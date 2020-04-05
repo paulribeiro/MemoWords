@@ -21,6 +21,7 @@ public class FirebaseDataHelper {
     public FirebaseDataHelper() {
         dataBase = FirebaseDatabase.getInstance();
         referenceWords = dataBase.getReference("words/german");
+        referenceWords.keepSynced(true);
     }
 
     public interface DataStatus {
@@ -53,5 +54,10 @@ public class FirebaseDataHelper {
 
             }
         });
+    }
+
+    public void updateWord(final Word word) {
+        word.setNumberSuccess(word.getNumberSuccess() + 1);
+        referenceWords.child(word.getId().toString()).setValue(word);
     }
 }

@@ -39,6 +39,32 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final FirebaseDataHelper firebaseDataHelper = new FirebaseDataHelper();
+        firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
+
+            @Override
+            public void dataIsLoaded(List<Word> w, List<String> keys) {
+                words.addAll(w);
+                textViewWord.setText(words.get(cpt).getWordDE());
+                textViewTranslation.setText(words.get(cpt).getWordFR());
+            }
+
+            @Override
+            public void dataIsInserted() {
+
+            }
+
+            @Override
+            public void dataIsUpdated() {
+
+            }
+
+            @Override
+            public void dataIsDeleted() {
+
+            }
+        });
+
         words = new ArrayList<>();
         cpt = 0;
         textViewWord = view.findViewById(R.id.textview_word);
@@ -80,7 +106,9 @@ public class FirstFragment extends Fragment {
                 textViewWord.setText(words.get(cpt).getWordDE());
                 textViewTranslation.setText(words.get(cpt).getWordFR());
                 textViewTranslation.setVisibility(View.GONE);
+                firebaseDataHelper.updateWord(words.get(cpt));
                 cpt++;
+
             }
         });
 
@@ -97,32 +125,5 @@ public class FirstFragment extends Fragment {
             }
         });
 
-
-        FirebaseDataHelper firebaseDataHelper = new FirebaseDataHelper();
-        firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
-
-            @Override
-            public void dataIsLoaded(List<Word> w, List<String> keys) {
-                words.addAll(w);
-                textViewWord.setText(words.get(cpt).getWordDE());
-                textViewTranslation.setText(words.get(cpt).getWordFR());
-                cpt++;
-            }
-
-            @Override
-            public void dataIsInserted() {
-
-            }
-
-            @Override
-            public void dataIsUpdated() {
-
-            }
-
-            @Override
-            public void dataIsDeleted() {
-
-            }
-        });
     }
 }

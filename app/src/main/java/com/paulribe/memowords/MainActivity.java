@@ -4,10 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addButton;
     private EditText inputWordFR;
     private EditText inputWordDE;
+    private BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +45,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonShowPopupWindowClick(findViewById(R.id.content_main));
-            }
-        });
+        bottomNav = findViewById(R.id.bottom_nav);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_bottom_fragment);
+        assert navHostFragment != null;
+        NavigationUI.setupWithNavController(bottomNav, navHostFragment.getNavController());
     }
 
     @Override

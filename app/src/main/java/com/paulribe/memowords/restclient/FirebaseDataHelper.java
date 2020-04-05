@@ -20,6 +20,7 @@ public class FirebaseDataHelper {
 
     public FirebaseDataHelper() {
         dataBase = FirebaseDatabase.getInstance();
+        dataBase.setPersistenceEnabled(true);
         referenceWords = dataBase.getReference("words/german");
         referenceWords.keepSynced(true);
     }

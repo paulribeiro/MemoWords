@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.restclient.FirebaseDataHelper;
-
-import java.util.ArrayList;
+import com.paulribe.memowords.model.mContext;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,13 +17,13 @@ import androidx.fragment.app.Fragment;
 public class FirstFragment extends Fragment {
 
     private int cpt;
-    private List<Word> words;
     private TextView textViewWord;
     private TextView textViewTranslation;
     private boolean answerShown = false;
     private Button showAnswerButton;
     private Button easyButton;
     private Button difficultButton;
+    private mContext mContext;
 
     @Override
     public View onCreateView(
@@ -39,33 +37,8 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final FirebaseDataHelper firebaseDataHelper = new FirebaseDataHelper();
-        firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
+        mContext = new mContext();
 
-            @Override
-            public void dataIsLoaded(List<Word> w, List<String> keys) {
-                words.addAll(w);
-                textViewWord.setText(words.get(cpt).getWordDE());
-                textViewTranslation.setText(words.get(cpt).getWordFR());
-            }
-
-            @Override
-            public void dataIsInserted() {
-
-            }
-
-            @Override
-            public void dataIsUpdated() {
-
-            }
-
-            @Override
-            public void dataIsDeleted() {
-
-            }
-        });
-
-        words = new ArrayList<>();
         cpt = 0;
         textViewWord = view.findViewById(R.id.textview_word);
         textViewTranslation = view.findViewById(R.id.textview_translation);
@@ -76,16 +49,9 @@ public class FirstFragment extends Fragment {
         difficultButton.setVisibility(View.GONE);
         textViewTranslation.setVisibility(View.GONE);
 
-        /*
-        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+        textViewWord.setText(mContext.getWords().get(cpt).getWordFR());
+        textViewTranslation.setText(mContext.getWords().get(cpt).getWordDE());
 
-            }
-        });
-*/
         showAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,28 +66,27 @@ public class FirstFragment extends Fragment {
         easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mContext.getFirebaseDataHelper().updateWord(mContext.getWords().get(cpt));
+                cpt++;
                 showAnswerButton.setVisibility(View.VISIBLE);
                 easyButton.setVisibility(View.GONE);
                 difficultButton.setVisibility(View.GONE);
-                textViewWord.setText(words.get(cpt).getWordDE());
-                textViewTranslation.setText(words.get(cpt).getWordFR());
+                textViewWord.setText(mContext.getWords().get(cpt).getWordDE());
+                textViewTranslation.setText(mContext.getWords().get(cpt).getWordFR());
                 textViewTranslation.setVisibility(View.GONE);
-                firebaseDataHelper.updateWord(words.get(cpt));
-                cpt++;
-
             }
         });
 
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cpt++;
                 showAnswerButton.setVisibility(View.VISIBLE);
                 easyButton.setVisibility(View.GONE);
                 difficultButton.setVisibility(View.GONE);
-                textViewWord.setText(words.get(cpt).getWordDE());
-                textViewTranslation.setText(words.get(cpt).getWordFR());
+                textViewWord.setText(mContext.getWords().get(cpt).getWordDE());
+                textViewTranslation.setText(mContext.getWords().get(cpt).getWordFR());
                 textViewTranslation.setVisibility(View.GONE);
-                cpt++;
             }
         });
 

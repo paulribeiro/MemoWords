@@ -1,18 +1,22 @@
 package com.paulribe.memowords;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.model.mContext;
+import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.Fragment;
+
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -30,6 +34,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+
 public class MainActivity extends AppCompatActivity {
 
     //popup
@@ -37,18 +42,58 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputWordFR;
     private EditText inputWordDE;
     private BottomNavigationView bottomNav;
+    private BottomNavigationView bottomMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        bottomNav = findViewById(R.id.bottom_nav);
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_bottom_fragment);
-        assert navHostFragment != null;
-        NavigationUI.setupWithNavController(bottomNav, navHostFragment.getNavController());
+        createBottomMenu();
+    }
+
+    private void createBottomMenu() {
+        final Fragment fragment1 = new FirstFragment();
+        final Fragment fragment2 = new NewWordFragment();
+        final Fragment fragment3 = new SecondFragment();
+        final FragmentManager fm = getSupportFragmentManager();
+        final Fragment[] active = {fragment1};
+
+        fm.beginTransaction().add(R.id.content, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.content, fragment2, "2").hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.content,fragment1, "1").commit();
+
+        bottomMenu = findViewById(R.id.bottom_nav);
+        Menu menu = bottomMenu.getMenu();
+
+
+        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                fm.beginTransaction().hide(active[0]).show(fragment1).commit();
+                active[0] = fragment1;
+                return true;
+            }
+        });
+
+        bottomMenu.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                fm.beginTransaction().hide(active[0]).show(fragment2).commit();
+                active[0] = fragment2;
+                return true;
+            }
+        });
+
+        bottomMenu.getMenu().getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                fm.beginTransaction().hide(active[0]).show(fragment3).commit();
+                active[0] = fragment3;
+                return true;
+            }
+        });
     }
 
     @Override

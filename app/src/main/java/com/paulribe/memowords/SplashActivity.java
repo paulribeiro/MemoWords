@@ -20,7 +20,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setup view for activity
-        setContentView(R.layout.activity_splash);
+        //setContentView(R.layout.activity_splash);
 
         final mContext mContext = new mContext();
         final FirebaseDataHelper firebaseDataHelper = new FirebaseDataHelper();

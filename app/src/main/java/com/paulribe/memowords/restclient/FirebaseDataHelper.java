@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,8 +70,21 @@ public class FirebaseDataHelper implements Serializable {
         });
     }
 
-    public void updateWord(final Word word) {
+    public void setWordEasy(final Word word) {
+        Date now = new Date();
+        word.setLastSuccess(now);
+        word.setLastTry(now);
         word.setNumberSuccess(word.getNumberSuccess() + 1);
+        word.setNumberTry(word.getNumberTry() + 1);
+        word.setKnowledgeLevel(word.getKnowledgeLevel() + 1);
+        referenceWords.child(word.getId().toString()).setValue(word);
+    }
+
+    public void setWordDifficult(final Word word) {
+        Date now = new Date();
+        word.setLastTry(now);
+        word.setNumberTry(word.getNumberTry() + 1);
+        word.setKnowledgeLevel(0);
         referenceWords.child(word.getId().toString()).setValue(word);
     }
 

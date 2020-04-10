@@ -12,22 +12,28 @@ public class Word {
     private String wordDE;
     private Date dateAdded;
     private Date lastSuccess;
+    private Date lastTry;
     private Integer numberTry;
     private Integer numberSuccess;
     private String context;
+    private Integer knowledgeLevel;
 
     public Word() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(String wordFR, String wordDE, Date dateAdded, Date lastSuccess, Integer numberTry, Integer numberSuccess, String context) {
+    public Word(Integer id, String wordFR, String wordDE, Date dateAdded, Date lastSuccess,
+                Date lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel) {
+        this.id = id;
         this.wordFR = wordFR;
         this.wordDE = wordDE;
         this.dateAdded = dateAdded;
         this.lastSuccess = lastSuccess;
+        this.lastTry = lastTry;
         this.numberTry = numberTry;
         this.numberSuccess = numberSuccess;
         this.context = context;
+        this.knowledgeLevel = knowledgeLevel;
     }
 
     public String getWordFR() {
@@ -92,5 +98,21 @@ public class Word {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getLastTry() {
+        return lastTry;
+    }
+
+    public void setLastTry(Date lastTry) {
+        this.lastTry = lastTry;
+    }
+
+    public Integer getKnowledgeLevel() {
+        return knowledgeLevel;
+    }
+
+    public void setKnowledgeLevel(Integer knowledgeLevel) {
+        this.knowledgeLevel = knowledgeLevel;
     }
 }

@@ -1,24 +1,15 @@
 package com.paulribe.memowords;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mContext;
-import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBottomMenu() {
-        final Fragment fragment1 = new FirstFragment();
+        final Fragment fragment1 = new LearningFragment();
         final Fragment fragment2 = new NewWordFragment();
         final Fragment fragment3 = new SecondFragment();
         final FragmentManager fm = getSupportFragmentManager();

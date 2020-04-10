@@ -7,14 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class FirstFragment extends Fragment {
+public class LearningFragment extends Fragment {
 
     private int cpt;
     private TextView textViewWord;
@@ -37,28 +35,20 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mContext = new mContext();
+        defineViews(view);
 
+        mContext = new mContext();
         cpt = 0;
-        textViewWord = view.findViewById(R.id.textview_word);
-        textViewTranslation = view.findViewById(R.id.textview_translation);
-        showAnswerButton = view.findViewById(R.id.button);
-        easyButton = view.findViewById(R.id.button2);
-        difficultButton = view.findViewById(R.id.button3);
         easyButton.setVisibility(View.GONE);
         difficultButton.setVisibility(View.GONE);
         textViewTranslation.setVisibility(View.GONE);
-
-        textViewWord.setText(mContext.getWords().get(cpt).getWordFR());
-        textViewTranslation.setText(mContext.getWords().get(cpt).getWordDE());
+        textViewWord.setText(mContext.getWordsToLearn().get(cpt).getWordFR());
+        textViewTranslation.setText(mContext.getWordsToLearn().get(cpt).getWordDE());
 
         showAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAnswerButton.setVisibility(View.GONE);
-                easyButton.setVisibility(View.VISIBLE);
-                difficultButton.setVisibility(View.VISIBLE);
-                textViewTranslation.setVisibility(View.VISIBLE);
+                showAnswerAction();
 
             }
         });
@@ -66,29 +56,44 @@ public class FirstFragment extends Fragment {
         easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.getFirebaseDataHelper().updateWord(mContext.getWords().get(cpt));
+                mContext.getFirebaseDataHelper().setWordEasy(mContext.getWordsToLearn().get(cpt));
                 cpt++;
-                showAnswerButton.setVisibility(View.VISIBLE);
-                easyButton.setVisibility(View.GONE);
-                difficultButton.setVisibility(View.GONE);
-                textViewWord.setText(mContext.getWords().get(cpt).getWordDE());
-                textViewTranslation.setText(mContext.getWords().get(cpt).getWordFR());
-                textViewTranslation.setVisibility(View.GONE);
+                afterAnswerAction();
             }
         });
 
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mContext.getFirebaseDataHelper().setWordDifficult(mContext.getWordsToLearn().get(cpt));
                 cpt++;
-                showAnswerButton.setVisibility(View.VISIBLE);
-                easyButton.setVisibility(View.GONE);
-                difficultButton.setVisibility(View.GONE);
-                textViewWord.setText(mContext.getWords().get(cpt).getWordDE());
-                textViewTranslation.setText(mContext.getWords().get(cpt).getWordFR());
-                textViewTranslation.setVisibility(View.GONE);
+                afterAnswerAction();
             }
         });
 
+    }
+
+    private void defineViews(@NonNull View view) {
+        textViewWord = view.findViewById(R.id.textview_word);
+        textViewTranslation = view.findViewById(R.id.textview_translation);
+        showAnswerButton = view.findViewById(R.id.button);
+        easyButton = view.findViewById(R.id.button2);
+        difficultButton = view.findViewById(R.id.button3);
+    }
+
+    private void showAnswerAction() {
+        showAnswerButton.setVisibility(View.GONE);
+        easyButton.setVisibility(View.VISIBLE);
+        difficultButton.setVisibility(View.VISIBLE);
+        textViewTranslation.setVisibility(View.VISIBLE);
+    }
+
+    private void afterAnswerAction() {
+        showAnswerButton.setVisibility(View.VISIBLE);
+        easyButton.setVisibility(View.GONE);
+        difficultButton.setVisibility(View.GONE);
+        textViewWord.setText(mContext.getWordsToLearn().get(cpt).getWordFR());
+        textViewTranslation.setText(mContext.getWordsToLearn().get(cpt).getWordDE());
+        textViewTranslation.setVisibility(View.GONE);
     }
 }

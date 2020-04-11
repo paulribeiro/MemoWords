@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_first" />
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.paulribe.memowords.SecondFragment"
+        android:name="com.paulribe.memowords.ListFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second"/>
 

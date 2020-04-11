@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private void createBottomMenu() {
         final Fragment fragment1 = new LearningFragment();
         final Fragment fragment2 = new NewWordFragment();
-        final Fragment fragment3 = new SecondFragment();
+        final Fragment fragment3 = new ListFragment();
         final FragmentManager fm = getSupportFragmentManager();
         final Fragment[] active = {fragment1};
 

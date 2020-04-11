@@ -1,7 +1,5 @@
 package com.paulribe.memowords.restclient;
 
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.database.Query;
 import com.paulribe.memowords.model.Word;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,8 +70,8 @@ public class FirebaseDataHelper implements Serializable {
 
     public void setWordEasy(final Word word) {
         Date now = new Date();
-        word.setLastSuccess(now);
-        word.setLastTry(now);
+        word.setLastSuccess(now.getTime());
+        word.setLastTry(now.getTime());
         word.setNumberSuccess(word.getNumberSuccess() + 1);
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(word.getKnowledgeLevel() + 1);
@@ -82,7 +80,7 @@ public class FirebaseDataHelper implements Serializable {
 
     public void setWordDifficult(final Word word) {
         Date now = new Date();
-        word.setLastTry(now);
+        word.setLastTry(now.getTime());
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(0);
         referenceWords.child(word.getId().toString()).setValue(word);

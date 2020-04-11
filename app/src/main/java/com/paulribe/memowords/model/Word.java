@@ -2,17 +2,15 @@ package com.paulribe.memowords.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.Date;
-
 @IgnoreExtraProperties
 public class Word {
 
     private Integer id;
     private String wordFR;
     private String wordDE;
-    private Date dateAdded;
-    private Date lastSuccess;
-    private Date lastTry;
+    private long dateAdded;
+    private long lastSuccess;
+    private long lastTry;
     private Integer numberTry;
     private Integer numberSuccess;
     private String context;
@@ -22,9 +20,7 @@ public class Word {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(Integer id, String wordFR, String wordDE, Date dateAdded, Date lastSuccess,
-                Date lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel) {
-        this.id = id;
+    public Word(String wordFR, String wordDE, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel) {
         this.wordFR = wordFR;
         this.wordDE = wordDE;
         this.dateAdded = dateAdded;
@@ -34,6 +30,30 @@ public class Word {
         this.numberSuccess = numberSuccess;
         this.context = context;
         this.knowledgeLevel = knowledgeLevel;
+    }
+
+    public void setDateAdded(long dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public void setLastSuccess(long lastSuccess) {
+        this.lastSuccess = lastSuccess;
+    }
+
+    public long getDateAdded() {
+        return dateAdded;
+    }
+
+    public long getLastSuccess() {
+        return lastSuccess;
+    }
+
+    public long getLastTry() {
+        return lastTry;
+    }
+
+    public void setLastTry(long lastTry) {
+        this.lastTry = lastTry;
     }
 
     public String getWordFR() {
@@ -50,22 +70,6 @@ public class Word {
 
     public void setWordDE(String wordDE) {
         this.wordDE = wordDE;
-    }
-
-    public Date getDateAdded() {
-        return dateAdded;
-    }
-
-    public void setDateAdded(Date dateAdded) {
-        this.dateAdded = dateAdded;
-    }
-
-    public Date getLastSuccess() {
-        return lastSuccess;
-    }
-
-    public void setLastSuccess(Date lastSuccess) {
-        this.lastSuccess = lastSuccess;
     }
 
     public Integer getNumberTry() {
@@ -100,19 +104,7 @@ public class Word {
         this.id = id;
     }
 
-    public Date getLastTry() {
-        return lastTry;
-    }
+    public Integer getKnowledgeLevel() { return knowledgeLevel; }
 
-    public void setLastTry(Date lastTry) {
-        this.lastTry = lastTry;
-    }
-
-    public Integer getKnowledgeLevel() {
-        return knowledgeLevel;
-    }
-
-    public void setKnowledgeLevel(Integer knowledgeLevel) {
-        this.knowledgeLevel = knowledgeLevel;
-    }
+    public void setKnowledgeLevel(Integer knowledgeLevel) { this.knowledgeLevel = knowledgeLevel; }
 }

@@ -60,13 +60,13 @@ public class mContext implements Serializable {
             case 0:
             case 1:
                 Date yesterday = new Date(today.getTime() - (1000 * 60 * 60 * 24));
-                return word.getLastTry().before(yesterday);
+                return word.getLastTry() < yesterday.getTime();
             case 2:
                 Date lastWeek = new Date(today.getTime() - (1000 * 60 * 60 * 24 * 7));
-                return word.getLastTry().before(lastWeek);
+                return word.getLastTry() < lastWeek.getTime();
             case 3:
                 Date lastMonth = new Date(today.getTime() - (1000 * 60 * 60 * 24 * 21));
-                return word.getLastTry().before(lastMonth);
+                return word.getLastTry() < lastMonth.getTime();
             default:
                 return false;
         }

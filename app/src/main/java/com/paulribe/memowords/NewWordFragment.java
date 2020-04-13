@@ -1,5 +1,7 @@
 package com.paulribe.memowords;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,6 +27,8 @@ import com.paulribe.memowords.recyclerViews.FindWordAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class NewWordFragment extends Fragment {
 
@@ -127,7 +133,6 @@ public class NewWordFragment extends Fragment {
         });
 
         inputWordFR.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -180,8 +185,26 @@ public class NewWordFragment extends Fragment {
                 }
             }});
 
-
+        hideKeyboardWhenTouchingOutside(view);
         configureRecyclerView();
+    }
+
+    private void hideKeyboardWhenTouchingOutside(@NonNull View view) {
+        view.findViewById(R.id.outPopup).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return true;
+            }
+        });
+
+        view.findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return true;
+            }
+        });
     }
 
     private void checkRequiredFields() {
@@ -246,5 +269,10 @@ public class NewWordFragment extends Fragment {
         // 3.4 - Set layout manager to position the items
         this.suggestionWordDERecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.suggestionWordDERecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    public void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

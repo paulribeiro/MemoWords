@@ -86,4 +86,14 @@ public class FirebaseDataHelper implements Serializable {
         referenceWords.child(word.getId().toString()).setValue(word);
     }
 
+    public void addWord(final Word word) {
+        int id = words.size() + 1;
+        referenceWords.child(Integer.toString(id)).setValue(word);
+    }
+
+    public void updateWord(final Word word) {
+        int id = word.getId();
+        referenceWords.child(Integer.toString(id)).setValue(word);
+    }
+
 }

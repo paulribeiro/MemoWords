@@ -3,8 +3,6 @@ package com.paulribe.memowords.model;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +14,8 @@ public class mContext implements Serializable {
     private static List<Word> words;
     private static List<Word> wordsToLearn;
     private static FirebaseDataHelper firebaseDataHelper;
+    public static final long NO_LAST_SUCCESS = 946684800;
+    public static final long NO_LAST_TRY = 915148800;
 
     public mContext() {
 
@@ -70,5 +70,13 @@ public class mContext implements Serializable {
             default:
                 return false;
         }
+    }
+
+    public void addWord(Word word) {
+        firebaseDataHelper.addWord(word);
+    }
+
+    public void updateWord(Word word) {
+        firebaseDataHelper.updateWord(word);
     }
 }

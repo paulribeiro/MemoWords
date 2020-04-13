@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.paulribe.memowords.adapter.WordAdapter;
+import com.paulribe.memowords.recyclerViews.WordAdapter;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
 

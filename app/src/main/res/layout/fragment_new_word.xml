@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="0dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/shape_popup"
         android:orientation="vertical"
@@ -30,139 +30,145 @@
         android:paddingRight="10dp"
         android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/popupText"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:text="Add a new word"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textview_word_fr"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="10dp"
-            android:text="word in french :"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/popupText" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/popupInputFR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/popupText"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_word_fr">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputWordFR"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="a"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textViewWordDE"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="9dp"
-            android:text="word in german :"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/popupInputFR" />
+                <TextView
+                    android:id="@+id/popupText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="Add a new word"
+                    android:textSize="22sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/popupInputDE"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/popupText"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWordDE">
+                <TextView
+                    android:id="@+id/textview_word_fr"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="word in french :" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputWordDE"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="a"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/popupInputFR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/popupText"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:theme="@style/TextLabel">
 
-        <TextView
-            android:id="@+id/textViewWordContext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="9dp"
-            android:text="context :"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/popupInputDE" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputWordFR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/popupInputContext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/popupText"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWordContext">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/suggestionWordFR"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputWordContext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="a"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/textViewWordDE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="9dp"
+                    android:text="word in german :" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/popupInputDE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/popupText"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:theme="@style/TextLabel">
 
-        </androidx.constraintlayout.widget.Guideline>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputWordDE"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/popupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/shape_button"
-            android:text="Confirm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/popupInputContext" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/suggestionWordDE"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp" />
+
+                <TextView
+                    android:id="@+id/textViewWordContext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="9dp"
+                    android:text="context :" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/popupInputContext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/popupText"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:theme="@style/TextLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputWordContext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textImeMultiLine"
+                        android:lines="2"
+                        android:gravity="top|left"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/popupButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/shape_button"
+                    android:text="Confirm"
+                    android:textSize="14sp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5">
+
+                </androidx.constraintlayout.widget.Guideline>
+
+            </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

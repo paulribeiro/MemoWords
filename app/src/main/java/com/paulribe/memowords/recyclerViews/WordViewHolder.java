@@ -1,4 +1,4 @@
-package com.paulribe.memowords.adapter;
+package com.paulribe.memowords.recyclerViews;
 
 import android.view.View;
 import android.widget.TextView;

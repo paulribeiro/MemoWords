@@ -28,8 +28,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void dataIsLoaded(List<Word> w, List<String> keys) {
-                List<Word> words = new ArrayList<>(w);
-                mContext.setWords(words);
+                mContext.setWords(w);
                 mContext.setFirebaseDataHelper(firebaseDataHelper);
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);

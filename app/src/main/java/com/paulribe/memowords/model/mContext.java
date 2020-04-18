@@ -1,5 +1,6 @@
 package com.paulribe.memowords.model;
 
+import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
 import java.io.Serializable;
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
 
 public class mContext implements Serializable {
     private static List<Word> words;
-    private static List<Word> wordsToLearn;
+    private static List<Word> wordsToDisplay;
+    private static boolean isRevisionFinished;
     private static FirebaseDataHelper firebaseDataHelper;
     public static final long NO_LAST_SUCCESS = 946684800;
     public static final long NO_LAST_TRY = 915148800;
@@ -27,10 +29,11 @@ public class mContext implements Serializable {
 
     public void setWords(List<Word> words) {
         mContext.words = words;
+        calculateWordsToRevise();
         calculateWordsToLearn();
     }
 
-    public FirebaseDataHelper getFirebaseDataHelper() {
+    public static FirebaseDataHelper getFirebaseDataHelper() {
         return firebaseDataHelper;
     }
 
@@ -38,22 +41,38 @@ public class mContext implements Serializable {
         mContext.firebaseDataHelper = firebaseDataHelper;
     }
 
-    public List<Word> getWordsToLearn() {
-        return wordsToLearn;
+    public static List<Word> getWordsToDisplay() {
+        return wordsToDisplay;
     }
 
-    public void setWordsToLearn(List<Word> wordsToLearn) {
-        mContext.wordsToLearn = wordsToLearn;
+    public static void setWordsToDisplay(List<Word> wordsToDisplay) {
+        mContext.wordsToDisplay = wordsToDisplay;
     }
 
-    public void calculateWordsToLearn() {
+    public static boolean getIsRevisionFinished() {
+        return isRevisionFinished;
+    }
+
+    public static void setIsRevisionFinished(boolean isRevisionFinished) {
+        mContext.isRevisionFinished = isRevisionFinished;
+    }
+
+    public static void calculateWordsToLearn() {
+        if(isRevisionFinished) {
+            List<Word> wordsToOrder = new ArrayList<>(words);
+            wordsToDisplay = wordsToOrder.stream().filter(w -> w.getNumberTry().equals(0)).collect(Collectors.toList());
+        }
+    }
+
+    private static void calculateWordsToRevise() {
         List<Word> wordsToOrder = new ArrayList<>(words);
         Collections.sort(wordsToOrder, Comparator.comparing(Word::getKnowledgeLevel)
                 .thenComparing(Word::getDateAdded));
-        wordsToLearn = wordsToOrder.stream().filter(this::hasToBeRevise).collect(Collectors.toList());
+        wordsToDisplay = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
+        isRevisionFinished = CollectionUtils.isEmpty(wordsToDisplay);
     }
 
-    private boolean hasToBeRevise(Word word) {
+    private static boolean hasToBeRevise(Word word) {
         Date today = new Date();
         // TODO : use LocalDateTime ?
         switch(word.getKnowledgeLevel()) {

@@ -2,9 +2,11 @@ package com.paulribe.memowords;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import android.widget.EditText;
 
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
+import com.paulribe.memowords.recyclerViews.DividerItemDecoration;
 import com.paulribe.memowords.recyclerViews.FindWordAdapter;
 
 import java.util.ArrayList;
@@ -81,10 +84,6 @@ public class NewWordFragment extends Fragment {
         suggestionWordDERecyclerView.setHasFixedSize(true);
         suggestionWordFRRecyclerView.setVisibility(View.GONE);
         suggestionWordDERecyclerView.setVisibility(View.GONE);
-
-        //DividerItemDecoration decoration = new DividerItemDecoration(getParentFragment().getContext(), DividerItemDecoration.HORIZONTAL);
-
-
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +185,12 @@ public class NewWordFragment extends Fragment {
             }});
 
         hideKeyboardWhenTouchingOutside(view);
+
+        Drawable drawable = getActivity().getDrawable(R.drawable.divider);
+        suggestionWordDERecyclerView.addItemDecoration(
+                new DividerItemDecoration(drawable,
+                        false, false));
+
         configureRecyclerView();
     }
 

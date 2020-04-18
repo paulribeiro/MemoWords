@@ -6,15 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_title_background"
     android:layout_width="match_parent"
-    android:background="#877777"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="1dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

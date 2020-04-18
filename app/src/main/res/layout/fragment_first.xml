@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:backgroundTint="#FF9800"
-    tools:context=".FirstFragment">
+    android:background="@color/white"
+    android:backgroundTint="@color/themeColor"
+    tools:context=".LearningFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

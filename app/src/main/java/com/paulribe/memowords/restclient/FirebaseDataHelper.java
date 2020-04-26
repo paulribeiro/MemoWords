@@ -1,5 +1,6 @@
 package com.paulribe.memowords.restclient;
 
+import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.model.Word;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,4 +97,12 @@ public class FirebaseDataHelper implements Serializable {
         referenceWords.child(Integer.toString(id)).setValue(word);
     }
 
+    public DatabaseReference getReferenceWords() {
+        return referenceWords;
+    }
+
+    public void setReferenceWords(LanguageEnum languageEnum) {
+        referenceWords = dataBase.getReference("user1/words/" + languageEnum.getLanguage());
+
+    }
 }

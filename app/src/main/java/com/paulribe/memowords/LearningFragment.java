@@ -44,26 +44,28 @@ public class LearningFragment extends Fragment {
 
         easyButton.setOnClickListener(view -> {
             mContext.getFirebaseDataHelper().setWordEasy(getCurrentWord());
+            mContext.getWordsToDisplay().remove(0);
             updateWordList();
         });
 
         difficultButton.setOnClickListener(view -> {
             mContext.getFirebaseDataHelper().setWordDifficult(getCurrentWord());
+            mContext.getWordsToDisplay().remove(0);
             updateWordList();
         });
     }
 
-    private void updateWordList() {
+    public void updateWordList() {
         if(mContext.getIsRevisionFinished()) {
-            if(mContext.getWordsToDisplay().size() > 1) {
-                mContext.getWordsToDisplay().remove(0);
+            if(mContext.getWordsToDisplay().size() > 0) {
+                ((MainActivity)getActivity()).displayLearningFragment();
                 displayNextWord();
             } else {
                 ((MainActivity)getActivity()).displayNoMoreWords();
             }
         } else {
-            if(mContext.getWordsToDisplay().size() > 1) {
-                mContext.getWordsToDisplay().remove(0);
+            if(mContext.getWordsToDisplay().size() > 0) {
+                ((MainActivity)getActivity()).displayLearningFragment();
                 displayNextWord();
             } else {
                 ((MainActivity)getActivity()).displayRevisionFinished();

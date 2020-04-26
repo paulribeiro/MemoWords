@@ -1,6 +1,7 @@
 package com.paulribe.memowords.model;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
 import java.io.Serializable;
@@ -12,22 +13,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class mContext implements Serializable {
+
     private static List<Word> words;
     private static List<Word> wordsToDisplay;
     private static boolean isRevisionFinished;
     private static FirebaseDataHelper firebaseDataHelper;
     public static final long NO_LAST_SUCCESS = 946684800;
     public static final long NO_LAST_TRY = 915148800;
+    private static LanguageEnum currentLanguage = LanguageEnum.GERMAN;
 
     public mContext() {
 
     }
 
-    public List<Word> getWords() {
+    public static List<Word> getWords() {
         return words;
     }
 
-    public void setWords(List<Word> words) {
+    public static void setWords(List<Word> words) {
         mContext.words = words;
         calculateWordsToRevise();
         calculateWordsToLearn();
@@ -37,7 +40,7 @@ public class mContext implements Serializable {
         return firebaseDataHelper;
     }
 
-    public void setFirebaseDataHelper(FirebaseDataHelper firebaseDataHelper) {
+    public static void setFirebaseDataHelper(FirebaseDataHelper firebaseDataHelper) {
         mContext.firebaseDataHelper = firebaseDataHelper;
     }
 
@@ -97,5 +100,13 @@ public class mContext implements Serializable {
 
     public void updateWord(Word word) {
         firebaseDataHelper.updateWord(word);
+    }
+
+    public static LanguageEnum getCurrentLanguage() {
+        return currentLanguage;
+    }
+
+    public static void setCurrentLanguage(LanguageEnum language) {
+        currentLanguage = language;
     }
 }

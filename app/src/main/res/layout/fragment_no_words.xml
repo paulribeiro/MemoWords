@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:contentDescription="noContentImage"
-        android:src="@drawable/image_no_content_cut"
+        android:src="@drawable/no_words_background"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

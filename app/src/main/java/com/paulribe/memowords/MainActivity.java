@@ -1,15 +1,15 @@
 package com.paulribe.memowords;
 
-
 import android.os.Bundle;
-
 import com.google.android.gms.common.util.CollectionUtils;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
+import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,18 +34,78 @@ public class MainActivity extends AppCompatActivity {
     final List<Fragment> active = new ArrayList<>();
 
     private BottomNavigationView bottomMenu;
-    private AppBarLayout appBarLayout;
-    private androidx.appcompat.widget.Toolbar toolbar;
     private View notificationBadge;
+    boolean newLanguageLoaded;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createBottomMenu();
+        createOptionMenu();
         displayBadgeNumberCardsToRevise();
     }
 
+    private void createOptionMenu() {
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        MenuItem menuItemGerman = toolbar.getMenu().getItem(0).getSubMenu().getItem(0);
+        MenuItem menuItemPortuguese = toolbar.getMenu().getItem(0).getSubMenu().getItem(1);
+        MenuItem menuItemEnglish = toolbar.getMenu().getItem(0).getSubMenu().getItem(2);
+        MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.action_german:
+                    switchWordsLanguage(LanguageEnum.GERMAN);
+                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_germany_24dp);
+                    return true;
+                case R.id.action_portuguese:
+                    switchWordsLanguage(LanguageEnum.PORTUGUESE);
+                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_portugal_24dp);
+                    return true;
+                case R.id.action_english:
+                    switchWordsLanguage(LanguageEnum.ENGLISH);
+                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_england_24dp);
+                    return true;
+                default:
+                    return true;
+            }
+        };
+
+        menuItemGerman.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemPortuguese.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
+    }
+
+    private void switchWordsLanguage(LanguageEnum language) {
+        if(!mContext.getCurrentLanguage().equals(language)) {
+            newLanguageLoaded = true;
+            mContext.setCurrentLanguage(language);
+            FirebaseDataHelper firebaseDataHelper = mContext.getFirebaseDataHelper();
+            firebaseDataHelper.setReferenceWords(language);
+            firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
+
+                @Override
+                public void dataIsLoaded(List<Word> w, List<String> keys) {
+                    mContext.setWords(w);
+                }
+
+                @Override
+                public void dataIsInserted() {}
+
+                @Override
+                public void dataIsUpdated(List<Word> w) {
+                    mContext.setWords(w);
+                    if(newLanguageLoaded){
+                        newLanguageLoaded = false;
+                        ((LearningFragment)learningFragment).updateWordList();
+                    }
+                }
+
+                @Override
+                public void dataIsDeleted() {}
+            });
+        }
+    }
 
     private void createBottomMenu() {
 
@@ -123,6 +183,13 @@ public class MainActivity extends AppCompatActivity {
         deleteBadge();
         fm.beginTransaction().hide(active.get(0)).show(fragmentRevisionFinished).commit();
         active.add(0, fragmentRevisionFinished);
+    }
+
+    public void displayLearningFragment(){
+        if(!active.get(0).equals(learningFragment)){
+            fm.beginTransaction().hide(active.get(0)).show(learningFragment).commit();
+            active.add(0, learningFragment);
+        }
     }
 
     public void comeBackLearningFragment() {

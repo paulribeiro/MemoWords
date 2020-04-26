@@ -1,29 +1,36 @@
 package com.paulribe.memowords.recyclerViews;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.model.mContext;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class WordViewHolder  extends RecyclerView.ViewHolder {
 
-    View view;
-    TextView textViewWord;
-    TextView textViewTranslation;
-    TextView textViewLastTry;
+    private View view;
+    private TextView textViewWord;
+    private TextView textViewLastTryText;
+    private TextView textViewTranslation;
+    private TextView textViewLastTry;
+    private ImageButton favoriteButton;
 
     public WordViewHolder(View itemView) {
         super(itemView);
         textViewWord = itemView.findViewById(R.id.item_word);
         textViewTranslation = itemView.findViewById(R.id.item_word_translation);
         textViewLastTry = itemView.findViewById(R.id.item_last_try);
+        textViewLastTryText = itemView.findViewById(R.id.textViewLastTry);
         view = itemView.findViewById(R.id.item_view);
+        favoriteButton = itemView.findViewById(R.id.favorite);
     }
 
     public void updateWithWord(Word word, Integer position) {
@@ -34,14 +41,33 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
         }
         this.textViewWord.setText(word.getWordFR());
         this.textViewTranslation.setText(word.getWordDE());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = new Date(word.getLastTry()*1000);
-        if(d.after(new Date(2020, 1, 1))) {
-            this.textViewLastTry.setText(formatter.format(d));
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date(word.getLastTry());
+        if(d.after(new Date(920000000))) {
+            textViewLastTryText.setVisibility(View.VISIBLE);
+            textViewLastTry.setVisibility(View.VISIBLE);
+            textViewLastTry.setText(dateFormat.format(d));
         }
         else {
-            this.textViewLastTry.setVisibility(View.GONE);
+            textViewLastTryText.setVisibility(View.GONE);
+            textViewLastTry.setVisibility(View.GONE);
         }
 
+        favoriteButton.setOnClickListener(view -> {
+            word.setFavorite(!word.isFavorite());
+            mContext.getFirebaseDataHelper().updateWord(word);
+            updateFavoriteButton(word);
+
+        });
+        updateFavoriteButton(word);
+    }
+
+    private void updateFavoriteButton(Word word) {
+        if(word.isFavorite()) {
+            favoriteButton.setImageResource(R.drawable.star_filled);
+        } else {
+            favoriteButton.setImageResource(R.drawable.star_empty);
+        }
     }
 }

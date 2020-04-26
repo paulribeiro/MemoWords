@@ -15,12 +15,13 @@ public class Word {
     private Integer numberSuccess;
     private String context;
     private Integer knowledgeLevel;
+    private boolean isFavorite;
 
     public Word() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(String wordFR, String wordDE, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel) {
+    public Word(String wordFR, String wordDE, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
         this.wordFR = wordFR;
         this.wordDE = wordDE;
         this.dateAdded = dateAdded;
@@ -30,6 +31,7 @@ public class Word {
         this.numberSuccess = numberSuccess;
         this.context = context;
         this.knowledgeLevel = knowledgeLevel;
+        this.isFavorite = isFavorite;
     }
 
     public void setDateAdded(long dateAdded) {
@@ -107,4 +109,12 @@ public class Word {
     public Integer getKnowledgeLevel() { return knowledgeLevel; }
 
     public void setKnowledgeLevel(Integer knowledgeLevel) { this.knowledgeLevel = knowledgeLevel; }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 }

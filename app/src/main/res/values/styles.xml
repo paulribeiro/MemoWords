@@ -32,7 +32,7 @@
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@drawable/new_splash_screen</item>
     </style>
 
 </resources>

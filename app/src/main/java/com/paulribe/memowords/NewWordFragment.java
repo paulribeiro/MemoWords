@@ -224,7 +224,7 @@ public class NewWordFragment extends Fragment {
         if(newWord == null) {
             Word word = new Word(inputWordFR.getText().toString(), inputWordDE.getText().toString(),
                     new Date().getTime(), mContext.NO_LAST_SUCCESS, mContext.NO_LAST_TRY,
-                    0,0, inputWordContext.getText().toString(), 0);
+                    0,0, inputWordContext.getText().toString(), 0, false);
             mContext.addWord(word);
         } else {
             newWord.setWordDE(inputWordDE.getText().toString());

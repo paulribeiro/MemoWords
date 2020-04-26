@@ -3,8 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.paulribe.memowords.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_select_language"
+        android:icon="@drawable/flag_germany_24dp"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="German"
+        app:showAsAction="always">
+
+        <menu>
+            <item android:id="@+id/action_german"
+                android:icon="@drawable/flag_germany_24dp"
+                app:showAsAction="ifRoom"
+                android:title="German" />
+            <item android:id="@+id/action_portuguese"
+                android:icon="@drawable/flag_portugal_24dp"
+                app:showAsAction="ifRoom"
+                android:title="Portuguese" />
+
+            <item android:id="@+id/action_english"
+                android:icon="@drawable/flag_england_24dp"
+                app:showAsAction="ifRoom"
+                android:title="English" />
+        </menu>
+    </item>
 </menu>

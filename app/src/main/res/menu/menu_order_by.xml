@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.paulribe.memowords.MainActivity">
+    <item
+        android:id="@+id/action_show_favorite"
+        android:orderInCategory="100"
+        android:icon="@drawable/star_empty_white"
+        android:title="favorite"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_order_by"
+        android:orderInCategory="100"
+        android:icon="@drawable/sorting_icon_white"
+        android:title="order by"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/action_last_tried"
+                android:title="Last tried"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/action_knowledge_level"
+                android:title="Knowledge level"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/action_AZ"
+                android:title="A-Z"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/action_ZA"
+                android:title="Z-A"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+</menu>

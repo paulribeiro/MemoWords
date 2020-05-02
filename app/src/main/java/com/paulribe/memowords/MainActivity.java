@@ -6,6 +6,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
@@ -13,10 +14,14 @@ import com.paulribe.memowords.restclient.FirebaseDataHelper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,21 +39,47 @@ public class MainActivity extends AppCompatActivity {
     final List<Fragment> active = new ArrayList<>();
 
     private BottomNavigationView bottomMenu;
+    private androidx.appcompat.widget.Toolbar toolbar;
+    private TextView searchBar;
+
     private View notificationBadge;
     boolean newLanguageLoaded;
+    private String searchedString = "";
+    private boolean isFavoriteSelected = false;
+    private Button deleteSearchWordButton;
+    private OrderByEnum orderByEnum = OrderByEnum.LAST_TRY;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar);
+        searchBar = findViewById(R.id.search_word);
+        searchBar.setVisibility(View.GONE);
+        deleteSearchWordButton = findViewById(R.id.delete_search_word);
         createBottomMenu();
-        createOptionMenu();
+        createOptionMenuSelectLanguage();
         displayBadgeNumberCardsToRevise();
     }
 
-    private void createOptionMenu() {
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+    private void createOptionMenuSelectLanguage() {
+        if(toolbar.getMenu() != null) {
+            toolbar.getMenu().clear();
+        }
+        toolbar.inflateMenu(R.menu.menu_main);
+        switch(mContext.getCurrentLanguage()) {
+            case GERMAN:
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_germany_24dp);
+                break;
+            case ENGLISH:
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_england_24dp);
+                break;
+            case PORTUGUESE:
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_portugal_24dp);
+                break;
+        }
+
         MenuItem menuItemGerman = toolbar.getMenu().getItem(0).getSubMenu().getItem(0);
         MenuItem menuItemPortuguese = toolbar.getMenu().getItem(0).getSubMenu().getItem(1);
         MenuItem menuItemEnglish = toolbar.getMenu().getItem(0).getSubMenu().getItem(2);
@@ -74,6 +105,80 @@ public class MainActivity extends AppCompatActivity {
         menuItemGerman.setOnMenuItemClickListener(menuItemClickListener);
         menuItemPortuguese.setOnMenuItemClickListener(menuItemClickListener);
         menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
+    }
+
+    private void createOptionMenuOrderBy() {
+        if(toolbar.getMenu() != null){
+            toolbar.getMenu().clear();
+        }
+        toolbar.inflateMenu(R.menu.menu_order_by);
+        MenuItem menuItemOrderByLastTry = toolbar.getMenu().getItem(1).getSubMenu().getItem(0);
+        MenuItem menuItemOrderByKnowledgeLevel = toolbar.getMenu().getItem(1).getSubMenu().getItem(1);
+        MenuItem menuItemOrderByAZ = toolbar.getMenu().getItem(1).getSubMenu().getItem(2);
+        MenuItem menuItemOrderByZA = toolbar.getMenu().getItem(1).getSubMenu().getItem(3);
+
+        MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.action_last_tried:
+                    orderByEnum = OrderByEnum.LAST_TRY;
+                    break;
+                case R.id.action_knowledge_level:
+                    orderByEnum = OrderByEnum.KNOWLEDGE_LEVEL;
+                    break;
+                case R.id.action_AZ:
+                    orderByEnum = OrderByEnum.AZ;
+                    break;
+                case R.id.action_ZA:
+                    orderByEnum = OrderByEnum.ZA;
+                    break;
+                default:
+                    break;
+            }
+            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
+            return true;
+        };
+
+        menuItemOrderByLastTry.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemOrderByKnowledgeLevel.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemOrderByAZ.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemOrderByZA.setOnMenuItemClickListener(menuItemClickListener);
+
+        MenuItem menuItemFavorite = toolbar.getMenu().getItem(0);
+        menuItemFavorite.setOnMenuItemClickListener(menuItem -> {
+            isFavoriteSelected = !isFavoriteSelected;
+            if(isFavoriteSelected) {
+                menuItemFavorite.setIcon(R.drawable.star_filled);
+            } else {
+                menuItemFavorite.setIcon(R.drawable.star_empty);
+            }
+            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
+            return true;
+        });
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                searchedString = s.toString();
+                ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
+            }
+        });
+
+        deleteSearchWordButton.setOnClickListener(view -> {
+            searchedString = "";
+            searchBar.setText("");
+            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
+        });
+
     }
 
     private void switchWordsLanguage(LanguageEnum language) {
@@ -139,18 +244,24 @@ public class MainActivity extends AppCompatActivity {
                 ((LearningFragment) learningFragment).displayNextWord();
                 active.add(0, learningFragment);
             }
+            createOptionMenuSelectLanguage();
+            searchBar.setVisibility(View.GONE);
             return true;
         });
 
         bottomMenu.getMenu().getItem(1).setOnMenuItemClickListener(menuItem -> {
             fm.beginTransaction().hide(active.get(0)).show(newWordFragment).commit();
             active.add(0, newWordFragment);
+            createOptionMenuSelectLanguage();
+            searchBar.setVisibility(View.GONE);
             return true;
         });
 
         bottomMenu.getMenu().getItem(2).setOnMenuItemClickListener(menuItem -> {
             fm.beginTransaction().hide(active.get(0)).show(listFragment).commit();
             active.add(0, listFragment);
+            createOptionMenuOrderBy();
+            searchBar.setVisibility(View.VISIBLE);
             return true;
         });
     }

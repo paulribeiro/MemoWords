@@ -33,6 +33,7 @@
 
 
             <FrameLayout
+                android:id="@+id/search_word_toolbar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
@@ -42,9 +43,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:layout_margin="5dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textColorHighlight="@color/white"
                     android:hint="Search word"
@@ -59,7 +59,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="right|center_vertical"
-                    android:background="@drawable/cross_icon_white" />
+                    android:background="@drawable/cross_icon_white_50px" />
 
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>

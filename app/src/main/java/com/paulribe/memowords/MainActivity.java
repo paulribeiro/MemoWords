@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomMenu;
     private androidx.appcompat.widget.Toolbar toolbar;
     private TextView searchBar;
+    private FrameLayout searchBarLayout;
 
     private View notificationBadge;
     boolean newLanguageLoaded;
@@ -56,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         searchBar = findViewById(R.id.search_word);
-        searchBar.setVisibility(View.GONE);
+        searchBarLayout = findViewById(R.id.search_word_toolbar);
+        searchBarLayout.setVisibility(View.GONE);
         deleteSearchWordButton = findViewById(R.id.delete_search_word);
         createBottomMenu();
         createOptionMenuSelectLanguage();
@@ -149,12 +152,14 @@ public class MainActivity extends AppCompatActivity {
             if(isFavoriteSelected) {
                 menuItemFavorite.setIcon(R.drawable.star_filled);
             } else {
-                menuItemFavorite.setIcon(R.drawable.star_empty);
+                menuItemFavorite.setIcon(R.drawable.star_empty_white);
             }
             ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
             return true;
         });
 
+        View crossIcon = findViewById(R.id.delete_search_word);
+        crossIcon.setVisibility(View.GONE);
         searchBar.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -168,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+                if(s != null && !s.toString().equals("")) {
+                    crossIcon.setVisibility(View.VISIBLE);
+                } else {
+                    crossIcon.setVisibility(View.GONE);
+                }
                 searchedString = s.toString();
                 ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
             }
@@ -245,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 active.add(0, learningFragment);
             }
             createOptionMenuSelectLanguage();
-            searchBar.setVisibility(View.GONE);
+            searchBarLayout.setVisibility(View.GONE);
             return true;
         });
 
@@ -253,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
             fm.beginTransaction().hide(active.get(0)).show(newWordFragment).commit();
             active.add(0, newWordFragment);
             createOptionMenuSelectLanguage();
-            searchBar.setVisibility(View.GONE);
+            searchBarLayout.setVisibility(View.GONE);
             return true;
         });
 
@@ -261,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
             fm.beginTransaction().hide(active.get(0)).show(listFragment).commit();
             active.add(0, listFragment);
             createOptionMenuOrderBy();
-            searchBar.setVisibility(View.VISIBLE);
+            searchBarLayout.setVisibility(View.VISIBLE);
             return true;
         });
     }

@@ -1,10 +1,11 @@
-package com.paulribe.memowords;
+package com.paulribe.memowords.views;
 
 import android.os.Bundle;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.model.Word;

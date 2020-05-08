@@ -1,4 +1,4 @@
-package com.paulribe.memowords;
+package com.paulribe.memowords.views;
 
 import android.app.Activity;
 import android.content.Intent;

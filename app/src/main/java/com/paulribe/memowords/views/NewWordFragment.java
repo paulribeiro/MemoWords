@@ -1,4 +1,4 @@
-package com.paulribe.memowords;
+package com.paulribe.memowords.views;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
 import com.paulribe.memowords.recyclerViews.DividerItemDecoration;

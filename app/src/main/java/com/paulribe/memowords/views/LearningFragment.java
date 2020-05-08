@@ -1,4 +1,4 @@
-package com.paulribe.memowords;
+package com.paulribe.memowords.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mContext;
 

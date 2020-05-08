@@ -1,10 +1,11 @@
-package com.paulribe.memowords;
+package com.paulribe.memowords.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.recyclerViews.WordAdapter;
 import com.paulribe.memowords.model.Word;

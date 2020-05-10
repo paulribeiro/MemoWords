@@ -104,18 +104,19 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.action_german:
                     switchWordsLanguage(LanguageEnum.GERMAN);
                     toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_germany_24dp);
-                    return true;
+                    break;
                 case R.id.action_portuguese:
                     switchWordsLanguage(LanguageEnum.PORTUGUESE);
                     toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_portugal_24dp);
-                    return true;
+                    break;
                 case R.id.action_english:
                     switchWordsLanguage(LanguageEnum.ENGLISH);
                     toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_england_24dp);
-                    return true;
+                    break;
                 default:
-                    return true;
+                    break;
             }
+            return true;
         };
 
         menuItemGerman.setOnMenuItemClickListener(menuItemClickListener);
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
     private void switchWordsLanguage(LanguageEnum language) {
         if(!mContext.getCurrentLanguage().equals(language)) {
             newLanguageLoaded = true;
+            deleteBadge();
             mContext.setCurrentLanguage(language);
             FirebaseDataHelper firebaseDataHelper = mContext.getFirebaseDataHelper();
             firebaseDataHelper.setReferenceWords(language);
@@ -239,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     if(newLanguageLoaded){
                         newLanguageLoaded = false;
                         ((LearningFragment)learningFragment).updateWordList();
+                        displayBadgeNumberCardsToRevise();
                     }
                 }
 
@@ -362,6 +365,8 @@ public class MainActivity extends AppCompatActivity {
             int nbWordToRevise = mContext.getWordsToDisplay().size();
             if(nbWordToRevise != 0) {
                 setBadgeText(Integer.toString(nbWordToRevise));
+            } else {
+                deleteBadge();
             }
         }
     }

@@ -22,6 +22,8 @@ public class LearningFragment extends Fragment {
     private Button showAnswerButton;
     private Button easyButton;
     private Button difficultButton;
+    private View layoutNew;
+
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
@@ -81,7 +83,9 @@ public class LearningFragment extends Fragment {
     public void displayNextWord() {
         setElementVisibility(true);
         setTextViewWithNextWord();
+        layoutNew.setVisibility(View.VISIBLE);
         if (!mContext.getIsRevisionFinished()) {
+            layoutNew.setVisibility(View.GONE);
             int nbWordToRevise = mContext.getWordsToDisplay().size();
             if (nbWordToRevise > 0) {
                 ((MainActivity) getActivity()).setBadgeText(Integer.toString(nbWordToRevise));
@@ -100,6 +104,7 @@ public class LearningFragment extends Fragment {
         showAnswerButton = view.findViewById(R.id.button);
         easyButton = view.findViewById(R.id.button2);
         difficultButton = view.findViewById(R.id.button3);
+        layoutNew = view.findViewById(R.id.newLayout);
     }
 
     private Word getCurrentWord() {

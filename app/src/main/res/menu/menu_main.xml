@@ -30,7 +30,8 @@
     <item
         android:id="@+id/action_log_user"
         android:orderInCategory="0"
-        app:showAsAction="ifRoom">
+        app:showAsAction="ifRoom"
+        android:title="logout">
         <menu>
             <item
                 android:id="@+id/action_logout"

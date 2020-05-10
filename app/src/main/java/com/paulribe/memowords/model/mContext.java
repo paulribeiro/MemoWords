@@ -95,11 +95,11 @@ public class mContext implements Serializable {
         }
     }
 
-    public void addWord(Word word) {
+    public static void addWord(Word word) {
         firebaseDataHelper.addWord(word);
     }
 
-    public void updateWord(Word word) {
+    public static void updateWord(Word word) {
         firebaseDataHelper.updateWord(word);
     }
 

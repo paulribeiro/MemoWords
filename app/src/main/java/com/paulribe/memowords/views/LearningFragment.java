@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.util.CollectionUtils;
@@ -19,11 +20,12 @@ public class LearningFragment extends Fragment {
 
     private TextView textViewWord;
     private TextView textViewTranslation;
+    private TextView textViewContext;
     private Button showAnswerButton;
     private Button easyButton;
     private Button difficultButton;
     private View layoutNew;
-
+    private ImageButton editWordButton;
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
@@ -37,6 +39,10 @@ public class LearningFragment extends Fragment {
         defineViews(view);
         setElementVisibility(true);
         setButtonsOnClickListener();
+        layoutNew.setVisibility(View.VISIBLE);
+        if (!mContext.getIsRevisionFinished()) {
+            layoutNew.setVisibility(View.GONE);
+        }
         if(!CollectionUtils.isEmpty(mContext.getWordsToDisplay())) {
             setTextViewWithNextWord();
         }
@@ -55,6 +61,10 @@ public class LearningFragment extends Fragment {
             mContext.getFirebaseDataHelper().setWordDifficult(getCurrentWord());
             mContext.getWordsToDisplay().remove(0);
             updateWordList();
+        });
+
+        editWordButton.setOnClickListener(view -> {
+            ((MainActivity)getActivity()).switchToNewWordFragment(getCurrentWord());
         });
     }
 
@@ -96,15 +106,18 @@ public class LearningFragment extends Fragment {
     private void setTextViewWithNextWord() {
         textViewWord.setText(getCurrentWord().getWordFR());
         textViewTranslation.setText(getCurrentWord().getWordDE());
+        textViewContext.setText(getCurrentWord().getContext());
     }
 
     private void defineViews(@NonNull View view) {
         textViewWord = view.findViewById(R.id.textview_word);
         textViewTranslation = view.findViewById(R.id.textview_translation);
+        textViewContext = view.findViewById(R.id.textViewContext);
         showAnswerButton = view.findViewById(R.id.button);
         easyButton = view.findViewById(R.id.button2);
         difficultButton = view.findViewById(R.id.button3);
         layoutNew = view.findViewById(R.id.newLayout);
+        editWordButton = view.findViewById(R.id.editWordButton);
     }
 
     private Word getCurrentWord() {

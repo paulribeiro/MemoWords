@@ -286,10 +286,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomMenu.getMenu().getItem(1).setOnMenuItemClickListener(menuItem -> {
-            fm.beginTransaction().hide(active.get(0)).show(newWordFragment).commit();
-            active.add(0, newWordFragment);
-            createOptionMenuSelectLanguage();
-            searchBarLayout.setVisibility(View.GONE);
+            switchToNewWordFragment(null);
             return true;
         });
 
@@ -300,6 +297,16 @@ public class MainActivity extends AppCompatActivity {
             searchBarLayout.setVisibility(View.VISIBLE);
             return true;
         });
+    }
+
+    public void switchToNewWordFragment(Word word) {
+        fm.beginTransaction().hide(active.get(0)).show(newWordFragment).commit();
+        active.add(0, newWordFragment);
+        createOptionMenuSelectLanguage();
+        searchBarLayout.setVisibility(View.GONE);
+        if(word != null) {
+            ((NewWordFragment)newWordFragment).switchToEditWordMode(word);
+        }
     }
 
     public void setBadgeText(String badgeText) {

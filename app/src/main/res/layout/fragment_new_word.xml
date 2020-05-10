@@ -42,7 +42,7 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/popupText"
+                    android:id="@+id/popupAddTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
@@ -52,6 +52,53 @@
                     android:gravity="center"
                     android:text="Add a new word"
                     android:textSize="22sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/popupEditLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/exitEditWordButton"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/cross_icon"
+                        app:layout_constraintEnd_toStartOf="@+id/popupEditTitle"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/popupEditTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:gravity="center"
+                        android:text="Edit the word :"
+                        android:textSize="22sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/popupCurrentWordEdited"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:gravity="center"
+                        android:text="chocolat"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/popupEditTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/textview_word_fr"
@@ -66,7 +113,7 @@
                     android:id="@+id/popupInputFR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupText"
+                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">
@@ -100,7 +147,7 @@
                     android:id="@+id/popupInputDE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupText"
+                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">
@@ -134,7 +181,7 @@
                     android:id="@+id/popupInputContext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupText"
+                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">

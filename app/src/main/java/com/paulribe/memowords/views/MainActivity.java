@@ -1,10 +1,13 @@
 package com.paulribe.memowords.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private Button deleteSearchWordButton;
     private OrderByEnum orderByEnum = OrderByEnum.LAST_TRY;
 
+    private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
         createBottomMenu();
         createOptionMenuSelectLanguage();
         displayBadgeNumberCardsToRevise();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if(currentUser == null) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
     }
 
     private void createOptionMenuSelectLanguage() {
@@ -74,32 +86,32 @@ public class MainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu_main);
         switch(mContext.getCurrentLanguage()) {
             case GERMAN:
-                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_germany_24dp);
+                toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_germany_24dp);
                 break;
             case ENGLISH:
-                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_england_24dp);
+                toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_england_24dp);
                 break;
             case PORTUGUESE:
-                toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_portugal_24dp);
+                toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_portugal_24dp);
                 break;
         }
 
-        MenuItem menuItemGerman = toolbar.getMenu().getItem(0).getSubMenu().getItem(0);
-        MenuItem menuItemPortuguese = toolbar.getMenu().getItem(0).getSubMenu().getItem(1);
-        MenuItem menuItemEnglish = toolbar.getMenu().getItem(0).getSubMenu().getItem(2);
+        MenuItem menuItemGerman = toolbar.getMenu().getItem(1).getSubMenu().getItem(0);
+        MenuItem menuItemPortuguese = toolbar.getMenu().getItem(1).getSubMenu().getItem(1);
+        MenuItem menuItemEnglish = toolbar.getMenu().getItem(1).getSubMenu().getItem(2);
         MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_german:
                     switchWordsLanguage(LanguageEnum.GERMAN);
-                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_germany_24dp);
+                    toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_germany_24dp);
                     return true;
                 case R.id.action_portuguese:
                     switchWordsLanguage(LanguageEnum.PORTUGUESE);
-                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_portugal_24dp);
+                    toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_portugal_24dp);
                     return true;
                 case R.id.action_english:
                     switchWordsLanguage(LanguageEnum.ENGLISH);
-                    toolbar.getMenu().getItem(0).setIcon(R.drawable.flag_england_24dp);
+                    toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_england_24dp);
                     return true;
                 default:
                     return true;
@@ -109,6 +121,19 @@ public class MainActivity extends AppCompatActivity {
         menuItemGerman.setOnMenuItemClickListener(menuItemClickListener);
         menuItemPortuguese.setOnMenuItemClickListener(menuItemClickListener);
         menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
+
+        MenuItem menuItemLogout = toolbar.getMenu().getItem(0);
+        menuItemLogout.setTitle(mContext.getCurrentUser().replace(" ", "."));
+        menuItemLogout.getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                return true;
+            }
+        });
+
     }
 
     private void createOptionMenuOrderBy() {

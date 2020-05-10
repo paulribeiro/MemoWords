@@ -7,8 +7,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.paulribe.memowords.model.mContext;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,15 +22,17 @@ import androidx.annotation.NonNull;
 public class FirebaseDataHelper implements Serializable {
     private FirebaseDatabase dataBase;
     private DatabaseReference referenceWords;
+    private static DatabaseReference referenceBase;
     private List<Word> words = new ArrayList<>();
     private ValueEventListener listener;
     private Integer cpt = 0;
 
     public FirebaseDataHelper() {
-        dataBase = FirebaseDatabase.getInstance();
-        dataBase.setPersistenceEnabled(true);
-        referenceWords = dataBase.getReference("user1/words/german");
-        referenceWords.keepSynced(true);
+        if(dataBase == null) {
+            dataBase = FirebaseDatabase.getInstance();
+            dataBase.setPersistenceEnabled(true);
+            referenceBase = dataBase.getReference();
+        }
     }
 
     public interface DataStatus {
@@ -102,7 +107,11 @@ public class FirebaseDataHelper implements Serializable {
     }
 
     public void setReferenceWords(LanguageEnum languageEnum) {
-        referenceWords = dataBase.getReference("user1/words/" + languageEnum.getLanguage());
+        referenceWords = dataBase.getReference(mContext.getCurrentUser() + "/words/" + languageEnum.getLanguage());
+        referenceWords.keepSynced(true);
+    }
 
+    public static void addUser() {
+        referenceBase.child(mContext.getCurrentUser() + "/words/german");
     }
 }

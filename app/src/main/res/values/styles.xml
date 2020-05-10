@@ -13,8 +13,11 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="actionMenuTextAppearance">@style/MenuItemTextAppearance</item>
     </style>
-
+    <style name="MenuItemTextAppearance" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="textAllCaps">false</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style parent="AppTheme.PopupOverlay" name="AppTheme.PopupOverlay" tools:ignore="ResourceCycle">

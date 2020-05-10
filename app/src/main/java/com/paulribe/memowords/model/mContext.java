@@ -21,6 +21,7 @@ public class mContext implements Serializable {
     public static final long NO_LAST_SUCCESS = 946684800;
     public static final long NO_LAST_TRY = 915148800;
     private static LanguageEnum currentLanguage = LanguageEnum.GERMAN;
+    private static String currentUser;
 
     public mContext() {
 
@@ -108,5 +109,13 @@ public class mContext implements Serializable {
 
     public static void setCurrentLanguage(LanguageEnum language) {
         currentLanguage = language;
+    }
+
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(String currentUser) {
+        mContext.currentUser = currentUser.replace(".", " ");
     }
 }

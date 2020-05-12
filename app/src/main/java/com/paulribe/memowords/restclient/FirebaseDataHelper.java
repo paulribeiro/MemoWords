@@ -38,7 +38,6 @@ public class FirebaseDataHelper implements Serializable {
         void dataIsInserted();
         void dataIsUpdated(List<Word> words);
         void dataIsDeleted();
-
     }
 
     public void readWords(final DataStatus dataStatus) {
@@ -98,6 +97,11 @@ public class FirebaseDataHelper implements Serializable {
     public void updateWord(final Word word) {
         int id = word.getId();
         referenceWords.child(Integer.toString(id)).setValue(word);
+    }
+
+    public void deleteWord(final Word word) {
+        int id = word.getId();
+        referenceWords.child(Integer.toString(id)).removeValue();
     }
 
     public DatabaseReference getReferenceWords() {

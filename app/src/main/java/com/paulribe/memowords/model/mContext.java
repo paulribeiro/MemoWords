@@ -104,6 +104,10 @@ public class mContext implements Serializable {
         firebaseDataHelper.updateWord(word);
     }
 
+    public static void deleteWord(Word word) {
+        firebaseDataHelper.deleteWord(word);
+    }
+
     public static LanguageEnum getCurrentLanguage() {
         return currentLanguage;
     }

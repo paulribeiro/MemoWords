@@ -34,6 +34,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class NewWordFragment extends Fragment {
 
     private Button addButton;
+    private Button deleteButton;
     private EditText inputWordFR;
     private EditText inputWordDE;
     private EditText inputWordContext;
@@ -67,6 +68,8 @@ public class NewWordFragment extends Fragment {
 
         addButton = view.findViewById(R.id.popupButton);
         addButton.setEnabled(false);
+        deleteButton = view.findViewById(R.id.popupDeleteButton);
+        deleteButton.setVisibility(View.GONE);
         inputWordFR = view.findViewById(R.id.inputWordFR);
         inputWordDE = view.findViewById(R.id.inputWordDE);
         inputWordContext = view.findViewById(R.id.inputWordContext);
@@ -89,6 +92,10 @@ public class NewWordFragment extends Fragment {
 
         exitEditWordButton.setOnClickListener(view1 -> {
             switchToAddWordMode();
+        });
+
+        deleteButton.setOnClickListener(view1 -> {
+            deleteWord();
         });
 
         inputWordFR.addTextChangedListener(new TextWatcher() {
@@ -211,9 +218,8 @@ public class NewWordFragment extends Fragment {
             mContext.updateWord(newWord);
             switchToAddWordMode();
         }
-        inputWordFR.setText("");
-        inputWordDE.setText("");
-        inputWordContext.setText("");
+        emptyInputFields();
+        deleteButton.setVisibility(View.GONE);
     }
 
     private void configureRecyclerView(){
@@ -253,13 +259,28 @@ public class NewWordFragment extends Fragment {
         popupEditLayout.setVisibility(View.VISIBLE);
         popupAddTitleTextView.setVisibility(View.GONE);
         popupCurrentWordEditedTextView.setText(word.getWordFR() + " - " + word.getWordDE());
+        deleteButton.setVisibility(View.VISIBLE);
     }
 
     private void switchToAddWordMode() {
         popupEditLayout.setVisibility(View.GONE);
         popupAddTitleTextView.setVisibility(View.VISIBLE);
+        deleteButton.setVisibility(View.GONE);
         newWord = null;
         addButton.setText("add word");
+    }
+
+    private void deleteWord() {
+        mContext.deleteWord(newWord);
+        switchToAddWordMode();
+        emptyInputFields();
+        mContext.getWordsToDisplay().remove(0);
+    }
+
+    private void emptyInputFields() {
+        inputWordFR.setText("");
+        inputWordDE.setText("");
+        inputWordContext.setText("");
     }
 
     private void hideKeyboard() {

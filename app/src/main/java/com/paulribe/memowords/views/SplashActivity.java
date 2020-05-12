@@ -37,7 +37,7 @@ public class SplashActivity extends Activity {
 
 
             final FirebaseDataHelper firebaseDataHelper = new FirebaseDataHelper();
-            mContext.setCurrentUser(currentUser.getEmail());
+            mContext.setCurrentUser(currentUser);
             firebaseDataHelper.setReferenceWords(LanguageEnum.GERMAN);
             firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
 

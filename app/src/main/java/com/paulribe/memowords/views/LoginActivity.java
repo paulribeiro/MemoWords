@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             } else {
                                 firebaseDataHelper = mContext.getFirebaseDataHelper();
                             }
-                            mContext.setCurrentUser(email);
+                            mContext.setCurrentUser(task.getResult().getUser());
                             firebaseDataHelper.setReferenceWords(LanguageEnum.GERMAN);
                             firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
 

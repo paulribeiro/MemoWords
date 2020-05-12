@@ -1,6 +1,7 @@
 package com.paulribe.memowords.model;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
@@ -21,7 +22,7 @@ public class mContext implements Serializable {
     public static final long NO_LAST_SUCCESS = 946684800;
     public static final long NO_LAST_TRY = 915148800;
     private static LanguageEnum currentLanguage = LanguageEnum.GERMAN;
-    private static String currentUser;
+    private static FirebaseUser currentUser;
 
     public mContext() {
 
@@ -111,11 +112,11 @@ public class mContext implements Serializable {
         currentLanguage = language;
     }
 
-    public static String getCurrentUser() {
+    public static FirebaseUser getCurrentUser() {
         return currentUser;
     }
 
-    public static void setCurrentUser(String currentUser) {
-        mContext.currentUser = currentUser.replace(".", " ");
+    public static void setCurrentUser(FirebaseUser currentUser) {
+        mContext.currentUser = currentUser;
     }
 }

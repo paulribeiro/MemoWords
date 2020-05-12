@@ -10,8 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.paulribe.memowords.model.mContext;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,11 +105,11 @@ public class FirebaseDataHelper implements Serializable {
     }
 
     public void setReferenceWords(LanguageEnum languageEnum) {
-        referenceWords = dataBase.getReference(mContext.getCurrentUser() + "/words/" + languageEnum.getLanguage());
+        referenceWords = dataBase.getReference(mContext.getCurrentUser().getUid() + "/words/" + languageEnum.getLanguage());
         referenceWords.keepSynced(true);
     }
 
     public static void addUser() {
-        referenceBase.child(mContext.getCurrentUser() + "/words/german");
+        referenceBase.child(mContext.getCurrentUser().getUid() + "/words/german");
     }
 }

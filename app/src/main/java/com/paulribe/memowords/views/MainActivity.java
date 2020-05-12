@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
 
         MenuItem menuItemLogout = toolbar.getMenu().getItem(0);
-        menuItemLogout.setTitle(mContext.getCurrentUser().replace(" ", "."));
+        menuItemLogout.setTitle(mContext.getCurrentUser().getEmail());
         menuItemLogout.getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {

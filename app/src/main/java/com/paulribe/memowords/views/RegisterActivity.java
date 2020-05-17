@@ -18,13 +18,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.paulribe.memowords.R;
-import com.paulribe.memowords.enumeration.LanguageEnum;
-import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mContext;
-import com.paulribe.memowords.restclient.FirebaseDataHelper;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -84,47 +77,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-
-                            final FirebaseDataHelper firebaseDataHelper;
-                            if(mContext.getFirebaseDataHelper() == null) {
-                                firebaseDataHelper = new FirebaseDataHelper();
-                            } else {
-                                firebaseDataHelper = mContext.getFirebaseDataHelper();
-                            }
-                            mContext.setCurrentUser(task.getResult().getUser());
-                            firebaseDataHelper.setReferenceWords(LanguageEnum.GERMAN);
-                            firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
-
-                                @Override
-                                public void dataIsLoaded(List<Word> w, List<String> keys) {
-                                    mContext.setWords(w);
-                                    mContext.setFirebaseDataHelper(firebaseDataHelper);
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    // close this activity
-                                    finish();
-                                }
-
-                                @Override
-                                public void dataIsInserted() {
-
-                                }
-
-                                @Override
-                                public void dataIsUpdated(List<Word> w) {
-                                    mContext.setWords(w);
-                                    mContext.setFirebaseDataHelper(firebaseDataHelper);
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void dataIsDeleted() {
-
-                                }
-                            });
-                            FirebaseDataHelper.addUser();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            //FirebaseDataHelper.addUser();
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(RegisterActivity.this,"This user already exists",Toast.LENGTH_LONG).show();
@@ -136,7 +92,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 Toast.makeText(RegisterActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
                             }
                         }
-                        progressDialog.dismiss();
                     }
                 });
     }

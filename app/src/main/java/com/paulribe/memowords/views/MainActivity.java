@@ -2,7 +2,6 @@ package com.paulribe.memowords.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -10,15 +9,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mContext;
-import com.paulribe.memowords.restclient.FirebaseDataHelper;
-
+import com.paulribe.memowords.viewmodels.BaseViewModel;
+import com.paulribe.memowords.viewmodels.ListWordsViewModel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
+import androidx.lifecycle.ViewModelProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,47 +28,43 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    final Fragment learningFragment = new LearningFragment();
-    final Fragment newWordFragment = new NewWordFragment();
-    final Fragment listFragment = new ListFragment();
-    final Fragment fragmentRevisionFinished = new RevisionFinishedFragment();
-    final Fragment fragmentNoMoreWords = new NoWordsFragment();
+    List<Fragment> activeFragment;
+    LearningFragment learningFragment;
+    NewWordFragment newWordFragment;
+    ListFragment listFragment;
+    RevisionFinishedFragment fragmentRevisionFinished;
+    NoWordsFragment fragmentNoMoreWords;
 
     final FragmentManager fm = getSupportFragmentManager();
-    final List<Fragment> active = new ArrayList<>();
 
     private BottomNavigationView bottomMenu;
     private androidx.appcompat.widget.Toolbar toolbar;
     private TextView searchBar;
     private FrameLayout searchBarLayout;
-
     private View notificationBadge;
-    boolean newLanguageLoaded;
-    private String searchedString = "";
-    private boolean isFavoriteSelected = false;
     private Button deleteSearchWordButton;
-    private OrderByEnum orderByEnum = OrderByEnum.LAST_TRY;
-
     private FirebaseAuth firebaseAuth;
+
+    private BaseViewModel baseViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDataBinding();
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         searchBar = findViewById(R.id.search_word);
         searchBarLayout = findViewById(R.id.search_word_toolbar);
         searchBarLayout.setVisibility(View.GONE);
         deleteSearchWordButton = findViewById(R.id.delete_search_word);
-        createBottomMenu();
-        createOptionMenuSelectLanguage();
-        displayBadgeNumberCardsToRevise();
+        //displayBadgeNumberCardsToRevise();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -84,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.getMenu().clear();
         }
         toolbar.inflateMenu(R.menu.menu_main);
-        switch(mContext.getCurrentLanguage()) {
+        switch(baseViewModel.getCurrentLanguage().getValue()) {
             case GERMAN:
                 toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_germany_24dp);
                 break;
@@ -124,20 +119,19 @@ public class MainActivity extends AppCompatActivity {
         menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
 
         MenuItem menuItemLogout = toolbar.getMenu().getItem(0);
-        menuItemLogout.setTitle(mContext.getCurrentUser().getEmail());
-        menuItemLogout.getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                return true;
-            }
+        menuItemLogout.setTitle(BaseViewModel.getCurrentUser().getEmail());
+        menuItemLogout.getSubMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
+            firebaseAuth.signOut();
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            return true;
         });
 
     }
 
     private void createOptionMenuOrderBy() {
+        ListWordsViewModel listWordsViewModel = new ViewModelProvider(this).get(ListWordsViewModel.class);
+
         if(toolbar.getMenu() != null){
             toolbar.getMenu().clear();
         }
@@ -150,21 +144,20 @@ public class MainActivity extends AppCompatActivity {
         MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_last_tried:
-                    orderByEnum = OrderByEnum.LAST_TRY;
+                    listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.LAST_TRY);
                     break;
                 case R.id.action_knowledge_level:
-                    orderByEnum = OrderByEnum.KNOWLEDGE_LEVEL;
+                    listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.KNOWLEDGE_LEVEL);
                     break;
                 case R.id.action_AZ:
-                    orderByEnum = OrderByEnum.AZ;
+                    listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.AZ);
                     break;
                 case R.id.action_ZA:
-                    orderByEnum = OrderByEnum.ZA;
+                    listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.ZA);
                     break;
                 default:
                     break;
             }
-            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
             return true;
         };
 
@@ -175,13 +168,12 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem menuItemFavorite = toolbar.getMenu().getItem(0);
         menuItemFavorite.setOnMenuItemClickListener(menuItem -> {
-            isFavoriteSelected = !isFavoriteSelected;
-            if(isFavoriteSelected) {
+            listWordsViewModel.getIsFavoriteSelected().setValue(!listWordsViewModel.getIsFavoriteSelected().getValue());
+            if(listWordsViewModel.getIsFavoriteSelected().getValue()) {
                 menuItemFavorite.setIcon(R.drawable.star_filled);
             } else {
                 menuItemFavorite.setIcon(R.drawable.star_empty_white);
             }
-            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
             return true;
         });
 
@@ -205,83 +197,45 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     crossIcon.setVisibility(View.GONE);
                 }
-                searchedString = s.toString();
-                ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
+                listWordsViewModel.getSearchedString().setValue(s.toString());
             }
         });
 
         deleteSearchWordButton.setOnClickListener(view -> {
-            searchedString = "";
+            listWordsViewModel.getSearchedString().setValue("");
             searchBar.setText("");
-            ((ListFragment)listFragment).updateRecyclerView(orderByEnum, searchedString, isFavoriteSelected);
         });
 
     }
 
     private void switchWordsLanguage(LanguageEnum language) {
-        if(!mContext.getCurrentLanguage().equals(language)) {
-            newLanguageLoaded = true;
+        if(!baseViewModel.getCurrentLanguage().getValue().equals(language)) {
+            fm.beginTransaction().hide(activeFragment.get(0)).commit();
             deleteBadge();
-            mContext.setCurrentLanguage(language);
-            FirebaseDataHelper firebaseDataHelper = mContext.getFirebaseDataHelper();
-            firebaseDataHelper.setReferenceWords(language);
-            firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
-
-                @Override
-                public void dataIsLoaded(List<Word> w, List<String> keys) {
-                    mContext.setWords(w);
-                }
-
-                @Override
-                public void dataIsInserted() {}
-
-                @Override
-                public void dataIsUpdated(List<Word> w) {
-                    mContext.setWords(w);
-                    if(newLanguageLoaded){
-                        newLanguageLoaded = false;
-                        ((LearningFragment)learningFragment).updateWordList();
-                        displayBadgeNumberCardsToRevise();
-                    }
-                }
-
-                @Override
-                public void dataIsDeleted() {}
-            });
+            baseViewModel.updateLanguage(language);
         }
     }
 
     private void createBottomMenu() {
 
-        fm.beginTransaction().add(R.id.content, listFragment, "3").hide(listFragment).commit();
-        fm.beginTransaction().add(R.id.content, newWordFragment, "2").hide(newWordFragment).commit();
-        fm.beginTransaction().add(R.id.content, fragmentRevisionFinished, "4").hide(fragmentRevisionFinished).commit();
-
-
-        if(CollectionUtils.isEmpty(mContext.getWordsToDisplay())) {
-            fm.beginTransaction().add(R.id.content, learningFragment, "1").hide(learningFragment).commit();
-            fm.beginTransaction().add(R.id.content, fragmentNoMoreWords, "5").commit();
-            active.add(fragmentNoMoreWords);
-        } else {
-            fm.beginTransaction().add(R.id.content, learningFragment, "1").commit();
-            fm.beginTransaction().add(R.id.content, fragmentNoMoreWords, "5").hide(fragmentNoMoreWords).commit();
-            active.add(learningFragment);
-        }
-
         bottomMenu = findViewById(R.id.bottom_nav);
         Menu menu = bottomMenu.getMenu();
 
         menu.getItem(0).setOnMenuItemClickListener(menuItem -> {
-            if(CollectionUtils.isEmpty(mContext.getWordsToDisplay()) && mContext.getIsRevisionFinished()) {
-                fm.beginTransaction().hide(active.get(0)).show(fragmentNoMoreWords).commit();
-                active.add(0, fragmentNoMoreWords);
-            } else if (CollectionUtils.isEmpty(mContext.getWordsToDisplay()) && !mContext.getIsRevisionFinished()) {
-                fm.beginTransaction().hide(active.get(0)).show(fragmentRevisionFinished).commit();
-                active.add(0, fragmentRevisionFinished);
+            if(learningFragment.getLearningViewModel() != null && learningFragment.getLearningViewModel().getLearningFragmentStateEnum() != null) {
+                switch(learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue()) {
+                    case NO_MORE_WORDS:
+                        displayNoMoreWords(true);
+                        break;
+                    case REVISION_FINISHED:
+                        displayRevisionFinished(true);
+                        break;
+                    case LEARNING_FRAGMENT:
+                        displayLearningFragment(true);
+                        break;
+                }
             } else {
-                fm.beginTransaction().hide(active.get(0)).show(learningFragment).commit();
-                ((LearningFragment) learningFragment).displayNextWord();
-                active.add(0, learningFragment);
+                displayLearningFragment(true);
             }
             createOptionMenuSelectLanguage();
             searchBarLayout.setVisibility(View.GONE);
@@ -294,21 +248,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomMenu.getMenu().getItem(2).setOnMenuItemClickListener(menuItem -> {
-            fm.beginTransaction().hide(active.get(0)).show(listFragment).commit();
-            active.add(0, listFragment);
+            fm.beginTransaction().hide(activeFragment.get(0)).show(listFragment).commit();
+            activeFragment.add(0, listFragment);
             createOptionMenuOrderBy();
             searchBarLayout.setVisibility(View.VISIBLE);
             return true;
         });
     }
 
+    private void defineFragments() {
+        activeFragment = new ArrayList<>();
+        learningFragment = new LearningFragment();
+        newWordFragment = new NewWordFragment();
+        listFragment = new ListFragment();
+        fragmentRevisionFinished = new RevisionFinishedFragment();
+        fragmentNoMoreWords = new NoWordsFragment();
+
+        fm.beginTransaction().add(R.id.content, learningFragment, "1").commit();
+        fm.beginTransaction().add(R.id.content, listFragment, "3").hide(listFragment).commit();
+        fm.beginTransaction().add(R.id.content, newWordFragment, "2").hide(newWordFragment).commit();
+        fm.beginTransaction().add(R.id.content, fragmentRevisionFinished, "4").hide(fragmentRevisionFinished).commit();
+        fm.beginTransaction().add(R.id.content, fragmentNoMoreWords, "5").hide(fragmentNoMoreWords).commit();
+        activeFragment.add(learningFragment);
+    }
+
     public void switchToNewWordFragment(Word word) {
-        fm.beginTransaction().hide(active.get(0)).show(newWordFragment).commit();
-        active.add(0, newWordFragment);
+        fm.beginTransaction().hide(activeFragment.get(0)).show(newWordFragment).commit();
+        activeFragment.add(0, newWordFragment);
         createOptionMenuSelectLanguage();
         searchBarLayout.setVisibility(View.GONE);
         if(word != null) {
-            ((NewWordFragment)newWordFragment).switchToEditWordMode(word);
+            newWordFragment.switchToEditWordMode(word);
         }
     }
 
@@ -324,50 +294,73 @@ public class MainActivity extends AppCompatActivity {
         itemView.addView(notificationBadge);
     }
 
-    private void deleteBadge() {
+    public void deleteBadge() {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomMenu.getChildAt(0);
         BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(0);
         itemView.removeView(notificationBadge);
     }
 
-    public void displayNoMoreWords() {
-        fm.beginTransaction().hide(active.get(0)).show(fragmentNoMoreWords).commit();
-        active.add(0, fragmentNoMoreWords);
-    }
-
-    public void displayRevisionFinished() {
-        mContext.setIsRevisionFinished(true);
-        deleteBadge();
-        fm.beginTransaction().hide(active.get(0)).show(fragmentRevisionFinished).commit();
-        active.add(0, fragmentRevisionFinished);
-    }
-
-    public void displayLearningFragment(){
-        if(!active.get(0).equals(learningFragment)){
-            fm.beginTransaction().hide(active.get(0)).show(learningFragment).commit();
-            active.add(0, learningFragment);
+    public void displayNoMoreWords(boolean forced) {
+        if(!activeFragment.get(0).equals(fragmentNoMoreWords) && isTriggeredFromLearningFragmentOrForced(forced)) {
+            fm.beginTransaction().hide(activeFragment.get(0)).show(fragmentNoMoreWords).commit();
+            activeFragment.add(0, fragmentNoMoreWords);
         }
+    }
+
+    public void displayRevisionFinished(boolean forced) {
+        if(!activeFragment.get(0).equals(fragmentRevisionFinished) && isTriggeredFromLearningFragmentOrForced(forced)) {
+            deleteBadge();
+            fm.beginTransaction().hide(activeFragment.get(0)).show(fragmentRevisionFinished).commit();
+            activeFragment.add(0, fragmentRevisionFinished);
+        }
+    }
+
+    public void displayLearningFragment(boolean forced){
+        if(!activeFragment.get(0).equals(learningFragment) && isTriggeredFromLearningFragmentOrForced(forced)) {
+            fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
+            activeFragment.add(0, learningFragment);
+        }
+    }
+
+    private boolean isTriggeredFromLearningFragmentOrForced(boolean forced) {
+        Fragment currentFragment = activeFragment.get(0);
+        return Arrays.asList(learningFragment, fragmentNoMoreWords, fragmentRevisionFinished).contains(currentFragment) || forced;
     }
 
     public void comeBackLearningFragment() {
-        mContext.calculateWordsToLearn();
-        if(CollectionUtils.isEmpty(mContext.getWordsToDisplay())){
-            displayNoMoreWords();
+        if(learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue() == LearningFragmentStateEnum.NO_MORE_WORDS){
+            displayNoMoreWords(true);
         } else {
-            ((LearningFragment) learningFragment).displayNextWord();
-            fm.beginTransaction().hide(active.get(0)).show(learningFragment).commit();
-            active.add(0, learningFragment);
+            fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
+            activeFragment.add(0, learningFragment);
         }
     }
 
-    private void displayBadgeNumberCardsToRevise() {
-        if(!mContext.getIsRevisionFinished()) {
-            int nbWordToRevise = mContext.getWordsToDisplay().size();
-            if(nbWordToRevise != 0) {
-                setBadgeText(Integer.toString(nbWordToRevise));
-            } else {
-                deleteBadge();
-            }
-        }
+    private void initDataBinding() {
+        baseViewModel = new ViewModelProvider(this).get(BaseViewModel.class);
+        baseViewModel.init();
+        setUpChangeValueListener();
+        baseViewModel.loadUserConfig();
     }
+
+    private void setUpChangeValueListener() {
+        baseViewModel.getCurrentLanguage().observe(this, this::onCurrentLanguageChange);
+    }
+
+    private void onCurrentLanguageChange(LanguageEnum languageEnum) {
+        defineFragments();
+        createBottomMenu();
+        createOptionMenuSelectLanguage();
+    }
+
+//    private void displayBadgeNumberCardsToRevise() {
+//        if(!mContext.getIsRevisionFinished()) {
+//            int nbWordToRevise = mContext.getWordsToDisplay().size();
+//            if(nbWordToRevise != 0) {
+//                setBadgeText(Integer.toString(nbWordToRevise));
+//            } else {
+//                deleteBadge();
+//            }
+//        }
+//    }
 }

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mContext;
+import com.paulribe.memowords.viewmodels.BaseViewModel;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -56,7 +56,7 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
 
         favoriteButton.setOnClickListener(view -> {
             word.setFavorite(!word.isFavorite());
-            mContext.getFirebaseDataHelper().updateWord(word);
+            BaseViewModel.getFirebaseDataHelper().updateWord(word);
             updateFavoriteButton(word);
 
         });

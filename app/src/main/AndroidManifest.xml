@@ -13,7 +13,8 @@
         <activity
             android:name="com.paulribe.memowords.views.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Splash">
+            android:theme="@style/AppTheme.Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,22 +23,26 @@
         <activity
             android:name="com.paulribe.memowords.views.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.paulribe.memowords.views.LoginActivity"
             android:label="LoginMemowords"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.paulribe.memowords.views.RegisterActivity"
             android:label="SigninMemowords"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.paulribe.memowords.views.PasswordForgottenActivity"
             android:label="PasswordForgottenMemowords"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

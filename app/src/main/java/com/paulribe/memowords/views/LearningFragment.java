@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
+import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mContext;
-
+import com.paulribe.memowords.viewmodels.LearningViewModel;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 public class LearningFragment extends Fragment {
 
@@ -27,86 +27,51 @@ public class LearningFragment extends Fragment {
     private View layoutNew;
     private ImageButton editWordButton;
 
+    private LearningViewModel learningViewModel;
+
+    public LearningViewModel getLearningViewModel() {
+        return learningViewModel;
+    }
+
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return inflater.inflate(R.layout.fragment_learning, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initDataBinding();
 
         defineViews(view);
         setElementVisibility(true);
         setButtonsOnClickListener();
         layoutNew.setVisibility(View.VISIBLE);
-        if (!mContext.getIsRevisionFinished()) {
+        if (!learningViewModel.getIsRevisionFinished().getValue()) {
             layoutNew.setVisibility(View.GONE);
-        }
-        if(!CollectionUtils.isEmpty(mContext.getWordsToDisplay())) {
-            setTextViewWithNextWord();
         }
     }
 
     private void setButtonsOnClickListener() {
         showAnswerButton.setOnClickListener(view -> showAnswerButtonClicked());
 
-        easyButton.setOnClickListener(view -> {
-            mContext.getFirebaseDataHelper().setWordEasy(getCurrentWord());
-            mContext.getWordsToDisplay().remove(0);
-            updateWordList();
-        });
+        easyButton.setOnClickListener(view -> learningViewModel.setWordEasy());
 
-        difficultButton.setOnClickListener(view -> {
-            mContext.getFirebaseDataHelper().setWordDifficult(getCurrentWord());
-            mContext.getWordsToDisplay().remove(0);
-            updateWordList();
-        });
+        difficultButton.setOnClickListener(view -> learningViewModel.setWordDifficult());
 
         editWordButton.setOnClickListener(view -> {
-            ((MainActivity)getActivity()).switchToNewWordFragment(getCurrentWord());
+            ((MainActivity)getActivity()).switchToNewWordFragment(learningViewModel.getCurrentWord().getValue());
         });
-    }
-
-    public void updateWordList() {
-        if(mContext.getIsRevisionFinished()) {
-            if(mContext.getWordsToDisplay().size() > 0) {
-                ((MainActivity)getActivity()).displayLearningFragment();
-                displayNextWord();
-            } else {
-                ((MainActivity)getActivity()).displayNoMoreWords();
-            }
-        } else {
-            if(mContext.getWordsToDisplay().size() > 0) {
-                ((MainActivity)getActivity()).displayLearningFragment();
-                displayNextWord();
-            } else {
-                ((MainActivity)getActivity()).displayRevisionFinished();
-            }
-        }
     }
 
     private void showAnswerButtonClicked() {
         setElementVisibility(false);
     }
 
-    public void displayNextWord() {
-        setElementVisibility(true);
-        setTextViewWithNextWord();
-        layoutNew.setVisibility(View.VISIBLE);
-        if (!mContext.getIsRevisionFinished()) {
-            layoutNew.setVisibility(View.GONE);
-            int nbWordToRevise = mContext.getWordsToDisplay().size();
-            if (nbWordToRevise > 0) {
-                ((MainActivity) getActivity()).setBadgeText(Integer.toString(nbWordToRevise));
-            }
-        }
-    }
-
     private void setTextViewWithNextWord() {
-        textViewWord.setText(getCurrentWord().getWordFR());
-        textViewTranslation.setText(getCurrentWord().getWordDE());
-        textViewContext.setText(getCurrentWord().getContext());
+        textViewWord.setText(learningViewModel.getCurrentWord().getValue().getWordFR());
+        textViewTranslation.setText(learningViewModel.getCurrentWord().getValue().getWordDE());
+        textViewContext.setText(learningViewModel.getCurrentWord().getValue().getContext());
     }
 
     private void defineViews(@NonNull View view) {
@@ -120,14 +85,54 @@ public class LearningFragment extends Fragment {
         editWordButton = view.findViewById(R.id.editWordButton);
     }
 
-    private Word getCurrentWord() {
-        return mContext.getWordsToDisplay().get(0);
-    }
-
     private void setElementVisibility(boolean isBeforeShowAnswerClicked) {
         showAnswerButton.setVisibility(isBeforeShowAnswerClicked ? View.VISIBLE : View.GONE);
         easyButton.setVisibility(isBeforeShowAnswerClicked ? View.GONE : View.VISIBLE);
         difficultButton.setVisibility(isBeforeShowAnswerClicked ? View.GONE : View.VISIBLE);
         textViewTranslation.setVisibility(isBeforeShowAnswerClicked ? View.GONE : View.VISIBLE);
+    }
+
+    private void initDataBinding() {
+        //FragmentLearningBinding fragmentLearningBinding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_learning);
+        learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
+        //fragmentLearningBinding.setLearningViewModel(learningViewModel);
+        learningViewModel.init();
+        setUpChangeValueListener();
+        learningViewModel.readWords();
+    }
+
+    private void setUpChangeValueListener() {
+        learningViewModel.getCurrentWord().observe(getViewLifecycleOwner(), this::onCurrentWordChanged);
+        learningViewModel.getLearningFragmentStateEnum().observe(getViewLifecycleOwner(), this::onLearningFragmentStateChanged);
+    }
+
+    private void onLearningFragmentStateChanged(LearningFragmentStateEnum learningFragmentStateEnum) {
+        switch(learningFragmentStateEnum) {
+            case LEARNING_FRAGMENT:
+                ((MainActivity)getActivity()).displayLearningFragment(false);
+                break;
+            case NO_MORE_WORDS:
+                ((MainActivity)getActivity()).displayNoMoreWords(false);
+                break;
+            case REVISION_FINISHED:
+                ((MainActivity)getActivity()).displayRevisionFinished(false);
+                break;
+        }
+    }
+
+    @VisibleForTesting
+    public void onCurrentWordChanged(Word word) {
+        setElementVisibility(true);
+        setTextViewWithNextWord();
+        layoutNew.setVisibility(View.VISIBLE);
+        if (!learningViewModel.getIsRevisionFinished().getValue()) {
+            layoutNew.setVisibility(View.GONE);
+            int nbWordToRevise = learningViewModel.getWordsToDisplay().size();
+            if (nbWordToRevise > 0) {
+                ((MainActivity) getActivity()).setBadgeText(Integer.toString(nbWordToRevise));
+            } else {
+                ((MainActivity) getActivity()).deleteBadge();
+            }
+        }
     }
 }

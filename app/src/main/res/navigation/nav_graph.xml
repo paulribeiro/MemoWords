@@ -10,7 +10,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.paulribe.memowords.views.LearningFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first" />
+        tools:layout="@layout/fragment_learning" />
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.paulribe.memowords.views.ListFragment"

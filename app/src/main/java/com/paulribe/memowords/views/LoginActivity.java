@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
+import com.paulribe.memowords.viewmodels.BaseViewModel;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -69,7 +71,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
                     if(task.isSuccessful()){
+                        BaseViewModel.setCurrentUser(task.getResult().getUser());
+                        BaseViewModel.getFirebaseDataHelper().setReferenceUserConfig();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();

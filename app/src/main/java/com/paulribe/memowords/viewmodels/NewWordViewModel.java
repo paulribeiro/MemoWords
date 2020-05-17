@@ -14,7 +14,7 @@ public class NewWordViewModel extends BaseViewModel {
     private List<Word> words;
 
     public void init() {
-        readWords();
+        //readWords();
     }
 
     private void readWords() {

@@ -33,10 +33,10 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public void init() {
-        words = new MutableLiveData<>(new ArrayList<Word>());
+        words = new MutableLiveData<>(new ArrayList<>());
         orderByEnum = new MutableLiveData<>(OrderByEnum.LAST_TRY);
         isFavoriteSelected = new MutableLiveData<>(Boolean.FALSE);
-        searchedString = new MutableLiveData<String>("");
+        searchedString = new MutableLiveData<>("");
     }
 
     public void readWords() {

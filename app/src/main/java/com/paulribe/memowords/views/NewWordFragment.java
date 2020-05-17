@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.recyclerViews.DividerItemDecoration;
@@ -76,7 +77,7 @@ public class NewWordFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty()) {
+                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords())) {
                         suggestionWordFRRecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordFRRecyclerView.setVisibility(View.VISIBLE);
@@ -105,7 +106,7 @@ public class NewWordFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty()) {
+                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords())) {
                         suggestionWordDERecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordDERecyclerView.setVisibility(View.VISIBLE);

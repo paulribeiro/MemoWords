@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.paulribe.memowords.R;
+import com.paulribe.memowords.viewmodels.BaseViewModel;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,11 +78,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
                         if(task.isSuccessful()){
+                            BaseViewModel.setCurrentUser(task.getResult().getUser());
+                            BaseViewModel.getFirebaseDataHelper().setReferenceUserConfig();
+                            BaseViewModel.getFirebaseDataHelper().addUser();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finish();
-                            //FirebaseDataHelper.addUser();
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(RegisterActivity.this,"This user already exists",Toast.LENGTH_LONG).show();

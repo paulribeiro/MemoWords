@@ -2,6 +2,8 @@ package com.paulribe.memowords.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

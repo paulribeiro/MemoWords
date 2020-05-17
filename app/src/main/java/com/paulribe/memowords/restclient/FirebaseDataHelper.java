@@ -24,6 +24,8 @@ public class FirebaseDataHelper implements Serializable {
     private DatabaseReference referenceUserConfig;
     private List<Word> words = new ArrayList<>();
     private Integer cpt = 0;
+    private ValueEventListener configListener;
+    private ValueEventListener wordsListener;
 
     public FirebaseDataHelper() {
         if(dataBase == null) {
@@ -44,6 +46,7 @@ public class FirebaseDataHelper implements Serializable {
     }
 
     public void readWords(final DataStatus dataStatus) {
+        //TODO : check if doesn't happen many times ...
         referenceWords.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -73,7 +76,10 @@ public class FirebaseDataHelper implements Serializable {
     }
 
     public void loadUserConfig(final UserConfigLoadedStatus userConfigLoadedStatus) {
-        referenceUserConfig.addValueEventListener(new ValueEventListener() {
+        if(configListener != null) {
+            referenceUserConfig.removeEventListener(configListener);
+        }
+        configListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserConfig userConfig = dataSnapshot.getValue(UserConfig.class);
@@ -84,7 +90,8 @@ public class FirebaseDataHelper implements Serializable {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        referenceUserConfig.addValueEventListener(configListener);
     }
 
     public void setWordEasy(final Word word) {
@@ -138,7 +145,7 @@ public class FirebaseDataHelper implements Serializable {
         referenceUserConfig.child("currentLanguage").setValue(language.name());
     }
 
-//    public static void addUser() {
-//        referenceBase.child(mContext.getCurrentUser().getUid() + "/words/german");
-//    }
+    public void addUser() {
+        referenceUserConfig.child("/currentLanguage/").setValue("GERMAN");
+    }
 }

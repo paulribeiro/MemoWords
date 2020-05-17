@@ -69,7 +69,9 @@ public class LearningViewModel extends BaseViewModel {
             }
 
             @Override
-            public void dataIsDeleted() {}
+            public void dataIsDeleted() {
+
+            }
         });
     }
 
@@ -134,5 +136,4 @@ public class LearningViewModel extends BaseViewModel {
             }
         }
     }
-
 }

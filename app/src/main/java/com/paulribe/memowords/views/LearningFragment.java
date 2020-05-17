@@ -104,6 +104,7 @@ public class LearningFragment extends Fragment {
     private void setUpChangeValueListener() {
         learningViewModel.getCurrentWord().observe(getViewLifecycleOwner(), this::onCurrentWordChanged);
         learningViewModel.getLearningFragmentStateEnum().observe(getViewLifecycleOwner(), this::onLearningFragmentStateChanged);
+        learningViewModel.getIsRevisionFinished().observe(getViewLifecycleOwner(), this::onIsRevisionFinishedChanged);
     }
 
     private void onLearningFragmentStateChanged(LearningFragmentStateEnum learningFragmentStateEnum) {
@@ -120,11 +121,17 @@ public class LearningFragment extends Fragment {
         }
     }
 
+    private void onIsRevisionFinishedChanged(Boolean isRevisionFinished) {
+        if(isRevisionFinished) {
+            ((MainActivity) getActivity()).deleteBadge();
+        }
+    }
+
     @VisibleForTesting
     public void onCurrentWordChanged(Word word) {
         setElementVisibility(true);
         setTextViewWithNextWord();
-        layoutNew.setVisibility(View.VISIBLE);
+            layoutNew.setVisibility(View.VISIBLE);
         if (!learningViewModel.getIsRevisionFinished().getValue()) {
             layoutNew.setVisibility(View.GONE);
             int nbWordToRevise = learningViewModel.getWordsToDisplay().size();

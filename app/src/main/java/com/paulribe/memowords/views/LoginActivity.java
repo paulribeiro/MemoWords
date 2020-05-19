@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.viewmodels.BaseViewModel;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {

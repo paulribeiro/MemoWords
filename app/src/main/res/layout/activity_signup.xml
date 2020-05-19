@@ -29,7 +29,9 @@
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:hint="Enter email"
             android:inputType="textEmailAddress" />
 
@@ -40,6 +42,12 @@
             android:layout_margin="15dp"
             android:hint="Enter password"
             android:inputType="textPassword" />
+
+        <Spinner
+            android:id="@+id/flags_spinner"
+            android:layout_width="match_parent"
+            android:layout_margin="15dp"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/buttonSignup"

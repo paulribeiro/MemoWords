@@ -145,7 +145,8 @@ public class FirebaseDataHelper implements Serializable {
         referenceUserConfig.child("currentLanguage").setValue(language.name());
     }
 
-    public void addUser() {
+    public void addUser(LanguageEnum nativeLanguage) {
         referenceUserConfig.child("/currentLanguage/").setValue("GERMAN");
+        referenceUserConfig.child("/nativeLanguage/").setValue(nativeLanguage.name());
     }
 }

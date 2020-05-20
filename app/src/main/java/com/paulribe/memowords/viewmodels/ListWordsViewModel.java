@@ -41,7 +41,7 @@ public class ListWordsViewModel extends BaseViewModel {
 
     public void readWords() {
 
-        firebaseDataHelper.setReferenceWords(getCurrentLanguage().getValue());
+        firebaseDataHelper.setReferenceWords(getCurrentLanguage().getValue(), getCurrentUser());
         firebaseDataHelper.readWords(new FirebaseDataHelper.DataStatus() {
 
             @Override

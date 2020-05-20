@@ -14,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class WordAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
-    // FOR DATA
     private List<Word> words;
 
-    // CONSTRUCTOR
-    public WordAdapter(List<Word> words) {
+    private OnFavoriteClickListener favoriteCLickListener;
+
+    public WordAdapter(List<Word> words, OnFavoriteClickListener listener) {
         this.words = words;
+        favoriteCLickListener = listener;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.word_item, parent, false);
 
-        return new WordViewHolder(view);
+        return new WordViewHolder(view, favoriteCLickListener);
     }
 
     @Override

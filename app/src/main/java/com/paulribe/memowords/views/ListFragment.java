@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.OrderByEnum;
+import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import com.paulribe.memowords.recyclerViews.WordAdapter;
 import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.viewmodels.BaseViewModel;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,7 +51,13 @@ public class ListFragment extends Fragment {
     }
 
     private void configureRecyclerView(){
-        this.adapter = new WordAdapter(listWordsViewModel.getWords().getValue());
+        OnFavoriteClickListener favoriteClickListener = new OnFavoriteClickListener(){
+            @Override
+            public void onClick(View v) {
+                listWordsViewModel.getFirebaseDataHelper().updateWord(this.getWord());
+            }
+        };
+        this.adapter = new WordAdapter(listWordsViewModel.getWords().getValue(), favoriteClickListener);
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());

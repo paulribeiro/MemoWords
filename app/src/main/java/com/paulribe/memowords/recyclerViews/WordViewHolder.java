@@ -22,8 +22,10 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
     private TextView textViewTranslation;
     private TextView textViewLastTry;
     private ImageButton favoriteButton;
+    private OnFavoriteClickListener favoriteCLickListener;
 
-    public WordViewHolder(View itemView) {
+
+    public WordViewHolder(View itemView, OnFavoriteClickListener favoriteCLickListener) {
         super(itemView);
         textViewWord = itemView.findViewById(R.id.item_word);
         textViewTranslation = itemView.findViewById(R.id.item_word_translation);
@@ -31,6 +33,7 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
         textViewLastTryText = itemView.findViewById(R.id.textViewLastTry);
         view = itemView.findViewById(R.id.item_view);
         favoriteButton = itemView.findViewById(R.id.favorite);
+        this.favoriteCLickListener = favoriteCLickListener;
     }
 
     public void updateWithWord(Word word, Integer position) {
@@ -54,12 +57,18 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
             textViewLastTry.setVisibility(View.GONE);
         }
 
-        favoriteButton.setOnClickListener(view -> {
-            word.setFavorite(!word.isFavorite());
-            BaseViewModel.getFirebaseDataHelper().updateWord(word);
-            updateFavoriteButton(word);
-
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                word.setFavorite(!word.isFavorite());
+                updateFavoriteButton(word);
+                favoriteCLickListener.setWord(word);
+                favoriteCLickListener.onClick(view);
+            }
         });
+
+
+
         updateFavoriteButton(word);
     }
 

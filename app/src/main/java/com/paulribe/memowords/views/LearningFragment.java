@@ -93,9 +93,7 @@ public class LearningFragment extends Fragment {
     }
 
     private void initDataBinding() {
-        //FragmentLearningBinding fragmentLearningBinding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_learning);
         learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
-        //fragmentLearningBinding.setLearningViewModel(learningViewModel);
         learningViewModel.init();
         setUpChangeValueListener();
         learningViewModel.readWords();

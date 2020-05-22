@@ -4,7 +4,10 @@ import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -93,7 +96,7 @@ public class LearningViewModel extends BaseViewModel {
     }
 
     private static boolean hasToBeRevise(Word word) {
-        Date today = new Date();
+        Date today = getTodayDateRevision();
         // TODO : use LocalDateTime ?
         switch(word.getKnowledgeLevel()) {
             case 0:
@@ -109,6 +112,15 @@ public class LearningViewModel extends BaseViewModel {
             default:
                 return false;
         }
+    }
+
+    private static Date getTodayDateRevision() {
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        return now.getTime();
     }
 
     public void setWordEasy() {

@@ -145,11 +145,6 @@ public class NewWordFragment extends Fragment {
     private void initDataBinding() {
         newWordViewModel = new ViewModelProvider(getActivity()).get(NewWordViewModel.class);
         newWordViewModel.init();
-        setUpChangeValueListener();
-    }
-
-    private void setUpChangeValueListener() {
-        //newWordViewModel.getLearningFragmentStateEnum().observe(getViewLifecycleOwner(), this::onLearningFragmentStateChanged);
     }
 
     private void defineViews(@NonNull View view) {

@@ -15,7 +15,7 @@
         android:id="@+id/SecondFragment"
         android:name="com.paulribe.memowords.views.ListFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second"/>
+        tools:layout="@layout/fragment_list"/>
 
     <fragment
         android:id="@+id/newWordFragment"

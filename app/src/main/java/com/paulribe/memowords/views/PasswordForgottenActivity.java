@@ -1,5 +1,6 @@
 package com.paulribe.memowords.views;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,24 +8,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
+import com.paulribe.memowords.viewmodels.PasswordForgottenViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 public class PasswordForgottenActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth firebaseAuth;
     private EditText forgottenEmailEditText;
     private Button sendForgottenEmailButton;
     private TextView backToLoginTextView;
+    private ProgressDialog progressDialog;
+    private PasswordForgottenViewModel passwordForgottenViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_forgotten);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        initDataBinding();
+
+        progressDialog = new ProgressDialog(this);
 
         forgottenEmailEditText = findViewById(R.id.forgottenEmailEditText);
         sendForgottenEmailButton = findViewById(R.id.sendForgottenEmailButton);
@@ -37,19 +42,40 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View view) {
         if(view == sendForgottenEmailButton) {
-            firebaseAuth.sendPasswordResetEmail(forgottenEmailEditText.getText().toString())
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(PasswordForgottenActivity.this, "Email sent",Toast.LENGTH_LONG).show();
-                            backToLogin();
-                        } else {
-                            Toast.makeText(PasswordForgottenActivity.this, "Can't send email",Toast.LENGTH_LONG).show();
-                        }
-                    });
+            passwordForgottenViewModel.sendResetPasswordEmail(forgottenEmailEditText.getText().toString());
         } else if (view == backToLoginTextView) {
             backToLogin();
         }
 
+    }
+
+    private void initDataBinding() {
+        passwordForgottenViewModel = new ViewModelProvider(this).get(PasswordForgottenViewModel.class);
+        passwordForgottenViewModel.init();
+        setUpChangeValueListener();
+    }
+
+    private void setUpChangeValueListener() {
+        passwordForgottenViewModel.getIsLoading().observe(this, this::onIsLoadingChanged);
+        passwordForgottenViewModel.getIsPasswordResetSuccessful().observe(this, this::onIsPasswordResetSuccessfulChanged);
+    }
+
+    public void onIsLoadingChanged(Boolean isLoading) {
+        if(isLoading) {
+            progressDialog.setMessage("Sending reset email, please Wait...");
+            progressDialog.show();
+        } else {
+            progressDialog.dismiss();
+        }
+    }
+
+    public void onIsPasswordResetSuccessfulChanged(Boolean isPasswordResetSuccessful) {
+        if(isPasswordResetSuccessful) {
+            Toast.makeText(PasswordForgottenActivity.this, "Email sent",Toast.LENGTH_LONG).show();
+            backToLogin();
+        } else {
+            Toast.makeText(PasswordForgottenActivity.this, "Can't send email",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void backToLogin() {

@@ -1,5 +1,6 @@
 package com.paulribe.memowords.restclient;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.model.UserConfig;
 import com.paulribe.memowords.model.Word;
@@ -8,14 +9,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.paulribe.memowords.viewmodels.BaseViewModel;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {
@@ -25,7 +23,6 @@ public class FirebaseDataHelper implements Serializable {
     private List<Word> words = new ArrayList<>();
     private Integer cpt = 0;
     private ValueEventListener configListener;
-    private ValueEventListener wordsListener;
 
     public FirebaseDataHelper() {
         if(dataBase == null) {
@@ -131,13 +128,13 @@ public class FirebaseDataHelper implements Serializable {
         return referenceWords;
     }
 
-    public void setReferenceWords(LanguageEnum languageEnum) {
-        referenceWords = dataBase.getReference(BaseViewModel.getCurrentUser().getUid() + "/words/" + languageEnum.getLanguage());
+    public void setReferenceWords(LanguageEnum languageEnum, FirebaseUser currentUser) {
+        referenceWords = dataBase.getReference(currentUser.getUid() + "/words/" + languageEnum.getLanguage());
         referenceWords.keepSynced(true);
     }
 
-    public void setReferenceUserConfig() {
-        referenceUserConfig = dataBase.getReference(BaseViewModel.getCurrentUser().getUid() + "/config");
+    public void setReferenceUserConfig(FirebaseUser currentUser) {
+        referenceUserConfig = dataBase.getReference(currentUser.getUid() + "/config");
         referenceUserConfig.keepSynced(true);
     }
 

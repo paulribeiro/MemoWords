@@ -11,8 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
-import com.paulribe.memowords.viewmodels.BaseViewModel;
+import com.paulribe.memowords.viewmodels.LoginViewModel;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,15 +26,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        initDataBinding();
 
-        if(firebaseAuth.getCurrentUser() != null){
+        if(loginViewModel.getCurrentUser() != null){
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
@@ -65,22 +67,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        progressDialog.setMessage("Login, please Wait...");
-        progressDialog.show();
+        loginViewModel.loginByEmailAndPassword(email, password);
+    }
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    progressDialog.dismiss();
-                    if(task.isSuccessful()){
-                        BaseViewModel.setCurrentUser(task.getResult().getUser());
-                        BaseViewModel.getFirebaseDataHelper().setReferenceUserConfig();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Login failed",Toast.LENGTH_LONG).show();
-                    }
-                });
+    private void initDataBinding() {
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel.init();
+        setUpChangeValueListener();
+    }
+
+    private void setUpChangeValueListener() {
+        loginViewModel.getIsLoading().observe(this, this::onIsLoadingChanged);
+        loginViewModel.getIsLoginSuccessful().observe(this, this::onIsLoginSuccessfulChanged);
+    }
+
+    public void onIsLoadingChanged(Boolean isLoading) {
+        if(isLoading) {
+            progressDialog.setMessage("Login, please Wait...");
+            progressDialog.show();
+        } else {
+            progressDialog.dismiss();
+        }
+    }
+
+    public void onIsLoginSuccessfulChanged(Boolean isLoginSuccessful) {
+        if(isLoginSuccessful) {
+            openMainActivity();
+        } else {
+            displayLoginFailed();
+        }
+    }
+
+    public void openMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void displayLoginFailed() {
+        Toast.makeText(LoginActivity.this, "Login failed",Toast.LENGTH_LONG).show();
     }
 
     @Override

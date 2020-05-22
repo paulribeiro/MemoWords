@@ -12,45 +12,39 @@ public class BaseViewModel extends ViewModel {
     private static FirebaseUser currentUser;
     static FirebaseDataHelper firebaseDataHelper;
 
-
     public void init() {
-        firebaseDataHelper.setReferenceUserConfig();
+        firebaseDataHelper.setReferenceUserConfig(getCurrentUser());
         currentLanguage = new MutableLiveData<>();
     }
 
     public void loadUserConfig() {
-        firebaseDataHelper.loadUserConfig(userConfig -> {
-            currentLanguage.setValue(LanguageEnum.valueOf(userConfig.getCurrentLanguage()));
-        });
+        firebaseDataHelper.loadUserConfig(userConfig ->
+                currentLanguage.setValue(LanguageEnum.valueOf(userConfig.getCurrentLanguage())));
     }
 
     public void updateLanguage(LanguageEnum language) {
         FirebaseDataHelper firebaseDataHelper = getFirebaseDataHelper();
-        firebaseDataHelper.setReferenceWords(language);
+        firebaseDataHelper.setReferenceWords(language, getCurrentUser());
         firebaseDataHelper.updateCurrentLanguage(language);
     }
 
-    public static FirebaseDataHelper getFirebaseDataHelper() {
+    public FirebaseDataHelper getFirebaseDataHelper() {
         return firebaseDataHelper;
     }
 
-    public static void setFirebaseDataHelper(FirebaseDataHelper firebaseDataHelper) {
+    public void setFirebaseDataHelper(FirebaseDataHelper firebaseDataHelper) {
         BaseViewModel.firebaseDataHelper = firebaseDataHelper;
     }
 
-    public static FirebaseUser getCurrentUser() {
+    public FirebaseUser getCurrentUser() {
         return currentUser;
     }
 
-    public static void setCurrentUser(FirebaseUser currentUser) {
+    public void setCurrentUser(FirebaseUser currentUser) {
         BaseViewModel.currentUser = currentUser;
     }
 
     public MutableLiveData<LanguageEnum> getCurrentLanguage() {
         return currentLanguage;
-    }
-
-    public void setCurrentLanguage(MutableLiveData<LanguageEnum> currentLanguage) {
-        this.currentLanguage = currentLanguage;
     }
 }

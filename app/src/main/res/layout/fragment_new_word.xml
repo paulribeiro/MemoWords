@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/shape_popup"
         android:orientation="vertical"
@@ -39,19 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/popupAddTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"
-                    android:text="Add a new word"
-                    android:textSize="22sp" />
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/popupEditLayout"
@@ -79,7 +67,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
                         android:gravity="center"
-                        android:text="Edit the word :"
+                        android:text="@string/edit_the_word"
                         android:textSize="22sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +87,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/popupEditTitle" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/popupAddTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="Add a new word"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textview_word_fr"
@@ -130,9 +130,9 @@
                     android:id="@+id/suggestionWordFR"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
                     android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp" />
+                    android:layout_marginEnd="15dp"
+                    android:overScrollMode="never" />
 
                 <TextView
                     android:id="@+id/textViewWordDE"
@@ -164,9 +164,18 @@
                     android:id="@+id/suggestionWordDE"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
                     android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp" />
+                    android:layout_marginEnd="15dp"
+                    android:overScrollMode="never" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5">
+
+                </androidx.constraintlayout.widget.Guideline>
 
                 <TextView
                     android:id="@+id/textViewWordContext"
@@ -190,9 +199,9 @@
                         android:id="@+id/inputWordContext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="top|left"
                         android:inputType="textImeMultiLine"
                         android:lines="2"
-                        android:gravity="top|left"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,15 +231,6 @@
                     android:backgroundTint="@android:color/holo_red_light"
                     android:text="Delete"
                     android:textSize="14sp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline"
-                    android:layout_width="1dp"
-                    android:layout_height="1dp"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.5">
-
-                </androidx.constraintlayout.widget.Guideline>
 
             </LinearLayout>
         </ScrollView>

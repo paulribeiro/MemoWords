@@ -39,37 +39,6 @@
                 android:background="@color/themeColor2"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
-                <FrameLayout
-                    android:id="@+id/search_word_toolbar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
-
-                    <Button
-                        android:id="@+id/delete_search_word"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/cross_icon_white_50px" />
-
-                    <EditText
-                        android:id="@+id/search_word"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:drawableStart="@drawable/search_icon_white_24px"
-                        android:drawablePadding="10sp"
-                        android:gravity="left"
-                        android:hint="Search word"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/white"
-                        android:textColorHighlight="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textSize="16sp" />
-
-                </FrameLayout>
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>

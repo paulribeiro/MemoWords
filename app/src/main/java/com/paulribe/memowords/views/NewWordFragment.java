@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -240,7 +241,7 @@ public class NewWordFragment extends Fragment {
         inputWordDE.setText(word.getWordDE());
         inputWordFR.setText(word.getWordFR());
         inputWordContext.setText(word.getContext());
-        addButton.setText("update word");
+        addButton.setText(R.string.update_word);
         suggestionWordDERecyclerView.setVisibility(View.GONE);
         suggestionWordFRRecyclerView.setVisibility(View.GONE);
         popupEditLayout.setVisibility(View.VISIBLE);
@@ -254,7 +255,7 @@ public class NewWordFragment extends Fragment {
         popupEditLayout.setVisibility(View.GONE);
         popupAddTitleTextView.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.GONE);
-        addButton.setText("add word");
+        addButton.setText(R.string.add_word);
     }
 
     private void deleteWord() {

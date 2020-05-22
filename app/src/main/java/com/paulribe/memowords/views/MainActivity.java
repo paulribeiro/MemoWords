@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentNoMoreWords = new NoWordsFragment();
 
         fm.beginTransaction().add(R.id.content, learningFragment, "1").commit();
-        fm.beginTransaction().add(R.id.content, listFragment, "3").hide(listFragment).commit();
         fm.beginTransaction().add(R.id.content, newWordFragment, "2").hide(newWordFragment).commit();
+        fm.beginTransaction().add(R.id.content, listFragment, "3").hide(listFragment).commit();
         fm.beginTransaction().add(R.id.content, fragmentRevisionFinished, "4").hide(fragmentRevisionFinished).commit();
         fm.beginTransaction().add(R.id.content, fragmentNoMoreWords, "5").hide(fragmentNoMoreWords).commit();
         activeFragment.add(learningFragment);

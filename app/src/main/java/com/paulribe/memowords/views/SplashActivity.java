@@ -3,9 +3,7 @@ package com.paulribe.memowords.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.paulribe.memowords.restclient.FirebaseDataHelper;
 import com.paulribe.memowords.viewmodels.SplashViewModel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +37,5 @@ public class SplashActivity extends AppCompatActivity {
     private void initDataBinding() {
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         splashViewModel.init();
-        //setUpChangeValueListener();
     }
 }

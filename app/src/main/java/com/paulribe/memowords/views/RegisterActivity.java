@@ -101,12 +101,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String password  = editTextPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.please_enter_email, Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.please_enter_password, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -146,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage("Registering, please Wait...");
+            progressDialog.setMessage(getString(R.string.registering));
             progressDialog.show();
         } else {
             progressDialog.dismiss();
@@ -160,13 +160,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         } else {
             if (registerViewModel.getTaskRegistrationResultException() instanceof FirebaseAuthUserCollisionException) {
-                Toast.makeText(RegisterActivity.this,"This user already exists",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, R.string.user_already_exists,Toast.LENGTH_LONG).show();
             } else if (registerViewModel.getTaskRegistrationResultException() instanceof FirebaseAuthInvalidCredentialsException) {
-                Toast.makeText(RegisterActivity.this,"Wrong username format",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, R.string.wrong_username_format,Toast.LENGTH_LONG).show();
             } else if (registerViewModel.getTaskRegistrationResultException() instanceof FirebaseAuthWeakPasswordException) {
-                Toast.makeText(RegisterActivity.this,"Your password is not strong enough",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, R.string.password_not_strong_enough,Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(RegisterActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, R.string.registration_error,Toast.LENGTH_LONG).show();
             }
         }
     }

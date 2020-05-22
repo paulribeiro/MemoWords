@@ -62,7 +62,7 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage("Sending reset email, please Wait...");
+            progressDialog.setMessage(getString(R.string.sending_reset_email));
             progressDialog.show();
         } else {
             progressDialog.dismiss();
@@ -71,10 +71,10 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
 
     public void onIsPasswordResetSuccessfulChanged(Boolean isPasswordResetSuccessful) {
         if(isPasswordResetSuccessful) {
-            Toast.makeText(PasswordForgottenActivity.this, "Email sent",Toast.LENGTH_LONG).show();
+            Toast.makeText(PasswordForgottenActivity.this, R.string.email_sent,Toast.LENGTH_LONG).show();
             backToLogin();
         } else {
-            Toast.makeText(PasswordForgottenActivity.this, "Can't send email",Toast.LENGTH_LONG).show();
+            Toast.makeText(PasswordForgottenActivity.this, R.string.email_not_sent,Toast.LENGTH_LONG).show();
         }
     }
 

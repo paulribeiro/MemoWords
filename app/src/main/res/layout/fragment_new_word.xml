@@ -50,7 +50,7 @@
                         android:id="@+id/exitEditWordButton"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_gravity="end|center_vertical"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
@@ -80,7 +80,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
                         android:gravity="center"
-                        android:text="chocolat"
+                        android:text=""
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -92,12 +92,11 @@
                     android:id="@+id/popupAddTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="center"
-                    android:text="Add a new word"
+                    android:text="@string/add_a_new_word"
                     android:textSize="22sp" />
 
                 <TextView
@@ -107,13 +106,12 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="10dp"
-                    android:text="word in french :" />
+                    android:text="@string/word_in_french" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/popupInputFR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">
@@ -141,13 +139,12 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="9dp"
-                    android:text="word in german :" />
+                    android:text="@string/word_in_german" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/popupInputDE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">
@@ -184,13 +181,12 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="9dp"
-                    android:text="context :" />
+                    android:text="@string/context" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/popupInputContext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/popupAddTitle"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:theme="@style/TextLabel">
@@ -199,7 +195,7 @@
                         android:id="@+id/inputWordContext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="top|left"
+                        android:gravity="top|start"
                         android:inputType="textImeMultiLine"
                         android:lines="2"
                         android:textSize="16sp" />
@@ -209,27 +205,25 @@
                     android:id="@+id/popupButton"
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/shape_button"
-                    android:text="Confirm"
+                    android:text="@string/confirm"
                     android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/popupDeleteButton"
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/shape_button"
                     android:backgroundTint="@android:color/holo_red_light"
-                    android:text="Delete"
+                    android:text="@string/delete_word"
                     android:textSize="14sp" />
 
             </LinearLayout>

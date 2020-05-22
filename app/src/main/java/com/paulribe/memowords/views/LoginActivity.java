@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.viewmodels.LoginViewModel;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,10 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private TextView textViewSignup;
     private TextView textPasswordForgotten;
-
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-
     private LoginViewModel loginViewModel;
 
     @Override
@@ -40,11 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
-        textViewSignup  = findViewById(R.id.textViewSignUp);
-        textPasswordForgotten = findViewById(R.id.textPasswordForgotten);
+        defineViews();
 
         progressDialog = new ProgressDialog(this);
 
@@ -53,17 +45,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textPasswordForgotten.setOnClickListener(this);
     }
 
+    private void defineViews() {
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        textViewSignup  = findViewById(R.id.textViewSignUp);
+        textPasswordForgotten = findViewById(R.id.textPasswordForgotten);
+    }
+
     private void userLogin(){
         String email = editTextEmail.getText().toString().trim();
         String password  = editTextPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.please_enter_email,Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.please_enter_password,Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage("Login, please Wait...");
+            progressDialog.setMessage(getString(R.string.login_please_wait));
             progressDialog.show();
         } else {
             progressDialog.dismiss();
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void displayLoginFailed() {
-        Toast.makeText(LoginActivity.this, "Login failed",Toast.LENGTH_LONG).show();
+        Toast.makeText(LoginActivity.this, R.string.login_failed,Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -39,14 +39,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:text=" zzef erf resgegre  ze fze fezf zeq fezf eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/item_word_translation"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="word 2 ezfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" />
+                android:text="" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="10dp"
-            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -64,13 +64,13 @@
                 android:id="@+id/textViewLastTry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Last try :" />
+                android:text="@string/last_try" />
 
             <TextView
                 android:id="@+id/item_last_try"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,8 +89,7 @@
                     android:layout_height="24dp"
                     android:adjustViewBounds="true"
                     android:background="#00ffffff"
-                    android:contentDescription="star image"
-                    android:onClick="onToggleStar"
+                    android:contentDescription="@string/star_image_description"
                     android:scaleType="fitCenter"
                     android:src="@drawable/star_empty" />
 

@@ -27,4 +27,4 @@ public class OnFavoriteClickListener implements View.OnClickListener {
     public void setWord(Word word) {
         this.word = word;
     }
-};
+}

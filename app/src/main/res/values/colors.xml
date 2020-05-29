@@ -6,5 +6,7 @@
     <color name="colorAccentDark">#4aa87a</color>
     <color name="white">#FFFFFF</color>
     <color name="themeColor">#FF9800</color>
+    <color name="themeColorSecondary">#ebb184</color>
+    <color name="themeColorThird">#e5985b</color>
     <color name="themeColor2">#4A3516</color>
 </resources>

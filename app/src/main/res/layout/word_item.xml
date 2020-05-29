@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_background"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="#877777"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="1dp"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,8 +36,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="" />
+                android:text=""
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/item_word_translation"
@@ -60,28 +58,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textViewLastTry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/last_try" />
-
-            <TextView
-                android:id="@+id/item_last_try"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="10dp">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
                 <ImageButton
                     android:id="@+id/favorite"
@@ -93,9 +74,27 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/star_empty" />
 
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/item_last_try"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textViewLastTry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/last_try" />
+
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

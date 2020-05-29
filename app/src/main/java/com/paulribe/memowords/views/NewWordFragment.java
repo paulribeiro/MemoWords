@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,7 +24,7 @@ import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.recyclerViews.DividerItemDecoration;
-import com.paulribe.memowords.recyclerViews.FindWordAdapter;
+import com.paulribe.memowords.recyclerViews.findWord.FindWordAdapter;
 import com.paulribe.memowords.viewmodels.NewWordViewModel;
 
 import java.util.ArrayList;
@@ -232,10 +231,7 @@ public class NewWordFragment extends Fragment {
     }
 
     public void switchToEditWordMode(Word word) {
-        newWordViewModel.setNewWord(word);
-        inputWordDE.setText(word.getWordDE());
-        inputWordFR.setText(word.getWordFR());
-        inputWordContext.setText(word.getContext());
+        updateWithWord(word);
         addButton.setText(R.string.update_word);
         suggestionWordDERecyclerView.setVisibility(View.GONE);
         suggestionWordFRRecyclerView.setVisibility(View.GONE);
@@ -243,6 +239,13 @@ public class NewWordFragment extends Fragment {
         popupAddTitleTextView.setVisibility(View.GONE);
         popupCurrentWordEditedTextView.setText(word.getWordFR() + " - " + word.getWordDE());
         deleteButton.setVisibility(View.VISIBLE);
+    }
+
+    public void updateWithWord(Word word) {
+        newWordViewModel.setNewWord(word);
+        inputWordDE.setText(word.getWordDE());
+        inputWordFR.setText(word.getWordFR());
+        inputWordContext.setText(word.getContext());
     }
 
     private void switchToAddWordMode() {

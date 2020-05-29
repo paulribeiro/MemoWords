@@ -7,8 +7,6 @@ import java.util.List;
 
 public class NewWordViewModel extends BaseViewModel {
 
-    public final long NO_LAST_SUCCESS = 946684800;
-    public final long NO_LAST_TRY = 915148800;
     private Word newWord;
     private List<Word> words;
 

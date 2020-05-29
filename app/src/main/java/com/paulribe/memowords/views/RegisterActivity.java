@@ -20,6 +20,7 @@ import com.paulribe.memowords.R;
 import com.paulribe.memowords.countrypicker.CountryAdapter;
 import com.paulribe.memowords.countrypicker.CountryItem;
 import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.viewmodels.BaseViewModel;
 import com.paulribe.memowords.viewmodels.RegisterViewModel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -85,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 CountryItem clickedItem = (CountryItem) parent.getItemAtPosition(position);
                 LanguageEnum nativeLanguageSelected = clickedItem.getCountryName();
                 if(nativeLanguageSelected != null && nativeLanguageSelected != LanguageEnum.NONE) {
-                    registerViewModel.setNativeLanguage(nativeLanguageSelected);
+                    BaseViewModel.setNativeLanguage(nativeLanguageSelected);
                 }
                 checkRequiredFieldsForButtonSignup();
             }

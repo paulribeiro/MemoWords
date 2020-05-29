@@ -1,4 +1,4 @@
-package com.paulribe.memowords.recyclerViews;
+package com.paulribe.memowords.recyclerViews.findWord;
 
 import android.content.Context;
 import android.view.LayoutInflater;

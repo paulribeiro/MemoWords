@@ -60,7 +60,7 @@ public class LearningFragment extends Fragment {
         difficultButton.setOnClickListener(view -> learningViewModel.setWordDifficult());
 
         editWordButton.setOnClickListener(view -> {
-            ((MainActivity)getActivity()).displayNewWordFragment(learningViewModel.getCurrentWord().getValue());
+            ((MainActivity)getActivity()).displayNewWordFragment(learningViewModel.getCurrentWord().getValue(), Boolean.TRUE);
         });
     }
 

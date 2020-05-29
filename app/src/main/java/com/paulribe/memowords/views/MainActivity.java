@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomMenu.getMenu().getItem(1).setOnMenuItemClickListener(menuItem -> {
-            displayNewWordFragment(null);
+            displayNewWordFragment(null, Boolean.FALSE);
             return true;
         });
 
@@ -184,12 +184,16 @@ public class MainActivity extends AppCompatActivity {
         activeFragment.add(learningFragment);
     }
 
-    public void displayNewWordFragment(Word word) {
+    public void displayNewWordFragment(Word word, Boolean isEditWordMode) {
         fm.beginTransaction().hide(activeFragment.get(0)).show(newWordFragment).commit();
         activeFragment.add(0, newWordFragment);
         createOptionMenuSelectLanguage();
-        if(word != null) {
+        if(isEditWordMode) {
             newWordFragment.switchToEditWordMode(word);
+        } else {
+            if(word != null) {
+                newWordFragment.updateWithWord(word);
+            }
         }
         toolbar.setVisibility(View.GONE);
     }

@@ -1,5 +1,7 @@
 package com.paulribe.memowords.enumeration;
 
+import androidx.annotation.NonNull;
+
 public enum LanguageEnum {
     PORTUGUESE("portuguese"),
     GERMAN("german"),
@@ -10,7 +12,7 @@ public enum LanguageEnum {
 
     private final String language;
 
-    private LanguageEnum(String value) {
+    LanguageEnum(String value) {
         language = value;
     }
 
@@ -18,8 +20,25 @@ public enum LanguageEnum {
         return language;
     }
 
-    @Override
+    @NonNull
     public String toString() {
         return language;
+    }
+
+    public String getPrefixForPons(){
+        switch(this) {
+            case FRENCH:
+                return "fr";
+            case GERMAN:
+                return "de";
+            case ENGLISH:
+                return "en";
+            case SPANISH:
+                return "es";
+            case PORTUGUESE:
+                return "pt";
+            default:
+                return "";
+        }
     }
 }

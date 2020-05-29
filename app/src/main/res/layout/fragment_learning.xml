@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/layout_rounded"
+            android:background="@drawable/layout_right_rounded"
             android:backgroundTint="#EF1F1F"
             app:layout_constraintStart_toStartOf="@+id/view"
             app:layout_constraintTop_toTopOf="@+id/view">

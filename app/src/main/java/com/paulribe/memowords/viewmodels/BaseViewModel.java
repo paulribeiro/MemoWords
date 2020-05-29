@@ -8,7 +8,11 @@ import androidx.lifecycle.ViewModel;
 
 public class BaseViewModel extends ViewModel {
 
+    public final long NO_LAST_SUCCESS = 946684800;
+    public final long NO_LAST_TRY = 915148800;
+    private static LanguageEnum nativeLanguage;
     private static MutableLiveData<LanguageEnum> currentLanguage;
+    private static String xApiKeyPons;
     private static FirebaseUser currentUser;
     static FirebaseDataHelper firebaseDataHelper;
 
@@ -18,8 +22,11 @@ public class BaseViewModel extends ViewModel {
     }
 
     public void loadUserConfig() {
-        firebaseDataHelper.loadUserConfig(userConfig ->
-                currentLanguage.setValue(LanguageEnum.valueOf(userConfig.getCurrentLanguage())));
+        firebaseDataHelper.loadUserConfig(userConfig -> {
+            currentLanguage.setValue(LanguageEnum.valueOf(userConfig.getCurrentLanguage()));
+            nativeLanguage = LanguageEnum.valueOf(userConfig.getNativeLanguage());
+            xApiKeyPons = userConfig.getXApiKeyPons();
+        });
     }
 
     public void updateLanguage(LanguageEnum language) {
@@ -46,5 +53,17 @@ public class BaseViewModel extends ViewModel {
 
     public MutableLiveData<LanguageEnum> getCurrentLanguage() {
         return currentLanguage;
+    }
+
+    public String getxApiKeyPons() {
+        return xApiKeyPons;
+    }
+
+    public LanguageEnum getNativeLanguage() {
+        return nativeLanguage;
+    }
+
+    public static void setNativeLanguage(LanguageEnum nativeLanguage) {
+        BaseViewModel.nativeLanguage = nativeLanguage;
     }
 }

@@ -1,13 +1,12 @@
-package com.paulribe.memowords.recyclerViews;
+package com.paulribe.memowords.recyclerViews.word;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.viewmodels.BaseViewModel;
-
+import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -66,9 +65,6 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
                 favoriteCLickListener.onClick(view);
             }
         });
-
-
-
         updateFavoriteButton(word);
     }
 

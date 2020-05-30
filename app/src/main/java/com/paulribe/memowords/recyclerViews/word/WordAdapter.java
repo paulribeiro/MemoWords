@@ -4,21 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.paulribe.memowords.R;
-import com.paulribe.memowords.model.TranslatedWord;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
-
 import java.util.List;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
 
     private List<Word> words;
-
+    private Boolean isNativeLanguageToTranslation;
     private OnFavoriteClickListener favoriteCLickListener;
     private View.OnClickListener ponsClickListener;
     private View.OnClickListener googleTranslateClickListener;
@@ -28,6 +23,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > 
         this.favoriteCLickListener = listener;
         this.ponsClickListener = ponsClickListener;
         this.googleTranslateClickListener = googleTranslateClickListener;
+        this.isNativeLanguageToTranslation = Boolean.TRUE;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if(position != words.size()) {
-            ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position);
+            ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation);
         } else {
             ((TranslateButtonsViewHolder)viewHolder).updateWithTranslateCallView();
         }
@@ -73,5 +69,13 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > 
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public Boolean getNativeLanguageToTranslation() {
+        return isNativeLanguageToTranslation;
+    }
+
+    public void setNativeLanguageToTranslation(Boolean nativeLanguageToTranslation) {
+        isNativeLanguageToTranslation = nativeLanguageToTranslation;
     }
 }

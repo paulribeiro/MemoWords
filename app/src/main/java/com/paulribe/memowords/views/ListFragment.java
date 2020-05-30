@@ -189,9 +189,16 @@ public class ListFragment extends Fragment {
         if(searchWord != null && !searchWord.isEmpty()) {
             searchWord = updateStringWithIgnoredCharacter(searchWord);
             String finalSearchWord = searchWord;
-            words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordFR())
-                                                            .contains(finalSearchWord))
-                                                            .collect(Collectors.toList());
+            if(listWordsViewModel.getIsNativeLanguageToTranslation().getValue()) {
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordFR())
+                        .contains(finalSearchWord))
+                        .collect(Collectors.toList());
+            } else {
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordDE())
+                        .contains(finalSearchWord))
+                        .collect(Collectors.toList());
+            }
+
         }
         switch(orderByEnum) {
             case AZ:
@@ -207,6 +214,9 @@ public class ListFragment extends Fragment {
                 Collections.sort(words, Comparator.comparing(Word::getLastTry).reversed());
                 break;
             case KNOWLEDGE_LEVEL:
+                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel));
+                break;
+            case KNOWLEDGE_LEVEL_DESC:
                 Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel).reversed());
                 break;
         }
@@ -241,6 +251,9 @@ public class ListFragment extends Fragment {
                     break;
                 case R.id.action_knowledge_level:
                     listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.KNOWLEDGE_LEVEL);
+                    break;
+                case R.id.action_knowledge_level_desc:
+                    listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.KNOWLEDGE_LEVEL_DESC);
                     break;
                 case R.id.action_AZ:
                     listWordsViewModel.getOrderByEnum().setValue(OrderByEnum.AZ);
@@ -315,6 +328,12 @@ public class ListFragment extends Fragment {
         listWordsViewModel.getTranslatedWordResults().observe(getViewLifecycleOwner(), this::onTranslatedWordResultsChanged);
         listWordsViewModel.getCurrentSourceLanguage().observe(getViewLifecycleOwner(), this::onCurrentSourceLanguageChanged);
         listWordsViewModel.getCurrentTargetLanguage().observe(getViewLifecycleOwner(), this::onCurrentTargetLanguageChanged);
+        listWordsViewModel.getIsNativeLanguageToTranslation().observe(getViewLifecycleOwner(), this::onIsNativeLanguageToTranslation);
+    }
+
+    private void onIsNativeLanguageToTranslation(Boolean isNativeLanguageToTranslation) {
+        adapter.setNativeLanguageToTranslation(isNativeLanguageToTranslation);
+        adapter.notifyDataSetChanged();
     }
 
     private void onCurrentTargetLanguageChanged(LanguageEnum targetLanguage) {
@@ -323,6 +342,11 @@ public class ListFragment extends Fragment {
 
     private void onCurrentSourceLanguageChanged(LanguageEnum sourceLanguage) {
         sourceLanguageTextView.setText(sourceLanguage.toString());
+        if(listWordsViewModel.getCurrentSourceLanguage().getValue().equals(listWordsViewModel.getNativeLanguage())) {
+            listWordsViewModel.getIsNativeLanguageToTranslation().setValue(Boolean.TRUE);
+        } else {
+            listWordsViewModel.getIsNativeLanguageToTranslation().setValue(Boolean.FALSE);
+        }
     }
 
     private void onTranslatedWordResultsChanged(List<TranslatedWord> translatedWords) {

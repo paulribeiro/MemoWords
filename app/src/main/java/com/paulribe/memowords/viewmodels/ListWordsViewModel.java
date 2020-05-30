@@ -26,6 +26,8 @@ public class ListWordsViewModel extends BaseViewModel {
     private Boolean isRecyclerViewOnTranslateResults = Boolean.FALSE;
     private MutableLiveData<LanguageEnum> currentSourceLanguage;
     private MutableLiveData<LanguageEnum> currentTargetLanguage;
+    private MutableLiveData<Boolean> isNativeLanguageToTranslation;
+
 
     public MutableLiveData<List<Word>> getWords() {
         return words;
@@ -57,6 +59,10 @@ public class ListWordsViewModel extends BaseViewModel {
         this.currentTargetLanguage = currentTargetLanguage;
     }
 
+    public MutableLiveData<Boolean> getIsNativeLanguageToTranslation() {
+        return isNativeLanguageToTranslation;
+    }
+
     public void init() {
         words = new MutableLiveData<>(new ArrayList<>());
         orderByEnum = new MutableLiveData<>(OrderByEnum.LAST_TRY);
@@ -65,6 +71,7 @@ public class ListWordsViewModel extends BaseViewModel {
         translatedWordResults = new MutableLiveData<>(new ArrayList<>());
         currentSourceLanguage = new MutableLiveData<>(this.getNativeLanguage());
         currentTargetLanguage = new MutableLiveData<>(this.getCurrentLanguage().getValue());
+        isNativeLanguageToTranslation = new MutableLiveData<>(Boolean.TRUE);
     }
 
     public void readWords() {

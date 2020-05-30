@@ -24,7 +24,10 @@
                 android:id="@+id/action_knowledge_level"
                 android:title="Knowledge level"
                 app:showAsAction="ifRoom" />
-
+            <item
+                android:id="@+id/action_knowledge_level_desc"
+                android:title="Knowledge level desc"
+                app:showAsAction="ifRoom" />
             <item
                 android:id="@+id/action_AZ"
                 android:title="A-Z"

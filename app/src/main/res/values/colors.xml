@@ -9,4 +9,16 @@
     <color name="themeColorSecondary">#ebb184</color>
     <color name="themeColorThird">#e5985b</color>
     <color name="themeColor2">#4A3516</color>
+
+
+    <color name="greyBackground">#8DE1E1E1</color>
+
+
+
+    <color name="red">#D82C2C</color>
+    <color name="orange">#ED812F</color>
+    <color name="yellow">#EDCC2C</color>
+    <color name="clearGreen">#C6EF2D</color>
+    <color name="green">#2EBF0D</color>
+
 </resources>

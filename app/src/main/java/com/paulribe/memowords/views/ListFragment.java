@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
-import com.paulribe.memowords.enumeration.SectionRowEnum;
 import com.paulribe.memowords.model.TranslatedWord;
 import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.recyclerViews.OnExpandSectionClickListener;
@@ -29,14 +28,13 @@ import com.paulribe.memowords.restclient.RetrofitClientInstance;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -50,7 +48,6 @@ public class ListFragment extends Fragment {
     private WordAdapter adapter;
     private TranslationResultAdapter adapterTranslationResult;
     private ListWordsViewModel listWordsViewModel;
-    private FrameLayout searchBarLayout;
     private TextView searchBar;
     private androidx.appcompat.widget.Toolbar toolbar;
     private Button deleteSearchWordButton;
@@ -70,7 +67,6 @@ public class ListFragment extends Fragment {
         initDataBinding();
 
         recyclerView = view.findViewById(R.id.recycler_view_words);
-        searchBarLayout = view.findViewById(R.id.search_word_toolbar);
         searchBar = view.findViewById(R.id.search_word);
         toolbar = view.findViewById(R.id.toolbarList);
         deleteSearchWordButton = view.findViewById(R.id.delete_search_word);
@@ -80,11 +76,9 @@ public class ListFragment extends Fragment {
         createOptionMenuOrderBy();
         configureRecyclerView();
 
-        swapLanguageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listWordsViewModel.exchangeSourceTargetLanguage();
-            }
+        swapLanguageButton.setOnClickListener(view1 -> {
+            listWordsViewModel.exchangeSourceTargetLanguage();
+            updateRecyclerView();
         });
     }
 
@@ -106,7 +100,7 @@ public class ListFragment extends Fragment {
         OnWordTranslatedClickListener onTranslationClickListener = new OnWordTranslatedClickListener() {
             @Override
             public void onClick(View v) {
-                Word newWord = createWordFromTranslatedWord(this.getTranslatedWord());
+                Word newWord = listWordsViewModel.getNewTranslatedWord(this.getTranslatedWord());
                 ((MainActivity)getActivity()).displayNewWordFragment(newWord, Boolean.FALSE);
             }
         };
@@ -123,21 +117,6 @@ public class ListFragment extends Fragment {
         this.recyclerView.setAdapter(this.adapterTranslationResult);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-
-    private Word createWordFromTranslatedWord(TranslatedWord translatedWord) {
-        //TODO : manage which one is source and which one is target
-        Optional<TranslatedWord> subsectionForTranslatedWord = listWordsViewModel.getTranslatedWordResults().getValue().stream()
-                .filter(w -> w.getSectionRowtype().equals(SectionRowEnum.SUBSECTION) && w.getSubSectionNumber().equals(w.getSubSectionNumber()))
-                .findFirst();
-        String contextNewWord = "";
-        if(subsectionForTranslatedWord.isPresent()) {
-            contextNewWord = subsectionForTranslatedWord.get().getSourceWord();
-        }
-        Word word = new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
-                new Date().getTime(), listWordsViewModel.NO_LAST_SUCCESS, listWordsViewModel.NO_LAST_TRY,
-                0, 0, contextNewWord, 0, false);
-        return word;
     }
 
     private OnFavoriteClickListener createFavoriteClickListener() {
@@ -157,7 +136,13 @@ public class ListFragment extends Fragment {
                 call.enqueue(new Callback<List<PonsResult>>() {
                     @Override
                     public void onResponse(Call<List<PonsResult>> call, Response<List<PonsResult>> response) {
-                        listWordsViewModel.buildTranslation(response.body());
+                        int code = response.code();
+                        if(response.isSuccessful()) {
+                            listWordsViewModel.buildTranslation(response.body());
+                            //TODO : is result is empty, display no result
+                        } else {
+                            //TODO : display no result
+                        }
                     }
 
                     @Override
@@ -375,4 +360,17 @@ public class ListFragment extends Fragment {
                      .replace("ê", "e")
                      .toLowerCase();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

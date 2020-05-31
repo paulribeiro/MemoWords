@@ -15,7 +15,7 @@
     <string name="bottom_navigation_menu_word_learn">Learn</string>
     <string name="bottom_navigation_menu_word_add">Add</string>
 
-    <string name="edit_the_word">Edit the word :</string>
+    <string name="edit_the_word">Edit word</string>
     <string name="login_failed">Login failed</string>
     <string name="login_please_wait">Login, please Wait…</string>
     <string name="please_enter_password">Please, enter password</string>
@@ -48,7 +48,7 @@
     <string name="easy">Easy</string>
     <string name="difficult">Difficult</string>
     <string name="search_a_word">Search a word</string>
-    <string name="add_a_new_word">Add a new word</string>
+    <string name="add_a_new_word">New word</string>
     <string name="word_in_french">word in french :</string>
     <string name="word_in_german">word in german :</string>
     <string name="context">context :</string>

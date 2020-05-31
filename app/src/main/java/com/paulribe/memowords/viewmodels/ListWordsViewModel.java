@@ -13,7 +13,10 @@ import com.paulribe.memowords.model.pons.Translation;
 import com.paulribe.memowords.model.pons.WordMeaning;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import androidx.lifecycle.MutableLiveData;
 
 public class ListWordsViewModel extends BaseViewModel {
@@ -101,19 +104,27 @@ public class ListWordsViewModel extends BaseViewModel {
         Integer sectionNumber = 1;
         Integer subSectionNumber = 1;
         List<TranslatedWord> translatedWords = new ArrayList<>();
-            if(!CollectionUtils.isEmpty(ponsResults)) {
+        if(!CollectionUtils.isEmpty(ponsResults)) {
             PonsResult ponsResult = ponsResults.get(0);
-            for(SearchWordResultList searchWordResultList : ponsResult.getHits()) {
-                for(SearchWordResult searchWordResult : searchWordResultList.getRoms()) {
-                    translatedWords.add(createTranslatedWordForSection(searchWordResult, sectionNumber));
-                    for(WordMeaning wordMeaning : searchWordResult.getArabs()) {
-                        translatedWords.add(createTranslatedWordForSubSection(wordMeaning, sectionNumber, subSectionNumber));
-                        for(Translation translation : wordMeaning.getTranslations()) {
-                            translatedWords.add(createTranslatedWordForRow(translation, sectionNumber, subSectionNumber));
+            if(ponsResult.getHits() != null) {
+                for(SearchWordResultList searchWordResultList : ponsResult.getHits()) {
+                    if(searchWordResultList.getRoms() != null) {
+                        for(SearchWordResult searchWordResult : searchWordResultList.getRoms()) {
+                            translatedWords.add(createTranslatedWordForSection(searchWordResult, sectionNumber));
+                            if(searchWordResult.getArabs() != null) {
+                                for(WordMeaning wordMeaning : searchWordResult.getArabs()) {
+                                    translatedWords.add(createTranslatedWordForSubSection(wordMeaning, sectionNumber, subSectionNumber));
+                                    if(wordMeaning.getTranslations() != null) {
+                                        for(Translation translation : wordMeaning.getTranslations()) {
+                                            translatedWords.add(createTranslatedWordForRow(translation, sectionNumber, subSectionNumber));
+                                        }
+                                    }
+                                    subSectionNumber++;
+                                }
+                            }
+                            sectionNumber ++;
                         }
-                        subSectionNumber++;
                     }
-                    sectionNumber ++;
                 }
             }
             translatedWordResults.setValue(translatedWords);
@@ -169,5 +180,26 @@ public class ListWordsViewModel extends BaseViewModel {
         } else {
             return getCurrentTargetLanguage().getValue().getPrefixForPons() + getCurrentSourceLanguage().getValue().getPrefixForPons();
         }
+    }
+
+    public Word getNewTranslatedWord(TranslatedWord translatedWord) {
+        Optional<TranslatedWord> subsectionForTranslatedWord = getTranslatedWordResults().getValue().stream()
+                .filter(w -> w.getSectionRowtype().equals(SectionRowEnum.SUBSECTION) && w.getSubSectionNumber().equals(w.getSubSectionNumber()))
+                .findFirst();
+        String contextNewWord = "";
+        if(subsectionForTranslatedWord.isPresent()) {
+            contextNewWord = subsectionForTranslatedWord.get().getSourceWord();
+        }
+        Word word;
+        if(isNativeLanguageToTranslation.getValue()) {
+            word = new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
+                    new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
+                    0, 0, contextNewWord, 0, false);
+        } else {
+            word = new Word(translatedWord.getTargetWord(), translatedWord.getSourceWord(),
+                    new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
+                    0, 0, contextNewWord, 0, false);
+        }
+        return word;
     }
 }

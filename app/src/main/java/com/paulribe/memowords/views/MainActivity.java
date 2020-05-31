@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             newWordFragment.switchToEditWordMode(word);
         } else {
             if(word != null) {
-                newWordFragment.updateWithWord(word);
+                newWordFragment.updateInputFields(word);
             }
         }
         toolbar.setVisibility(View.GONE);
@@ -244,12 +244,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void comeBackLearningFragment() {
-        if(learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue() == LearningFragmentStateEnum.NO_MORE_WORDS){
-            displayNoMoreWords(true);
-        } else {
-            fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
-            activeFragment.add(0, learningFragment);
-        }
+        learningFragment.getLearningViewModel().getIsRevisionFinished().setValue(true);
+        learningFragment.getLearningViewModel().calculateWordsToLearn();
+        learningFragment.getLearningViewModel().updateLearningState();
+        //fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
+        //activeFragment.add(0, learningFragment);
     }
 
     private void initDataBinding() {

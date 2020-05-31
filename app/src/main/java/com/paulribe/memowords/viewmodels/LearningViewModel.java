@@ -1,11 +1,8 @@
 package com.paulribe.memowords.viewmodels;
 
-import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -78,9 +75,10 @@ public class LearningViewModel extends BaseViewModel {
         });
     }
 
-    private void calculateWordsToLearn() {
+    public void calculateWordsToLearn() {
         if(isRevisionFinished.getValue()) {
             List<Word> wordsToOrder = new ArrayList<>(words);
+            Collections.sort(wordsToOrder, Comparator.comparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToOrder.stream().filter(w -> w.getNumberTry().equals(0)).collect(Collectors.toList());
         }
     }
@@ -89,9 +87,9 @@ public class LearningViewModel extends BaseViewModel {
         if(!isRevisionFinished.getValue()) {
             List<Word> wordsToOrder = new ArrayList<>(words);
             Collections.sort(wordsToOrder, Comparator.comparing(Word::getKnowledgeLevel)
-                    .thenComparing(Word::getDateAdded));
+                    .thenComparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
-            isRevisionFinished.setValue(CollectionUtils.isEmpty(wordsToDisplay));
+            //isRevisionFinished.setValue(CollectionUtils.isEmpty(wordsToDisplay));
         }
     }
 
@@ -118,7 +116,7 @@ public class LearningViewModel extends BaseViewModel {
     private static Date getTodayDateRevision() {
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.HOUR_OF_DAY, 0);
         now.set(Calendar.MINUTE, 0);
         now.set(Calendar.SECOND, 0);
         return now.getTime();
@@ -136,7 +134,7 @@ public class LearningViewModel extends BaseViewModel {
         updateLearningState();
     }
 
-    private void updateLearningState() {
+    public void updateLearningState() {
         if(wordsToDisplay.size() > 0) {
             learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
             currentWord.setValue(wordsToDisplay.get(0));
@@ -144,7 +142,6 @@ public class LearningViewModel extends BaseViewModel {
             if(isRevisionFinished.getValue()) {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
             } else {
-                isRevisionFinished.setValue(true);
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.REVISION_FINISHED);
             }
         }

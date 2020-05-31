@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,10 +43,11 @@ public class NewWordFragment extends Fragment {
     private EditText inputWordContext;
     private RecyclerView suggestionWordFRRecyclerView;
     private RecyclerView suggestionWordDERecyclerView;
-    private View popupEditLayout;
     private Button exitEditWordButton;
     private TextView popupCurrentWordEditedTextView;
     private TextView popupAddTitleTextView;
+    private TextView popupEditTitleTextView;
+
     private FindWordAdapter adapterFR;
     private FindWordAdapter adapterDE;
 
@@ -156,13 +158,15 @@ public class NewWordFragment extends Fragment {
         inputWordContext = view.findViewById(R.id.inputWordContext);
         suggestionWordFRRecyclerView = view.findViewById(R.id.suggestionWordFR);
         suggestionWordDERecyclerView = view.findViewById(R.id.suggestionWordDE);
-        popupEditLayout = view.findViewById(R.id.popupEditLayout);
+        popupEditTitleTextView = view.findViewById(R.id.popupEditTitle);
         exitEditWordButton = view.findViewById(R.id.exitEditWordButton);
         popupCurrentWordEditedTextView = view.findViewById(R.id.popupCurrentWordEdited);
         popupAddTitleTextView = view.findViewById(R.id.popupAddTitle);
         suggestionWordFRRecyclerView.setHasFixedSize(true);
         suggestionWordDERecyclerView.setHasFixedSize(true);
-        popupEditLayout.setVisibility(View.GONE);
+        popupCurrentWordEditedTextView.setVisibility(View.GONE);
+        popupEditTitleTextView.setVisibility(View.GONE);
+        exitEditWordButton.setVisibility(View.GONE);
         suggestionWordFRRecyclerView.setVisibility(View.GONE);
         suggestionWordDERecyclerView.setVisibility(View.GONE);
     }
@@ -235,7 +239,9 @@ public class NewWordFragment extends Fragment {
         addButton.setText(R.string.update_word);
         suggestionWordDERecyclerView.setVisibility(View.GONE);
         suggestionWordFRRecyclerView.setVisibility(View.GONE);
-        popupEditLayout.setVisibility(View.VISIBLE);
+        popupCurrentWordEditedTextView.setVisibility(View.VISIBLE);
+        popupEditTitleTextView.setVisibility(View.VISIBLE);
+        exitEditWordButton.setVisibility(View.VISIBLE);
         popupAddTitleTextView.setVisibility(View.GONE);
         popupCurrentWordEditedTextView.setText(word.getWordFR() + " - " + word.getWordDE());
         deleteButton.setVisibility(View.VISIBLE);
@@ -243,6 +249,10 @@ public class NewWordFragment extends Fragment {
 
     public void updateWithWord(Word word) {
         newWordViewModel.setNewWord(word);
+        updateInputFields(word);
+    }
+
+    public void updateInputFields(Word word) {
         inputWordDE.setText(word.getWordDE());
         inputWordFR.setText(word.getWordFR());
         inputWordContext.setText(word.getContext());
@@ -250,7 +260,9 @@ public class NewWordFragment extends Fragment {
 
     private void switchToAddWordMode() {
         newWordViewModel.setNewWord(null);
-        popupEditLayout.setVisibility(View.GONE);
+        popupCurrentWordEditedTextView.setVisibility(View.GONE);
+        popupEditTitleTextView.setVisibility(View.GONE);
+        exitEditWordButton.setVisibility(View.GONE);
         popupAddTitleTextView.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.GONE);
         addButton.setText(R.string.add_word);

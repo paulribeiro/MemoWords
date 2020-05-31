@@ -129,7 +129,7 @@ public class LearningFragment extends Fragment {
     public void onCurrentWordChanged(Word word) {
         setElementVisibility(true);
         setTextViewWithNextWord();
-            layoutNew.setVisibility(View.VISIBLE);
+        layoutNew.setVisibility(View.VISIBLE);
         if (!learningViewModel.getIsRevisionFinished().getValue()) {
             layoutNew.setVisibility(View.GONE);
             int nbWordToRevise = learningViewModel.getWordsToDisplay().size();

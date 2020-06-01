@@ -1,5 +1,7 @@
 package com.paulribe.memowords.views;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.recyclerViews.OnExpandSectionClickListener;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import com.paulribe.memowords.recyclerViews.OnWordTranslatedClickListener;
+import com.paulribe.memowords.recyclerViews.SwipeHelper;
 import com.paulribe.memowords.recyclerViews.translationResult.TranslationResultAdapter;
 import com.paulribe.memowords.recyclerViews.word.WordAdapter;
 import com.paulribe.memowords.model.Word;
@@ -34,7 +36,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -75,6 +76,31 @@ public class ListFragment extends Fragment {
         swapLanguageButton = view.findViewById(R.id.swapLanguageButton);
         createOptionMenuOrderBy();
         configureRecyclerView();
+        SwipeHelper swipeHelper = new SwipeHelper(getContext(), recyclerView) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        BitmapFactory.decodeResource(getContext().getResources(),
+                                R.drawable.bin_icon_48),
+                        Color.parseColor("#FF3C30"),
+                        pos -> listWordsViewModel.deleteWord(pos)
+                ));
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Edit",
+                        BitmapFactory.decodeResource(getContext().getResources(),
+                                R.drawable.edit_icon_40),
+                        Color.parseColor("#3BDC1F"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
+                            }
+                        }
+                ));
+            }
+        };
 
         swapLanguageButton.setOnClickListener(view1 -> {
             listWordsViewModel.exchangeSourceTargetLanguage();
@@ -164,47 +190,7 @@ public class ListFragment extends Fragment {
         if(listWordsViewModel.getRecyclerViewOnTranslateResults()) {
            configureRecyclerView();
         }
-        List<Word> words = listWordsViewModel.getWords().getValue();
-        String searchWord = listWordsViewModel.getSearchedString().getValue();
-        Boolean isFavorite = listWordsViewModel.getIsFavoriteSelected().getValue();
-        OrderByEnum orderByEnum = listWordsViewModel.getOrderByEnum().getValue();
-        if(isFavorite != null && isFavorite) {
-            words = words.stream().filter(Word::isFavorite).collect(Collectors.toList());
-        }
-        if(searchWord != null && !searchWord.isEmpty()) {
-            searchWord = updateStringWithIgnoredCharacter(searchWord);
-            String finalSearchWord = searchWord;
-            if(listWordsViewModel.getIsNativeLanguageToTranslation().getValue()) {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordFR())
-                        .contains(finalSearchWord))
-                        .collect(Collectors.toList());
-            } else {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordDE())
-                        .contains(finalSearchWord))
-                        .collect(Collectors.toList());
-            }
-
-        }
-        switch(orderByEnum) {
-            case AZ:
-                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
-                                                            .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
-                break;
-            case ZA:
-                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
-                                                            .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
-                Collections.reverse(words);
-                break;
-            case LAST_TRY:
-                Collections.sort(words, Comparator.comparing(Word::getLastTry).reversed());
-                break;
-            case KNOWLEDGE_LEVEL:
-                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel));
-                break;
-            case KNOWLEDGE_LEVEL_DESC:
-                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel).reversed());
-                break;
-        }
+        List<Word> words = listWordsViewModel.filterWordsToDisplay();
         adapter.setWords(words);
         adapter.notifyDataSetChanged();
     }
@@ -353,22 +339,6 @@ public class ListFragment extends Fragment {
     private void onSearchedStringChanged(String searchedString) {
         updateRecyclerView();
     }
-
-    private String updateStringWithIgnoredCharacter(String string) {
-        return string.replace("é", "e")
-                     .replace("è", "e")
-                     .replace("ê", "e")
-                     .toLowerCase();
-    }
-
-
-
-
-
-
-
-
-
 
 
 

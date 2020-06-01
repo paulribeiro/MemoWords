@@ -13,15 +13,19 @@ import com.paulribe.memowords.model.pons.Translation;
 import com.paulribe.memowords.model.pons.WordMeaning;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import androidx.lifecycle.MutableLiveData;
 
 public class ListWordsViewModel extends BaseViewModel {
 
     private MutableLiveData<List<Word>> words;
+    private List<Word> wordsToDisplay;
     private MutableLiveData<OrderByEnum> orderByEnum;
     private MutableLiveData<Boolean> isFavoriteSelected;
     private MutableLiveData<String> searchedString;
@@ -64,6 +68,14 @@ public class ListWordsViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getIsNativeLanguageToTranslation() {
         return isNativeLanguageToTranslation;
+    }
+
+    public List<Word> getWordsToDisplay() {
+        return wordsToDisplay;
+    }
+
+    public void setWordsToDisplay(List<Word> wordsToDisplay) {
+        this.wordsToDisplay = wordsToDisplay;
     }
 
     public void init() {
@@ -131,6 +143,52 @@ public class ListWordsViewModel extends BaseViewModel {
         } else {
             translatedWordResults.setValue(new ArrayList<>());
         }
+    }
+
+    public List<Word> filterWordsToDisplay() {
+        List<Word> words = getWords().getValue();
+        String searchWord = getSearchedString().getValue();
+        Boolean isFavorite = getIsFavoriteSelected().getValue();
+        OrderByEnum orderByEnum = getOrderByEnum().getValue();
+        if(isFavorite != null && isFavorite) {
+            words = words.stream().filter(Word::isFavorite).collect(Collectors.toList());
+        }
+        if(searchWord != null && !searchWord.isEmpty()) {
+            searchWord = updateStringWithIgnoredCharacter(searchWord);
+            String finalSearchWord = searchWord;
+            if(getIsNativeLanguageToTranslation().getValue()) {
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordFR())
+                        .contains(finalSearchWord))
+                        .collect(Collectors.toList());
+            } else {
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordDE())
+                        .contains(finalSearchWord))
+                        .collect(Collectors.toList());
+            }
+
+        }
+        switch(orderByEnum) {
+            case AZ:
+                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
+                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
+                break;
+            case ZA:
+                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
+                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
+                Collections.reverse(words);
+                break;
+            case LAST_TRY:
+                Collections.sort(words, Comparator.comparing(Word::getLastTry).reversed());
+                break;
+            case KNOWLEDGE_LEVEL:
+                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel));
+                break;
+            case KNOWLEDGE_LEVEL_DESC:
+                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel).reversed());
+                break;
+        }
+        wordsToDisplay = words;
+        return words;
     }
 
     private TranslatedWord createTranslatedWordForRow(Translation translation, Integer sectionNumber, Integer subSectionNumber) {
@@ -201,5 +259,16 @@ public class ListWordsViewModel extends BaseViewModel {
                     0, 0, contextNewWord, 0, false);
         }
         return word;
+    }
+
+    public void deleteWord(int pos) {
+        getFirebaseDataHelper().deleteWord(wordsToDisplay.get(pos));
+    }
+
+    private String updateStringWithIgnoredCharacter(String string) {
+        return string.replace("é", "e")
+                .replace("è", "e")
+                .replace("ê", "e")
+                .toLowerCase();
     }
 }

@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {
@@ -52,9 +51,6 @@ public class FirebaseDataHelper implements Serializable {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Word word = keyNode.getValue(Word.class);
-                    if (word != null) {
-                        word.setId(Integer.parseInt(Objects.requireNonNull(keyNode.getKey())));
-                    }
                     words.add(word);
                 }
                 if(cpt == 0 ) {
@@ -98,7 +94,7 @@ public class FirebaseDataHelper implements Serializable {
         word.setNumberSuccess(word.getNumberSuccess() + 1);
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(word.getKnowledgeLevel() + 1);
-        referenceWords.child(word.getId().toString()).setValue(word);
+        referenceWords.child(word.getWordId()).setValue(word);
     }
 
     public void setWordDifficult(final Word word) {
@@ -106,22 +102,24 @@ public class FirebaseDataHelper implements Serializable {
         word.setLastTry(now.getTime());
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(0);
-        referenceWords.child(word.getId().toString()).setValue(word);
+        referenceWords.child(word.getWordId()).setValue(word);
     }
 
     public void addWord(final Word word) {
-        int id = words.size() + 1;
-        referenceWords.child(Integer.toString(id)).setValue(word);
+        DatabaseReference pushedWordRef = referenceWords.push();
+        String id = pushedWordRef.getKey();
+        word.setWordId(id);
+        pushedWordRef.setValue(word);
     }
 
     public void updateWord(final Word word) {
-        int id = word.getId();
-        referenceWords.child(Integer.toString(id)).setValue(word);
+        String id = word.getWordId();
+        referenceWords.child(id).setValue(word);
     }
 
     public void deleteWord(final Word word) {
-        int id = word.getId();
-        referenceWords.child(Integer.toString(id)).removeValue();
+        String id = word.getWordId();
+        referenceWords.child(id).removeValue();
     }
 
     public DatabaseReference getReferenceWords() {

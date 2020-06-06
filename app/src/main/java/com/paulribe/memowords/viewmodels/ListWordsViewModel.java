@@ -1,6 +1,7 @@
 package com.paulribe.memowords.viewmodels;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.paulribe.memowords.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.enumeration.SectionRowEnum;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +37,7 @@ public class ListWordsViewModel extends BaseViewModel {
     private MutableLiveData<LanguageEnum> currentTargetLanguage;
     private MutableLiveData<Boolean> isNativeLanguageToTranslation;
     private Word lastWordDeleted;
+    private MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected;
 
 
     public MutableLiveData<List<Word>> getWords() {
@@ -83,6 +86,14 @@ public class ListWordsViewModel extends BaseViewModel {
         return lastWordDeleted;
     }
 
+    public MutableLiveData<HashSet<KnowledgeLevelEnum>> getKnowledgeFilterSelected() {
+        return knowledgeFilterSelected;
+    }
+
+    public void setKnowledgeFilterSelected(MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected) {
+        this.knowledgeFilterSelected = knowledgeFilterSelected;
+    }
+
     public void init() {
         words = new MutableLiveData<>(new ArrayList<>());
         orderByEnum = new MutableLiveData<>(OrderByEnum.LAST_TRY);
@@ -92,6 +103,7 @@ public class ListWordsViewModel extends BaseViewModel {
         currentSourceLanguage = new MutableLiveData<>(this.getNativeLanguage());
         currentTargetLanguage = new MutableLiveData<>(this.getCurrentLanguage().getValue());
         isNativeLanguageToTranslation = new MutableLiveData<>(Boolean.TRUE);
+        knowledgeFilterSelected = new MutableLiveData<>(new HashSet<>());
     }
 
     public void readWords() {
@@ -150,8 +162,32 @@ public class ListWordsViewModel extends BaseViewModel {
         }
     }
 
+    public List<Word> getFilteredWords(){
+        List<Word> allWords = words.getValue();
+        if(!CollectionUtils.isEmpty(knowledgeFilterSelected.getValue())) {
+            return allWords.stream().filter(w -> knowledgeFilterSelected.getValue().contains(convertToKnowledgeLevelEnum(w.getKnowledgeLevel()))).collect(Collectors.toList());
+        } else {
+            return allWords;
+        }
+    }
+
+    public KnowledgeLevelEnum convertToKnowledgeLevelEnum (Integer knowledgeLevel) {
+        switch(knowledgeLevel) {
+            case 0:
+                return KnowledgeLevelEnum.NEW;
+            case 1:
+            case 2:
+                return KnowledgeLevelEnum.SHORT_TERM_MEMORY;
+            case 3:
+            case 4:
+                return KnowledgeLevelEnum.MID_TERM_MEMORY;
+            default:
+                return KnowledgeLevelEnum.LONG_TERM_MEMORY;
+        }
+    }
+
     public List<Word> filterWordsToDisplay() {
-        List<Word> words = getWords().getValue();
+        List<Word> words = getFilteredWords();
         String searchWord = getSearchedString().getValue();
         Boolean isFavorite = getIsFavoriteSelected().getValue();
         OrderByEnum orderByEnum = getOrderByEnum().getValue();
@@ -282,5 +318,21 @@ public class ListWordsViewModel extends BaseViewModel {
                 .replace("è", "e")
                 .replace("ê", "e")
                 .toLowerCase();
+    }
+
+    public void addKnowledgeLevelFilter (KnowledgeLevelEnum knowledgeLevelEnum) {
+        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = this.knowledgeFilterSelected.getValue();
+        if(knowledgeFilterSelectedValue != null) {
+            knowledgeFilterSelectedValue.add(knowledgeLevelEnum);
+            knowledgeFilterSelected.setValue(knowledgeFilterSelectedValue);
+        }
+    }
+
+    public void deleteKnowledgeLevelFilter (KnowledgeLevelEnum knowledgeLevelEnum) {
+        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = this.knowledgeFilterSelected.getValue();
+        if(knowledgeFilterSelectedValue != null) {
+            knowledgeFilterSelectedValue.remove(knowledgeLevelEnum);
+            knowledgeFilterSelected.setValue(knowledgeFilterSelectedValue);
+        }
     }
 }

@@ -1,7 +1,5 @@
 package com.paulribe.memowords.recyclerViews.word;
 
-import android.content.res.ColorStateList;
-import android.graphics.ColorFilter;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -10,12 +8,8 @@ import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class WordViewHolder  extends RecyclerView.ViewHolder {
@@ -85,24 +79,28 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
                         android.graphics.PorterDuff.Mode.MULTIPLY);
                 break;
             case 2:
-                knowledgeLevelView.setBackgroundResource(R.color.yellow);
+                knowledgeLevelView.setBackgroundResource(R.color.orange);
                 progressBarKnowledgeLevel.setProgress(40);
-                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.yellow),
+                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.orange),
                         android.graphics.PorterDuff.Mode.MULTIPLY);
                 break;
             case 3:
-                knowledgeLevelView.setBackgroundResource(R.color.clearGreen);
+                knowledgeLevelView.setBackgroundResource(R.color.yellow);
                 progressBarKnowledgeLevel.setProgress(60);
-                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.clearGreen),
+                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.yellow),
                         android.graphics.PorterDuff.Mode.MULTIPLY);
                 break;
             case 4:
-                knowledgeLevelView.setBackgroundResource(R.color.clearGreen);
+                knowledgeLevelView.setBackgroundResource(R.color.yellow);
                 progressBarKnowledgeLevel.setProgress(80);
+                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.yellow),
+                        android.graphics.PorterDuff.Mode.MULTIPLY);
                 break;
             case 5:
                 knowledgeLevelView.setBackgroundResource(R.color.green);
                 progressBarKnowledgeLevel.setProgress(100);
+                progressBarKnowledgeLevel.getProgressDrawable().setColorFilter(this.itemView.getContext().getResources().getColor(R.color.green),
+                        android.graphics.PorterDuff.Mode.MULTIPLY);
                 break;
         }
         updateFavoriteButton(word);

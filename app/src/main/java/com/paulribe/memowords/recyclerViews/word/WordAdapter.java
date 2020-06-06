@@ -10,7 +10,7 @@ import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
+public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Word> words;
     private Boolean isNativeLanguageToTranslation;

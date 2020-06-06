@@ -1,5 +1,6 @@
 package com.paulribe.memowords.views;
 
+import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.paulribe.memowords.restclient.RetrofitClientInstance;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
@@ -91,27 +93,27 @@ public class ListFragment extends Fragment {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Delete",
-                        BitmapFactory.decodeResource(getContext().getResources(),
-                                R.drawable.bin_icon_48),
-                        Color.parseColor("#FF3C30"),
-                        pos -> {
-                            listWordsViewModel.deleteWord(pos);
-                            showUndoDeleteWordSnackBar();
-                        }
+                    "Delete",
+                    BitmapFactory.decodeResource(getContext().getResources(),
+                            R.drawable.bin_icon_48),
+                    Color.parseColor("#FF3C30"),
+                    pos -> {
+                        listWordsViewModel.deleteWord(pos);
+                        showUndoDeleteWordSnackBar();
+                    }
                 ));
 
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Edit",
-                        BitmapFactory.decodeResource(getContext().getResources(),
-                                R.drawable.edit_icon_40),
-                        Color.parseColor("#3BDC1F"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
-                            }
+                    "Edit",
+                    BitmapFactory.decodeResource(getContext().getResources(),
+                            R.drawable.edit_icon_40),
+                    Color.parseColor("#3BDC1F"),
+                    new SwipeHelper.UnderlayButtonClickListener() {
+                        @Override
+                        public void onClick(int pos) {
+                            ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
                         }
+                    }
                 ));
             }
         };
@@ -136,7 +138,32 @@ public class ListFragment extends Fragment {
         snackbar.show();
     }
 
+    private void configureFilterRecyclerView() {
+        if(this.knowledgeLevelFilterAdapter == null) {
+            KnowledgeLevelFilterAdapter.OnViewClickListener onViewClickListener = new KnowledgeLevelFilterAdapter.OnViewClickListener() {
+                @Override
+                public void onViewClick(KnowledgeLevelFilter knowledgeLevelFilter) {
+                    knowledgeLevelFilter.setSelected(!knowledgeLevelFilter.getSelected());
+                    if(knowledgeLevelFilter.getSelected()) {
+                        listWordsViewModel.addKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
+                    } else {
+                        listWordsViewModel.deleteKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
+                    }
+                }
+            };
+            this.knowledgeLevelFilterAdapter = new KnowledgeLevelFilterAdapter(createKnowledgeLevelFilterList(), onViewClickListener);
+        }
+        this.recyclerViewFilter.setAdapter(this.knowledgeLevelFilterAdapter);
+        this.recyclerViewFilter.setItemAnimator(new DefaultItemAnimator());
+    }
 
+    private List<KnowledgeLevelFilter> createKnowledgeLevelFilterList() {
+        List<KnowledgeLevelFilter> knowledgeLevelFilterList = new ArrayList<>();
+        for(KnowledgeLevelEnum knowledgeLevelEnum : Arrays.asList(KnowledgeLevelEnum.values())) {
+            knowledgeLevelFilterList.add(new KnowledgeLevelFilter(knowledgeLevelEnum, false));
+        }
+        return knowledgeLevelFilterList;
+    }
 
     private void configureRecyclerView() {
         listWordsViewModel.setRecyclerViewOnTranslateResults(Boolean.FALSE);
@@ -144,7 +171,8 @@ public class ListFragment extends Fragment {
             OnFavoriteClickListener favoriteClickListener = createFavoriteClickListener();
             View.OnClickListener ponsClickListener = createPonsClickListener();
             View.OnClickListener googleTranslateClickListener = createGoogleTranslateClickListener();
-            this.adapter = new WordAdapter(listWordsViewModel.getWords().getValue(), favoriteClickListener, ponsClickListener, googleTranslateClickListener);
+            List<Word> wordList = listWordsViewModel.getFilteredWords();
+            this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, googleTranslateClickListener);
         }
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -330,6 +358,12 @@ public class ListFragment extends Fragment {
         listWordsViewModel.getCurrentSourceLanguage().observe(getViewLifecycleOwner(), this::onCurrentSourceLanguageChanged);
         listWordsViewModel.getCurrentTargetLanguage().observe(getViewLifecycleOwner(), this::onCurrentTargetLanguageChanged);
         listWordsViewModel.getIsNativeLanguageToTranslation().observe(getViewLifecycleOwner(), this::onIsNativeLanguageToTranslation);
+        listWordsViewModel.getKnowledgeFilterSelected().observe(getViewLifecycleOwner(), this::onKnowledgeFilterSelected);
+    }
+
+    private void onKnowledgeFilterSelected(HashSet<KnowledgeLevelEnum> knowledgeLevelEnums) {
+        knowledgeLevelFilterAdapter.notifyDataSetChanged();
+        updateRecyclerView();
     }
 
     private void onIsNativeLanguageToTranslation(Boolean isNativeLanguageToTranslation) {

@@ -13,23 +13,27 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 import com.paulribe.memowords.R;
+import com.paulribe.memowords.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
+import com.paulribe.memowords.model.KnowledgeLevelFilter;
 import com.paulribe.memowords.model.TranslatedWord;
 import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.recyclerViews.OnExpandSectionClickListener;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
 import com.paulribe.memowords.recyclerViews.OnWordTranslatedClickListener;
 import com.paulribe.memowords.recyclerViews.SwipeHelper;
+import com.paulribe.memowords.recyclerViews.knowledgeLevelFilter.KnowledgeLevelFilterAdapter;
 import com.paulribe.memowords.recyclerViews.translationResult.TranslationResultAdapter;
 import com.paulribe.memowords.recyclerViews.word.WordAdapter;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.PonsService;
 import com.paulribe.memowords.restclient.RetrofitClientInstance;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
@@ -46,7 +50,9 @@ import retrofit2.Response;
 public class ListFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewFilter;
     private WordAdapter adapter;
+    private KnowledgeLevelFilterAdapter knowledgeLevelFilterAdapter;
     private TranslationResultAdapter adapterTranslationResult;
     private ListWordsViewModel listWordsViewModel;
     private TextView searchBar;
@@ -55,6 +61,7 @@ public class ListFragment extends Fragment {
     private TextView sourceLanguageTextView;
     private TextView targetLanguageTextView;
     private ImageButton swapLanguageButton;
+    private View listFragmentView;
 
     @Override
     public View onCreateView(
@@ -68,14 +75,18 @@ public class ListFragment extends Fragment {
         initDataBinding();
 
         recyclerView = view.findViewById(R.id.recycler_view_words);
+        recyclerViewFilter = view.findViewById(R.id.recyclerViewFilter);
         searchBar = view.findViewById(R.id.search_word);
         toolbar = view.findViewById(R.id.toolbarList);
         deleteSearchWordButton = view.findViewById(R.id.delete_search_word);
         sourceLanguageTextView = view.findViewById(R.id.sourceLanguageTextView);
         targetLanguageTextView = view.findViewById(R.id.targetLanguageTextView);
         swapLanguageButton = view.findViewById(R.id.swapLanguageButton);
+        listFragmentView = view;
+
         createOptionMenuOrderBy();
         configureRecyclerView();
+        configureFilterRecyclerView();
         SwipeHelper swipeHelper = new SwipeHelper(getContext(), recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
@@ -84,7 +95,10 @@ public class ListFragment extends Fragment {
                         BitmapFactory.decodeResource(getContext().getResources(),
                                 R.drawable.bin_icon_48),
                         Color.parseColor("#FF3C30"),
-                        pos -> listWordsViewModel.deleteWord(pos)
+                        pos -> {
+                            listWordsViewModel.deleteWord(pos);
+                            showUndoDeleteWordSnackBar();
+                        }
                 ));
 
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
@@ -107,6 +121,22 @@ public class ListFragment extends Fragment {
             updateRecyclerView();
         });
     }
+
+    private void showUndoDeleteWordSnackBar() {
+        // showing snack bar with Undo option
+        Snackbar snackbar = Snackbar
+                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordFR().toString() + " removed from the list", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listWordsViewModel.restoreLastWordDeleted();
+            }
+        });
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
+
 
     private void configureRecyclerView() {
         listWordsViewModel.setRecyclerViewOnTranslateResults(Boolean.FALSE);

@@ -34,6 +34,7 @@ public class ListWordsViewModel extends BaseViewModel {
     private MutableLiveData<LanguageEnum> currentSourceLanguage;
     private MutableLiveData<LanguageEnum> currentTargetLanguage;
     private MutableLiveData<Boolean> isNativeLanguageToTranslation;
+    private Word lastWordDeleted;
 
 
     public MutableLiveData<List<Word>> getWords() {
@@ -76,6 +77,10 @@ public class ListWordsViewModel extends BaseViewModel {
 
     public void setWordsToDisplay(List<Word> wordsToDisplay) {
         this.wordsToDisplay = wordsToDisplay;
+    }
+
+    public Word getLastWordDeleted() {
+        return lastWordDeleted;
     }
 
     public void init() {
@@ -262,7 +267,14 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public void deleteWord(int pos) {
-        getFirebaseDataHelper().deleteWord(wordsToDisplay.get(pos));
+        lastWordDeleted = wordsToDisplay.get(pos);
+        getFirebaseDataHelper().deleteWord(lastWordDeleted);
+    }
+
+    public void restoreLastWordDeleted(){
+        if(lastWordDeleted != null) {
+            getFirebaseDataHelper().updateWord(lastWordDeleted);
+        }
     }
 
     private String updateStringWithIgnoredCharacter(String string) {

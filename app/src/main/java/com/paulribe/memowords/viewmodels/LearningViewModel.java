@@ -21,12 +21,14 @@ public class LearningViewModel extends BaseViewModel {
     private MutableLiveData<Word> currentWord;
     private MutableLiveData<Boolean> isRevisionFinished;
     private MutableLiveData<LearningFragmentStateEnum> learningFragmentStateEnum;
+    private MutableLiveData<Boolean> isDataLoaded;
 
     public void init() {
         currentWord = new MutableLiveData<>();
         wordsToDisplay = new ObservableArrayList<>();
         isRevisionFinished = new MutableLiveData<>(Boolean.FALSE);
         learningFragmentStateEnum = new MutableLiveData<>(LearningFragmentStateEnum.LEARNING_FRAGMENT);
+        isDataLoaded = new MutableLiveData<>(Boolean.FALSE);
     }
 
     public LiveData<Word> getCurrentWord() {
@@ -39,6 +41,10 @@ public class LearningViewModel extends BaseViewModel {
 
     public MutableLiveData<LearningFragmentStateEnum> getLearningFragmentStateEnum() {
         return learningFragmentStateEnum;
+    }
+
+    public MutableLiveData<Boolean> getIsDataLoaded() {
+        return isDataLoaded;
     }
 
     public MutableLiveData<Boolean> getIsRevisionFinished() {
@@ -55,6 +61,9 @@ public class LearningViewModel extends BaseViewModel {
                 calculateWordsToRevise();
                 calculateWordsToLearn();
                 updateLearningState();
+                if(!isDataLoaded.getValue()) {
+                    isDataLoaded.setValue(Boolean.TRUE);
+                }
             }
 
             @Override
@@ -66,6 +75,9 @@ public class LearningViewModel extends BaseViewModel {
                 calculateWordsToRevise();
                 calculateWordsToLearn();
                 updateLearningState();
+                if(!isDataLoaded.getValue()) {
+                    isDataLoaded.setValue(Boolean.TRUE);
+                }
             }
 
             @Override

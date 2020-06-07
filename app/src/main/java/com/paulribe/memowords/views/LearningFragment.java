@@ -1,12 +1,17 @@
 package com.paulribe.memowords.views;
 
+import android.app.ProgressDialog;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
@@ -27,6 +32,11 @@ public class LearningFragment extends Fragment {
     private View layoutNew;
     private ImageButton editWordButton;
 
+    private ProgressDialog progressDialog;
+    private AnimationDrawable animationDrawable;
+    private ImageView mProgressBar;
+    private LoadingDialog loadingDialog;
+
     private LearningViewModel learningViewModel;
 
     public LearningViewModel getLearningViewModel() {
@@ -41,10 +51,11 @@ public class LearningFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mProgressBar = view.findViewById(R.id.main_progress);
         initDataBinding();
 
         defineViews(view);
-        setElementVisibility(true);
+                setElementVisibility(true);
         setButtonsOnClickListener();
         layoutNew.setVisibility(View.VISIBLE);
         if (!learningViewModel.getIsRevisionFinished().getValue()) {
@@ -93,6 +104,10 @@ public class LearningFragment extends Fragment {
     }
 
     private void initDataBinding() {
+
+        loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoadingDialog();
+
         learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
         learningViewModel.init();
         setUpChangeValueListener();
@@ -103,6 +118,13 @@ public class LearningFragment extends Fragment {
         learningViewModel.getCurrentWord().observe(getViewLifecycleOwner(), this::onCurrentWordChanged);
         learningViewModel.getLearningFragmentStateEnum().observe(getViewLifecycleOwner(), this::onLearningFragmentStateChanged);
         learningViewModel.getIsRevisionFinished().observe(getViewLifecycleOwner(), this::onIsRevisionFinishedChanged);
+        learningViewModel.getIsDataLoaded().observe(getViewLifecycleOwner(), this::onIsDataLoaded);
+    }
+
+    private void onIsDataLoaded(Boolean isDataLoaded) {
+        if(isDataLoaded) {
+            loadingDialog.dismissDialog();
+        }
     }
 
     private void onLearningFragmentStateChanged(LearningFragmentStateEnum learningFragmentStateEnum) {

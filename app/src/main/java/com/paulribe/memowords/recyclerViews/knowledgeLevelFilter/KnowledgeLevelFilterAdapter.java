@@ -35,7 +35,7 @@ public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeL
 
     @Override
     public void onBindViewHolder(@NonNull KnowledgeLevelViewHolder holder, int position) {
-        holder.update(this.filters.get(position));
+        holder.update(this.filters.get(position), holder.itemView.getContext());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

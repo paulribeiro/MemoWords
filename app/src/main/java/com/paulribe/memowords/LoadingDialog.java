@@ -2,6 +2,7 @@ package com.paulribe.memowords;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,7 +24,7 @@ public class LoadingDialog {
         this.activity = activity;
     }
 
-    public void startLoadingDialog(){
+    public void startLoadingDialog(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -42,7 +42,7 @@ public class LoadingDialog {
         loadingImage.setBackgroundResource(R.drawable.loader_animation);
         animationDrawable = (AnimationDrawable)loadingImage.getBackground();
         animationDrawable.start();
-        loadingMessage.setText("Loading Data ...");
+        loadingMessage.setText(context.getResources().getString(R.string.loading_data));
         builder.setCancelable(false);
         window.setContentView(loadingView);
 

@@ -1,5 +1,6 @@
 package com.paulribe.memowords.recyclerViews.word;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -35,7 +36,7 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
         this.favoriteCLickListener = favoriteCLickListener;
     }
 
-    public void updateWithWord(Word word, Integer position, Boolean isNativeLanguageToTranslation) {
+    public void updateWithWord(Word word, Integer position, Boolean isNativeLanguageToTranslation, Context context) {
 
         view.setBackgroundColor(0xFFFFFFFF);
         if(isNativeLanguageToTranslation) {
@@ -50,7 +51,7 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
         Date d = new Date(word.getLastTry());
         if(d.after(new Date(920000000))) {
             textViewLastTry.setVisibility(View.VISIBLE);
-            textViewLastTry.setText("Last try : " + dateFormat.format(d));
+            textViewLastTry.setText(context.getResources().getString(R.string.last_try) + " " + dateFormat.format(d));
         }
         else {
             textViewLastTry.setVisibility(View.GONE);

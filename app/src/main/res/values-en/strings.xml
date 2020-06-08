@@ -58,12 +58,12 @@
     <string name="congratulation">Congratulation !</string>
     <string name="you_finished_the_daily_revision">You finished the daily revision</string>
     <string name="learn_new_words">Learn new words</string>
-    <string name="last_try">Last try : </string>
+    <string name="last_try">Last try :</string>
     <string name="flag_image_description">flag image</string>
     <string name="congratulation_image_description">congratulation image</string>
     <string name="no_content_image_description">no Content Image</string>
     <string name="star_image_description">star image</string>
-    <string name="loading_data">Loading data ...</string>
+    <string name="loading_data">Loading data …</string>
     <string name="portuguese">Portuguese</string>
     <string name="german">German</string>
     <string name="english">English</string>
@@ -82,4 +82,5 @@
     <string name="short_term_memory">Short term memory</string>
     <string name="mid_term_memory">Mid term memory</string>
     <string name="known">Known</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.paulribe.memowords.recyclerViews.knowledgeLevelFilter;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 import com.paulribe.memowords.R;
@@ -19,8 +20,8 @@ public class KnowledgeLevelViewHolder extends RecyclerView.ViewHolder {
         itemTitleView = itemView.findViewById(R.id.item_filter_view);
     }
 
-    public void update(KnowledgeLevelFilter knowledgeLevel) {
-        textViewTitle.setText(knowledgeLevel.getKnowledgeLevelEnum().getKnowledgeLevel());
+    public void update(KnowledgeLevelFilter knowledgeLevel, Context context) {
+        textViewTitle.setText(knowledgeLevel.getKnowledgeLevelEnum().getKnowledgeLevel(context));
         int backgroundResource;
         switch(knowledgeLevel.getKnowledgeLevelEnum()) {
             case NEW:

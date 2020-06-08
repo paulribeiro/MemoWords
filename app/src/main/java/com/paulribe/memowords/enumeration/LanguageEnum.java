@@ -1,19 +1,25 @@
 package com.paulribe.memowords.enumeration;
 
+import android.content.Context;
+
+import com.paulribe.memowords.R;
+
 import androidx.annotation.NonNull;
 
 public enum LanguageEnum {
-    PORTUGUESE("portuguese"),
-    GERMAN("german"),
-    ENGLISH("english"),
-    FRENCH("french"),
-    SPANISH("spanish"),
-    NONE("select your native language");
+    PORTUGUESE("portuguese", R.string.portuguese),
+    GERMAN("german", R.string.german),
+    ENGLISH("english", R.string.english),
+    FRENCH("french", R.string.french),
+    SPANISH("spanish", R.string.spanish),
+    NONE("select your native language", R.string.select_language);
 
     private final String language;
+    private final int languageCode;
 
-    LanguageEnum(String value) {
+    LanguageEnum(String value, int languageCode) {
         language = value;
+        this.languageCode = languageCode;
     }
 
     public String getLanguage() {
@@ -21,8 +27,8 @@ public enum LanguageEnum {
     }
 
     @NonNull
-    public String toString() {
-        return language;
+    public String toString(Context context) {
+        return context.getResources().getString(languageCode);
     }
 
     public String getPrefixForPons(){

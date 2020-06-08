@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">MemoWords</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="bottom_navigation_menu_word_list">Liste</string>
+    <string name="bottom_navigation_menu_word_learn">Lernen</string>
+    <string name="bottom_navigation_menu_word_add">Hinzufügen</string>
+
+    <string name="edit_the_word">Wort anpassen</string>
+    <string name="login_failed">Login fehlgeschlagen</string>
+    <string name="login_please_wait">Login, bitte warten…</string>
+    <string name="please_enter_password">Bitte, passwort eingeben</string>
+    <string name="please_enter_email">Bitte, email eingeben</string>
+    <string name="update_word">Wort anpassen</string>
+    <string name="add_word">Wort hinzufügen</string>
+    <string name="sending_reset_email">Reset email schicken, warten…</string>
+    <string name="email_sent">Email gesendet</string>
+    <string name="email_not_sent">E-Mail kann nicht gesendet werden</string>
+    <string name="registering">Anmeldung, bitte warten …</string>
+    <string name="user_already_exists">Dieser Nutzer existiert schon</string>
+    <string name="wrong_username_format">Falsches Benutzernamenformat</string>
+    <string name="password_not_strong_enough">Ihr Passwort ist nicht stark genug</string>
+    <string name="registration_error">Registrierungsfehler</string>
+    <string name="enter_email">Email eingeben</string>
+    <string name="enter_password">Passwort eingeben</string>
+    <string name="login">Einloggen</string>
+    <string name="you_don_t_have_an_account">Sie haben kein Konto? Hier anmelden</string>
+    <string name="password_forgotten">Passwort vergessen ? E-Mail senden, um zurückzusetzen …</string>
+    <string name="password_forgotten_title">Senden Sie eine E-Mail, um Ihr Passwort zu ändern</string>
+    <string name="email">Email</string>
+    <string name="send_email">Email senden</string>
+    <string name="back_to_login">Zurück zur einloggen</string>
+    <string name="user_registration_title">Nutzer registrierung</string>
+    <string name="sign_up">Registrierung</string>
+    <string name="already_registered">Schon registriert ? Hier einloggen</string>
+    <string name="edit_button_description">Bearbeiten knopf</string>
+    <string name="new_label">NEU</string>
+    <string name="show_answer">Antwort zeigen</string>
+    <string name="easy">Einfach</string>
+    <string name="difficult">Schwer</string>
+    <string name="search_a_word">Ein Wort suchen</string>
+    <string name="add_a_new_word">Neues Wort</string>
+    <string name="word_in_french">Wort auf Französisch:</string>
+    <string name="word_in_german">Wort auf Deutsch:</string>
+    <string name="context">Kontext :</string>
+
+    <string name="delete_word">Wort löschen</string>
+    <string name="no_more_words">Keine Wörter mehr …</string>
+    <string name="add_some_new_words">Füge ein paar neue Wörter hinzu, um zu lernen!</string>
+    <string name="congratulation">Glückwunsch !</string>
+    <string name="you_finished_the_daily_revision">Sie haben die tägliche Überarbeitung abgeschlossen</string>
+    <string name="learn_new_words">Neue Wörter lernen</string>
+    <string name="last_try">Letzter Versuch :</string>
+    <string name="flag_image_description">Fahne bild</string>
+    <string name="congratulation_image_description">Glückwunsch bild</string>
+    <string name="no_content_image_description">kein Inhaltsbild</string>
+    <string name="star_image_description">Stern Bild</string>
+    <string name="loading_data">Lade Daten …</string>
+
+    <string name="portuguese">Portugiesisch</string>
+    <string name="german">Deutsch</string>
+    <string name="english">Englisch</string>
+    <string name="french">Französisch</string>
+    <string name="spanish">Spanisch</string>
+    <string name="select_language">Wählen Sie Ihre Muttersprache</string>
+    <string name="logout">Ausloggen</string>
+    <string name="favorite">Lieblings</string>
+    <string name="order_by">Sortieren nach</string>
+    <string name="last_tried">Zuletzt Versucht</string>
+    <string name="knowledge_level">Wissensstand aufsteigende</string>
+    <string name="knowledge_level_desc">Wissensstand absteigende</string>
+    <string name="a_z">A-Z</string>
+    <string name="z_a">Z-A</string>
+    <string name="neww">Neu</string>
+    <string name="short_term_memory">Kurzzeitgedächtnis</string>
+    <string name="mid_term_memory">Mittelgedächtnis</string>
+    <string name="known">Langzeitgedächtnis</string>
+
+</resources>

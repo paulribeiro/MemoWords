@@ -106,7 +106,7 @@ public class LearningFragment extends Fragment {
     private void initDataBinding() {
 
         loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.startLoadingDialog();
+        loadingDialog.startLoadingDialog(getContext());
 
         learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
         learningViewModel.init();

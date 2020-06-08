@@ -372,11 +372,11 @@ public class ListFragment extends Fragment {
     }
 
     private void onCurrentTargetLanguageChanged(LanguageEnum targetLanguage) {
-        targetLanguageTextView.setText(targetLanguage.toString());
+        targetLanguageTextView.setText(targetLanguage.toString(getContext()));
     }
 
     private void onCurrentSourceLanguageChanged(LanguageEnum sourceLanguage) {
-        sourceLanguageTextView.setText(sourceLanguage.toString());
+        sourceLanguageTextView.setText(sourceLanguage.toString(getContext()));
         if(listWordsViewModel.getCurrentSourceLanguage().getValue().equals(listWordsViewModel.getNativeLanguage())) {
             listWordsViewModel.getIsNativeLanguageToTranslation().setValue(Boolean.TRUE);
         } else {

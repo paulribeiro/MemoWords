@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">MemoWords</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="bottom_navigation_menu_word_list">Liste</string>
+    <string name="bottom_navigation_menu_word_learn">Apprendre</string>
+    <string name="bottom_navigation_menu_word_add">Ajouter</string>
+
+    <string name="edit_the_word">Editer un mot</string>
+    <string name="login_failed">Echec de la connexion</string>
+    <string name="login_please_wait">Connexion, patientez……</string>
+    <string name="please_enter_password">Entrez votre mot de passe</string>
+    <string name="please_enter_email">Entrez votre email</string>
+    <string name="update_word">Modifier un mot</string>
+    <string name="add_word">Ajouter un mot</string>
+    <string name="sending_reset_email">Envoi de l\'email de réinitialisation, patientez…</string>
+    <string name="email_sent">Email envoyé</string>
+    <string name="email_not_sent">Impossible d\'envoyer l\'email</string>
+    <string name="registering">Enregistrement, patientez…</string>
+    <string name="user_already_exists">L\'utilisateur existe déjà</string>
+    <string name="wrong_username_format">Le format de nom d\'utilisateur est incorrect</string>
+    <string name="password_not_strong_enough">Le mot de passe n\'est pas assez sécurisé</string>
+    <string name="registration_error">Erreur d\'enregistrement</string>
+    <string name="enter_email">Entrer votre email</string>
+    <string name="enter_password">Entrer votre mot de passe</string>
+    <string name="login">Connexion</string>
+    <string name="you_don_t_have_an_account">Vous n\'avez pas de compte ? Enregistrez vous ici !</string>
+    <string name="password_forgotten">Mot de passe oublié ? Envoyez un email de réinitialisation …</string>
+    <string name="password_forgotten_title">Envoyer un email pour changer votre mot de passe</string>
+    <string name="email">email</string>
+    <string name="send_email">Envoyer un email</string>
+    <string name="back_to_login">Retour à l\'écran de connexion</string>
+    <string name="user_registration_title">Enregistrement de l\'utilisateur</string>
+    <string name="sign_up">Enregistrement</string>
+    <string name="already_registered">Dèjà enregistré ? Connectez vous ici</string>
+    <string name="edit_button_description">bouton d\'édition</string>
+    <string name="new_label">NOUVEAU</string>
+    <string name="show_answer">Découvrir la traduction</string>
+    <string name="easy">Facile</string>
+    <string name="difficult">Difficile</string>
+    <string name="search_a_word">Rechercher un mot</string>
+    <string name="add_a_new_word">Nouveau mot</string>
+    <string name="word_in_french">Mot en Français :</string>
+    <string name="word_in_german">Mot en Allemand :</string>
+    <string name="context">Contexte :</string>
+    <string name="delete_word">Supprimer un mot</string>
+    <string name="no_more_words">Plus de mot …</string>
+    <string name="add_some_new_words">Ajouter des mots à apprendre !</string>
+    <string name="congratulation">Félicitations !</string>
+    <string name="you_finished_the_daily_revision">Vous avez les révisions pour aujourd\'hui</string>
+    <string name="learn_new_words">Apprendre des nouveaux mots</string>
+    <string name="last_try">Dernier essai :</string>
+    <string name="flag_image_description">image drapeau</string>
+    <string name="congratulation_image_description">image felicitation</string>
+    <string name="no_content_image_description">Image pas de contenu</string>
+    <string name="star_image_description">image étoile</string>
+    <string name="loading_data">Chargement des données …</string>
+    <string name="portuguese">Portugais</string>
+    <string name="german">Allemand</string>
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+    <string name="spanish">Espagnol</string>
+    <string name="select_language">Selectionner votre langue maternelle</string>
+    <string name="logout">Déconnexion</string>
+    <string name="favorite">Favoris</string>
+    <string name="order_by">Trier par</string>
+    <string name="last_tried">Dernier essai</string>
+    <string name="knowledge_level">Connaissance croissante</string>
+    <string name="knowledge_level_desc">Connaissance décroissante</string>
+    <string name="a_z">A-Z</string>
+    <string name="z_a">Z-A</string>
+    <string name="neww">Nouveau</string>
+    <string name="short_term_memory">Mémoire court terme</string>
+    <string name="mid_term_memory">Mémoire moyen terme</string>
+    <string name="known">Appris</string>
+</resources>

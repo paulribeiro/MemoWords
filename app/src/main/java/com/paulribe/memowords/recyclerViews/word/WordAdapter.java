@@ -42,7 +42,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if(position != words.size()) {
-            ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation);
+            ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation, viewHolder.itemView.getContext());
         } else {
             ((TranslateButtonsViewHolder)viewHolder).updateWithTranslateCallView();
         }

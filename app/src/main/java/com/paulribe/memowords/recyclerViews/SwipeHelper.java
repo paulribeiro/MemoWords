@@ -32,6 +32,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private float swipeThreshold = 0.5f;
     private Map<Integer, List<UnderlayButton>> buttonsBuffer;
     private Queue<Integer> recoverQueue;
+    private ItemTouchHelper itemTouchHelper;
 
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
         @Override
@@ -190,7 +191,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     public void attachSwipe(){
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(this);
+        itemTouchHelper = new ItemTouchHelper(this);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -247,5 +248,9 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     public interface UnderlayButtonClickListener {
         void onClick(int pos);
+    }
+
+    public void stop() {
+        itemTouchHelper.attachToRecyclerView(null);
     }
 }

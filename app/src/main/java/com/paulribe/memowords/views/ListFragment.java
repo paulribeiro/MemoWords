@@ -1,6 +1,5 @@
 package com.paulribe.memowords.views;
 
-import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -64,6 +63,7 @@ public class ListFragment extends Fragment {
     private TextView targetLanguageTextView;
     private ImageButton swapLanguageButton;
     private View listFragmentView;
+    private SwipeHelper swipeHelper;
 
     @Override
     public View onCreateView(
@@ -89,34 +89,6 @@ public class ListFragment extends Fragment {
         createOptionMenuOrderBy();
         configureRecyclerView();
         configureFilterRecyclerView();
-        SwipeHelper swipeHelper = new SwipeHelper(getContext(), recyclerView) {
-            @Override
-            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                    "Delete",
-                    BitmapFactory.decodeResource(getContext().getResources(),
-                            R.drawable.bin_icon_48),
-                    Color.parseColor("#FF3C30"),
-                    pos -> {
-                        listWordsViewModel.deleteWord(pos);
-                        showUndoDeleteWordSnackBar();
-                    }
-                ));
-
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                    "Edit",
-                    BitmapFactory.decodeResource(getContext().getResources(),
-                            R.drawable.edit_icon_40),
-                    Color.parseColor("#3BDC1F"),
-                    new SwipeHelper.UnderlayButtonClickListener() {
-                        @Override
-                        public void onClick(int pos) {
-                            ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
-                        }
-                    }
-                ));
-            }
-        };
 
         swapLanguageButton.setOnClickListener(view1 -> {
             listWordsViewModel.exchangeSourceTargetLanguage();
@@ -177,6 +149,35 @@ public class ListFragment extends Fragment {
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        swipeHelper = new SwipeHelper(getContext(), recyclerView) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        BitmapFactory.decodeResource(getContext().getResources(),
+                                R.drawable.bin_icon_48),
+                        Color.parseColor("#FF3C30"),
+                        pos -> {
+                            listWordsViewModel.deleteWord(pos);
+                            showUndoDeleteWordSnackBar();
+                        }
+                ));
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Edit",
+                        BitmapFactory.decodeResource(getContext().getResources(),
+                                R.drawable.edit_icon_40),
+                        Color.parseColor("#3BDC1F"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
+                            }
+                        }
+                ));
+            }
+        };
     }
 
     private void configureRecyclerViewForTranslationResult() {
@@ -201,6 +202,8 @@ public class ListFragment extends Fragment {
         this.recyclerView.setAdapter(this.adapterTranslationResult);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        swipeHelper.stop();
     }
 
     private OnFavoriteClickListener createFavoriteClickListener() {

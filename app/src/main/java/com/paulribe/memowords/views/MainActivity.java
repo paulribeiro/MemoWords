@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.model.Word;
@@ -18,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private androidx.appcompat.widget.Toolbar toolbar;
     private View notificationBadge;
     private FirebaseAuth firebaseAuth;
+    private LoadingDialog loadingDialog;
 
     private BaseViewModel baseViewModel;
 
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         initDataBinding();
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
-        //displayBadgeNumberCardsToRevise();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchWordsLanguage(LanguageEnum language) {
         if(!language.equals(baseViewModel.getCurrentLanguage().getValue())) {
+            startLoader();
             fm.beginTransaction().hide(activeFragment.get(0)).commit();
             deleteBadge();
             baseViewModel.updateLanguage(language);
@@ -125,40 +126,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBottomMenu() {
-
         bottomMenu = findViewById(R.id.bottom_nav);
-        Menu menu = bottomMenu.getMenu();
-
-        menu.getItem(0).setOnMenuItemClickListener(menuItem -> {
-            if(learningFragment.getLearningViewModel() != null && learningFragment.getLearningViewModel().getLearningFragmentStateEnum() != null) {
-                switch(learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue()) {
-                    case NO_MORE_WORDS:
-                        displayNoMoreWords(true);
-                        break;
-                    case REVISION_FINISHED:
-                        displayRevisionFinished(true);
-                        break;
-                    case LEARNING_FRAGMENT:
-                        displayLearningFragment(true);
-                        break;
-                }
-            } else {
-                displayLearningFragment(true);
-            }
-            createOptionMenuSelectLanguage();
-            toolbar.setVisibility(View.VISIBLE);
-            return true;
-        });
-
-        bottomMenu.getMenu().getItem(1).setOnMenuItemClickListener(menuItem -> {
-            displayNewWordFragment(null, Boolean.FALSE);
-            return true;
-        });
-
-        bottomMenu.getMenu().getItem(2).setOnMenuItemClickListener(menuItem -> {
-            displayListFragment();
-            return true;
-        });
+        bottomMenu.setOnNavigationItemSelectedListener(
+                menuItem -> {
+                    int id = menuItem.getItemId();
+                    switch (id) {
+                        case R.id.FirstFragment:
+                            if (learningFragment.getLearningViewModel() != null && learningFragment.getLearningViewModel().getLearningFragmentStateEnum() != null) {
+                                switch (learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue()) {
+                                    case NO_MORE_WORDS:
+                                        displayNoMoreWords(true);
+                                        break;
+                                    case REVISION_FINISHED:
+                                        displayRevisionFinished(true);
+                                        break;
+                                    case LEARNING_FRAGMENT:
+                                        displayLearningFragment(true);
+                                        break;
+                                }
+                            } else {
+                                displayLearningFragment(true);
+                            }
+                            createOptionMenuSelectLanguage();
+                            toolbar.setVisibility(View.VISIBLE);
+                            return true;
+                        case R.id.newWordFragment:
+                            displayNewWordFragment(null, Boolean.FALSE);
+                            return true;
+                        case R.id.SecondFragment:
+                            displayListFragment();
+                            return true;
+                        default:
+                            return true;
+                    }
+                });
     }
 
     private void displayListFragment() {
@@ -246,8 +247,6 @@ public class MainActivity extends AppCompatActivity {
         learningFragment.getLearningViewModel().getIsRevisionFinished().setValue(true);
         learningFragment.getLearningViewModel().calculateWordsToLearn();
         learningFragment.getLearningViewModel().updateLearningState();
-        //fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
-        //activeFragment.add(0, learningFragment);
     }
 
     private void initDataBinding() {
@@ -265,5 +264,23 @@ public class MainActivity extends AppCompatActivity {
         defineFragments();
         createBottomMenu();
         createOptionMenuSelectLanguage();
+        stopLoader();
+    }
+
+    public void startLoader() {
+        if(loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this);
+        }
+        loadingDialog.startLoadingDialog(this);
+    }
+
+    public void stopLoader() {
+        if(loadingDialog != null) {
+            loadingDialog.dismissDialog();
+        }
+    }
+
+    public void changeBottomMenuItemSelected(int itemMenuSelected) {
+        bottomMenu.setSelectedItemId(itemMenuSelected);
     }
 }

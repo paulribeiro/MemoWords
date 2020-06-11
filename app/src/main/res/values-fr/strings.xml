@@ -82,4 +82,5 @@
     <string name="short_term_memory">Mémoire court terme</string>
     <string name="mid_term_memory">Mémoire moyen terme</string>
     <string name="known">Appris</string>
+    <string name="loader_description">loader</string>
 </resources>

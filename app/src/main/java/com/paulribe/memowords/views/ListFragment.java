@@ -172,6 +172,7 @@ public class ListFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
+                                ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
                                 ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
                             }
                         }
@@ -185,6 +186,7 @@ public class ListFragment extends Fragment {
         OnWordTranslatedClickListener onTranslationClickListener = new OnWordTranslatedClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
                 Word newWord = listWordsViewModel.getNewTranslatedWord(this.getTranslatedWord());
                 ((MainActivity)getActivity()).displayNewWordFragment(newWord, Boolean.FALSE);
             }

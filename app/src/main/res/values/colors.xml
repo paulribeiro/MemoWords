@@ -11,7 +11,8 @@
     <color name="themeColor2">#4A3516</color>
 
 
-    <color name="greyBackground">#8DE1E1E1</color>
+    <color name="greyBackground">#A8E1E1E1</color>
+    <color name="greyBackgroundLight">#E2F1EEEE</color>
 
 
 

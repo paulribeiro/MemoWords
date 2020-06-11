@@ -25,6 +25,7 @@ public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeL
         void onViewClick(KnowledgeLevelFilter knowledgeLevelFilter);
     }
 
+    @NonNull
     @Override
     public KnowledgeLevelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -37,12 +38,7 @@ public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeL
     public void onBindViewHolder(@NonNull KnowledgeLevelViewHolder holder, int position) {
         holder.update(this.filters.get(position), holder.itemView.getContext());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onViewClick(filters.get(position));
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onViewClick(filters.get(position)));
     }
 
     @Override

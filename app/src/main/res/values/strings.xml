@@ -82,4 +82,5 @@
     <string name="short_term_memory">Short term memory</string>
     <string name="mid_term_memory">Mid term memory</string>
     <string name="known">Known</string>
+    <string name="loader_description">loader</string>
 </resources>

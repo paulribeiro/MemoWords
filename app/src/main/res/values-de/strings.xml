@@ -84,5 +84,6 @@
     <string name="short_term_memory">Kurzzeitgedächtnis</string>
     <string name="mid_term_memory">Mittelgedächtnis</string>
     <string name="known">Langzeitgedächtnis</string>
+    <string name="loader_description">loader</string>
 
 </resources>

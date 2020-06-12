@@ -79,7 +79,7 @@ public class NewWordFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords())) {
+                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords()) || s.toString().length() < 3) {
                         suggestionWordFRRecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordFRRecyclerView.setVisibility(View.VISIBLE);
@@ -108,7 +108,7 @@ public class NewWordFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords())) {
+                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords()) || s.toString().length() < 3) {
                         suggestionWordDERecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordDERecyclerView.setVisibility(View.VISIBLE);
@@ -137,6 +137,9 @@ public class NewWordFragment extends Fragment {
 
         Drawable drawable = getActivity().getDrawable(R.drawable.divider);
         suggestionWordDERecyclerView.addItemDecoration(
+                new DividerItemDecoration(drawable,
+                        false, false));
+        suggestionWordFRRecyclerView.addItemDecoration(
                 new DividerItemDecoration(drawable,
                         false, false));
 

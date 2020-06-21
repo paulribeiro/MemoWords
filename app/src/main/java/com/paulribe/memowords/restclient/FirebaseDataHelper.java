@@ -16,7 +16,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {
-    private FirebaseDatabase dataBase;
+    private static FirebaseDatabase dataBase;
     private DatabaseReference referenceWords;
     private DatabaseReference referenceUserConfig;
     private List<Word> words = new ArrayList<>();

@@ -63,7 +63,7 @@ public class BaseViewModel extends ViewModel {
         return nativeLanguage;
     }
 
-    public static void setNativeLanguage(LanguageEnum nativeLanguage) {
+    public void setNativeLanguage(LanguageEnum nativeLanguage) {
         BaseViewModel.nativeLanguage = nativeLanguage;
     }
 }

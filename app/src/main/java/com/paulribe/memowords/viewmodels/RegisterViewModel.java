@@ -12,7 +12,6 @@ public class RegisterViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isRegisterSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
-    private LanguageEnum nativeLanguage;
     private Exception taskRegistrationResultException;
     private ArrayList<CountryItem> mCountryList;
 
@@ -30,7 +29,7 @@ public class RegisterViewModel extends BaseViewModel {
                     if(task.isSuccessful()){
                         setCurrentUser(task.getResult().getUser());
                         getFirebaseDataHelper().setReferenceUserConfig(getCurrentUser());
-                        getFirebaseDataHelper().addUser(nativeLanguage);
+                        getFirebaseDataHelper().addUser(getNativeLanguage());
                         isRegisterSuccessful.setValue(Boolean.TRUE);
                     } else {
                         taskRegistrationResultException = task.getException();

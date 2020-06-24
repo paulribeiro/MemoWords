@@ -20,7 +20,6 @@ import com.paulribe.memowords.R;
 import com.paulribe.memowords.countrypicker.CountryAdapter;
 import com.paulribe.memowords.countrypicker.CountryItem;
 import com.paulribe.memowords.enumeration.LanguageEnum;
-import com.paulribe.memowords.viewmodels.BaseViewModel;
 import com.paulribe.memowords.viewmodels.RegisterViewModel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -51,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textViewSignin = findViewById(R.id.textViewSignin);
         buttonSignup = findViewById(R.id.buttonSignup);
 
+        buttonSignup.setEnabled(false);
         progressDialog = new ProgressDialog(this);
         buttonSignup.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 CountryItem clickedItem = (CountryItem) parent.getItemAtPosition(position);
                 LanguageEnum nativeLanguageSelected = clickedItem.getCountryName();
                 if(nativeLanguageSelected != null && nativeLanguageSelected != LanguageEnum.NONE) {
-                    BaseViewModel.setNativeLanguage(nativeLanguageSelected);
+                    registerViewModel.setNativeLanguage(nativeLanguageSelected);
                 }
                 checkRequiredFieldsForButtonSignup();
             }
@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void checkRequiredFieldsForButtonSignup() {
         if (!editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty() &&
-                registerViewModel.getNativeLanguage() != null) {
+                registerViewModel.getNativeLanguage() != null && registerViewModel.getNativeLanguage() != LanguageEnum.NONE) {
             buttonSignup.setEnabled(true);
         } else {
             buttonSignup.setEnabled(false);

@@ -36,7 +36,7 @@ public class CountryAdapter extends ArrayAdapter<CountryItem> {
             } else {
                 imageViewFlag.setImageResource(currentItem.getFlagImage());
             }
-            textViewName.setText(currentItem.getCountryName().toString());
+            textViewName.setText(currentItem.getCountryName().toString(convertView.getContext()));
         }
         return convertView;
     }
@@ -60,7 +60,7 @@ public class CountryAdapter extends ArrayAdapter<CountryItem> {
                 convertView.setLayoutParams(layoutParams);
                 imageViewFlag.setImageResource(currentItem.getFlagImage());
             }
-            textViewName.setText(currentItem.getCountryName().toString());
+            textViewName.setText(currentItem.getCountryName().toString(convertView.getContext()));
         }
         return convertView;
     }

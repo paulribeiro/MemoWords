@@ -83,4 +83,6 @@
     <string name="mid_term_memory">Mémoire moyen terme</string>
     <string name="known">Appris</string>
     <string name="loader_description">loader</string>
+    <string name="user_login_title">Connexion</string>
+
 </resources>

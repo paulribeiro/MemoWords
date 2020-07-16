@@ -83,4 +83,5 @@
     <string name="mid_term_memory">Mid term memory</string>
     <string name="known">Known</string>
     <string name="loader_description">loader</string>
+    <string name="user_login_title">Login</string>
 </resources>

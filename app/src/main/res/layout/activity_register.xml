@@ -3,34 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:paddingBottom="24dp"
     android:paddingLeft="24dp"
-    android:paddingRight="24dp"
     android:paddingTop="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="24dp"
     tools:context=".views.RegisterActivity">
 
     <LinearLayout
-        android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:orientation="vertical">
 
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_gravity="center_horizontal"
             android:text="@string/user_registration_title"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="15dp"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress" />
@@ -46,8 +47,8 @@
         <Spinner
             android:id="@+id/flags_spinner"
             android:layout_width="match_parent"
-            android:layout_margin="15dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp" />
 
         <Button
             android:id="@+id/buttonSignup"
@@ -57,12 +58,12 @@
             android:text="@string/sign_up" />
 
         <TextView
-            android:text="@string/already_registered"
             android:id="@+id/textViewSignin"
-            android:textAlignment="center"
-            android:layout_margin="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/already_registered"
+            android:textAlignment="center" />
 
     </LinearLayout>
 

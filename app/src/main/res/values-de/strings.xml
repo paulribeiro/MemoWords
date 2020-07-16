@@ -85,5 +85,6 @@
     <string name="mid_term_memory">Mittelgedächtnis</string>
     <string name="known">Langzeitgedächtnis</string>
     <string name="loader_description">loader</string>
+    <string name="user_login_title">Log in</string>
 
 </resources>

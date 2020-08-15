@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class ListFragment extends Fragment {
@@ -219,6 +222,7 @@ public class ListFragment extends Fragment {
 
     private View.OnClickListener createPonsClickListener() {
         return view -> {
+                hideKeyboard();
                 PonsService service = RetrofitClientInstance.getRetrofitInstance().create(PonsService.class);
                 Call<List<PonsResult>> call = service.getAllTranslations(listWordsViewModel.getTranslationLanguagesPrefix(), listWordsViewModel.getSearchedString().getValue(),
                         listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons(), listWordsViewModel.getxApiKeyPons());
@@ -245,7 +249,7 @@ public class ListFragment extends Fragment {
 
     private View.OnClickListener createGoogleTranslateClickListener() {
         return view -> {
-
+            hideKeyboard();
         };
     }
 
@@ -343,6 +347,7 @@ public class ListFragment extends Fragment {
         deleteSearchWordButton.setOnClickListener(view -> {
             listWordsViewModel.getSearchedString().setValue("");
             searchBar.setText("");
+            hideKeyboard();
         });
 
     }
@@ -409,7 +414,8 @@ public class ListFragment extends Fragment {
         updateRecyclerView();
     }
 
-
-
-
+    private void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
 }

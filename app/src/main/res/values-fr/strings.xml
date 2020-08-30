@@ -49,8 +49,7 @@
     <string name="difficult">Difficile</string>
     <string name="search_a_word">Rechercher un mot</string>
     <string name="add_a_new_word">Nouveau mot</string>
-    <string name="word_in_french">Mot en Français :</string>
-    <string name="word_in_german">Mot en Allemand :</string>
+    <string name="word_in">Mot en %1$s :</string>
     <string name="context">Contexte :</string>
     <string name="delete_word">Supprimer un mot</string>
     <string name="no_more_words">Plus de mots …</string>

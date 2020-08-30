@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +46,9 @@ public class NewWordFragment extends Fragment {
     private TextView popupCurrentWordEditedTextView;
     private TextView popupAddTitleTextView;
     private TextView popupEditTitleTextView;
+
+    private TextView textViewWordTranslation;
+    private TextView textViewWordNative;
 
     private FindWordAdapter adapterFR;
     private FindWordAdapter adapterDE;
@@ -165,6 +167,12 @@ public class NewWordFragment extends Fragment {
         exitEditWordButton = view.findViewById(R.id.exitEditWordButton);
         popupCurrentWordEditedTextView = view.findViewById(R.id.popupCurrentWordEdited);
         popupAddTitleTextView = view.findViewById(R.id.popupAddTitle);
+        textViewWordTranslation = view.findViewById(R.id.textViewWordDE);
+        textViewWordNative = view.findViewById(R.id.textview_word_fr);
+        if(newWordViewModel.getCurrentLanguage().getValue() != null) {
+            textViewWordTranslation.setText(getString(R.string.word_in, newWordViewModel.getCurrentLanguage().getValue().toString(getContext())));
+        }
+        textViewWordNative.setText(getString(R.string.word_in, newWordViewModel.getNativeLanguage().toString(getContext())));
         suggestionWordFRRecyclerView.setHasFixedSize(true);
         suggestionWordDERecyclerView.setHasFixedSize(true);
         popupCurrentWordEditedTextView.setVisibility(View.GONE);

@@ -49,8 +49,7 @@
     <string name="difficult">Schwer</string>
     <string name="search_a_word">Ein Wort suchen</string>
     <string name="add_a_new_word">Neues Wort</string>
-    <string name="word_in_french">Wort auf Französisch:</string>
-    <string name="word_in_german">Wort auf Deutsch:</string>
+    <string name="word_in">Wort auf %1$s :</string>
     <string name="context">Kontext :</string>
 
     <string name="delete_word">Wort löschen</string>

@@ -21,6 +21,7 @@ import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.model.KnowledgeLevelFilter;
 import com.paulribe.memowords.model.TranslatedWord;
+import com.paulribe.memowords.model.mymemory.MyMemoryResult;
 import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.recyclerViews.OnExpandSectionClickListener;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
@@ -30,11 +31,11 @@ import com.paulribe.memowords.recyclerViews.knowledgeLevelFilter.KnowledgeLevelF
 import com.paulribe.memowords.recyclerViews.translationResult.TranslationResultAdapter;
 import com.paulribe.memowords.recyclerViews.word.WordAdapter;
 import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.restclient.MyMemoryService;
 import com.paulribe.memowords.restclient.PonsService;
 import com.paulribe.memowords.restclient.RetrofitClientInstance;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,28 +103,20 @@ public class ListFragment extends Fragment {
     private void showUndoDeleteWordSnackBar() {
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
-                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordFR().toString() + " removed from the list", Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listWordsViewModel.restoreLastWordDeleted();
-            }
-        });
+                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordFR() + " removed from the list", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", view -> listWordsViewModel.restoreLastWordDeleted());
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
     private void configureFilterRecyclerView() {
         if(this.knowledgeLevelFilterAdapter == null) {
-            KnowledgeLevelFilterAdapter.OnViewClickListener onViewClickListener = new KnowledgeLevelFilterAdapter.OnViewClickListener() {
-                @Override
-                public void onViewClick(KnowledgeLevelFilter knowledgeLevelFilter) {
-                    knowledgeLevelFilter.setSelected(!knowledgeLevelFilter.getSelected());
-                    if(knowledgeLevelFilter.getSelected()) {
-                        listWordsViewModel.addKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
-                    } else {
-                        listWordsViewModel.deleteKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
-                    }
+            KnowledgeLevelFilterAdapter.OnViewClickListener onViewClickListener = knowledgeLevelFilter -> {
+                knowledgeLevelFilter.setSelected(!knowledgeLevelFilter.getSelected());
+                if(knowledgeLevelFilter.getSelected()) {
+                    listWordsViewModel.addKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
+                } else {
+                    listWordsViewModel.deleteKnowledgeLevelFilter(knowledgeLevelFilter.getKnowledgeLevelEnum());
                 }
             };
             this.knowledgeLevelFilterAdapter = new KnowledgeLevelFilterAdapter(createKnowledgeLevelFilterList(), onViewClickListener);
@@ -134,7 +127,7 @@ public class ListFragment extends Fragment {
 
     private List<KnowledgeLevelFilter> createKnowledgeLevelFilterList() {
         List<KnowledgeLevelFilter> knowledgeLevelFilterList = new ArrayList<>();
-        for(KnowledgeLevelEnum knowledgeLevelEnum : Arrays.asList(KnowledgeLevelEnum.values())) {
+        for(KnowledgeLevelEnum knowledgeLevelEnum : KnowledgeLevelEnum.values()) {
             knowledgeLevelFilterList.add(new KnowledgeLevelFilter(knowledgeLevelEnum, false));
         }
         return knowledgeLevelFilterList;
@@ -144,10 +137,13 @@ public class ListFragment extends Fragment {
         listWordsViewModel.setRecyclerViewOnTranslateResults(Boolean.FALSE);
         if(this.adapter == null) {
             OnFavoriteClickListener favoriteClickListener = createFavoriteClickListener();
-            View.OnClickListener ponsClickListener = createPonsClickListener();
-            View.OnClickListener googleTranslateClickListener = createGoogleTranslateClickListener();
+            View.OnClickListener ponsClickListener = null;
+            if(listWordsViewModel.getPossiblePonsTranslations().contains(listWordsViewModel.getTranslationLanguagesPrefix())) {
+                ponsClickListener = createPonsClickListener();
+            }
+            View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
             List<Word> wordList = listWordsViewModel.getFilteredWords();
-            this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, googleTranslateClickListener);
+            this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener);
         }
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -172,12 +168,9 @@ public class ListFragment extends Fragment {
                         BitmapFactory.decodeResource(getContext().getResources(),
                                 R.drawable.edit_icon_40),
                         Color.parseColor("#3BDC1F"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
-                                ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
-                            }
+                        pos -> {
+                            ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
+                            ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
                         }
                 ));
             }
@@ -245,6 +238,33 @@ public class ListFragment extends Fragment {
                     }
                 });
             };
+    }
+
+    private View.OnClickListener createMyMemoryClickListener() {
+        return view -> {
+            hideKeyboard();
+            MyMemoryService service = RetrofitClientInstance.getRetrofitMyMemoryInstance().create(MyMemoryService.class);
+            Call<MyMemoryResult> call = service.getTranslations(listWordsViewModel.getSearchedString().getValue(),
+                    listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons() + "|" + listWordsViewModel.getCurrentTargetLanguage().getValue().getPrefixForPons());
+            call.enqueue(new Callback<MyMemoryResult>() {
+                @Override
+                public void onResponse(Call<MyMemoryResult> call, Response<MyMemoryResult> response) {
+                    int code = response.code();
+                    if(response.isSuccessful()) {
+                        listWordsViewModel.buildTranslationForMyMemory(response.body());
+                        //TODO : is result is empty, display no result
+                    } else {
+                        //TODO : display no result
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MyMemoryResult> call, Throwable t) {
+                    //progressDoalog.dismiss();
+                    Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        };
     }
 
     private View.OnClickListener createGoogleTranslateClickListener() {

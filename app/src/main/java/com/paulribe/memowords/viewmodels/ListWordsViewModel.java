@@ -7,6 +7,8 @@ import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.enumeration.SectionRowEnum;
 import com.paulribe.memowords.model.TranslatedWord;
 import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.model.mymemory.Match;
+import com.paulribe.memowords.model.mymemory.MyMemoryResult;
 import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.model.pons.SearchWordResult;
 import com.paulribe.memowords.model.pons.SearchWordResultList;
@@ -14,6 +16,7 @@ import com.paulribe.memowords.model.pons.Translation;
 import com.paulribe.memowords.model.pons.WordMeaning;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -38,7 +41,7 @@ public class ListWordsViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> isNativeLanguageToTranslation;
     private Word lastWordDeleted;
     private MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected;
-
+    private List<String> possiblePonsTranslations;
 
     public MutableLiveData<List<Word>> getWords() {
         return words;
@@ -94,6 +97,10 @@ public class ListWordsViewModel extends BaseViewModel {
         this.knowledgeFilterSelected = knowledgeFilterSelected;
     }
 
+    public List<String> getPossiblePonsTranslations() {
+        return possiblePonsTranslations;
+    }
+
     public void init() {
         words = new MutableLiveData<>(new ArrayList<>());
         orderByEnum = new MutableLiveData<>(OrderByEnum.LAST_TRY);
@@ -104,6 +111,8 @@ public class ListWordsViewModel extends BaseViewModel {
         currentTargetLanguage = new MutableLiveData<>(this.getCurrentLanguage().getValue());
         isNativeLanguageToTranslation = new MutableLiveData<>(Boolean.TRUE);
         knowledgeFilterSelected = new MutableLiveData<>(new HashSet<>());
+
+        possiblePonsTranslations = Arrays.asList("enfr", "deen", "ensp", "enpt", "defr", "frsp", "dept", "desp", "ptsp");
     }
 
     public void readWords() {
@@ -154,6 +163,22 @@ public class ListWordsViewModel extends BaseViewModel {
                             sectionNumber ++;
                         }
                     }
+                }
+            }
+            translatedWordResults.setValue(translatedWords);
+        } else {
+            translatedWordResults.setValue(new ArrayList<>());
+        }
+    }
+
+    public void buildTranslationForMyMemory(MyMemoryResult myMemoryResult) {
+        Integer sectionNumber = 1;
+        Integer subSectionNumber = 1;
+        List<TranslatedWord> translatedWords = new ArrayList<>();
+        if(myMemoryResult != null) {
+            if(myMemoryResult.getMatches() != null) {
+                for(Match match : myMemoryResult.getMatches()) {
+                     translatedWords.add(createTranslatedWordForRow(new Translation(match.getSegment(), match.getTranslation()), sectionNumber, subSectionNumber));
                 }
             }
             translatedWordResults.setValue(translatedWords);

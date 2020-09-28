@@ -12,12 +12,15 @@ public class TranslateButtonsViewHolder extends RecyclerView.ViewHolder {
     private ImageButton buttonCallPons;
     private ImageButton buttonCallTranslate;
 
-    public TranslateButtonsViewHolder(View itemView, View.OnClickListener ponsClickListener, View.OnClickListener googleTranslateClickListener) {
+    public TranslateButtonsViewHolder(View itemView, View.OnClickListener ponsClickListener, View.OnClickListener mymemoryClickListener) {
         super(itemView);
         buttonCallPons = itemView.findViewById(R.id.buttonCallPons);
-        buttonCallTranslate = itemView.findViewById(R.id.buttonCallTranslate);
+        buttonCallTranslate = itemView.findViewById(R.id.buttonCallMyMemory);
+        if(ponsClickListener == null) {
+            buttonCallPons.setVisibility(View.GONE);
+        }
         this.ponsClickListener = ponsClickListener;
-        this.googleTranslateClickListener = googleTranslateClickListener;
+        this.googleTranslateClickListener = mymemoryClickListener;
     }
 
     public void updateWithTranslateCallView() {

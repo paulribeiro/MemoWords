@@ -16,13 +16,13 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Boolean isNativeLanguageToTranslation;
     private OnFavoriteClickListener favoriteCLickListener;
     private View.OnClickListener ponsClickListener;
-    private View.OnClickListener googleTranslateClickListener;
+    private View.OnClickListener mymemoryClickListener;
 
-    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener googleTranslateClickListener) {
+    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener mymemoryClickListener) {
         this.words = words;
         this.favoriteCLickListener = listener;
         this.ponsClickListener = ponsClickListener;
-        this.googleTranslateClickListener = googleTranslateClickListener;
+        this.mymemoryClickListener = mymemoryClickListener;
         this.isNativeLanguageToTranslation = Boolean.TRUE;
     }
 
@@ -35,7 +35,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return new WordViewHolder(view, favoriteCLickListener);
         } else {
             View view = inflater.inflate(R.layout.translate_word_buttons_item, parent, false);
-            return new TranslateButtonsViewHolder(view, ponsClickListener, googleTranslateClickListener);
+            return new TranslateButtonsViewHolder(view, ponsClickListener, mymemoryClickListener);
         }
     }
 

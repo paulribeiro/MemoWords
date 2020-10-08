@@ -8,18 +8,18 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.paulribe.memowords.LearningFragment"
+        android:name="com.paulribe.memowords.views.LearningFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first" />
+        tools:layout="@layout/fragment_learning" />
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.paulribe.memowords.ListFragment"
+        android:name="com.paulribe.memowords.views.ListFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second"/>
+        tools:layout="@layout/fragment_list"/>
 
     <fragment
         android:id="@+id/newWordFragment"
-        android:name="com.paulribe.memowords.NewWordFragment"
+        android:name="com.paulribe.memowords.views.NewWordFragment"
         android:label="fragment_new_word"
         tools:layout="@layout/fragment_new_word" />
 </navigation>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutCallPons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyBackground">
+
+        <ImageButton
+            android:id="@+id/buttonCallPons"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="#04B833"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_background_pons"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonCallMyMemory"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TranslateWithTextView" />
+
+        <ImageButton
+            android:id="@+id/buttonCallMyMemory"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_rounded"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonCallPons"
+            app:layout_constraintTop_toBottomOf="@+id/TranslateWithTextView"
+            app:srcCompat="@drawable/button_background_mymemory" />
+
+        <TextView
+            android:id="@+id/TranslateWithTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="left"
+            android:text="@string/translate_with"
+            app:layout_constraintBottom_toTopOf="@+id/buttonCallPons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

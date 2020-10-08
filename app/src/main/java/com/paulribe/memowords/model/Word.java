@@ -5,7 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Word {
 
-    private Integer id;
+    private String wordId;
     private String wordFR;
     private String wordDE;
     private long dateAdded;
@@ -98,12 +98,12 @@ public class Word {
         this.context = context;
     }
 
-    public Integer getId() {
-        return id;
+    public String getWordId() {
+        return wordId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setWordId(String wordId) {
+        this.wordId = wordId;
     }
 
     public Integer getKnowledgeLevel() { return knowledgeLevel; }

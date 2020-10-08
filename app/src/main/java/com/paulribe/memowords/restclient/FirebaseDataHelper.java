@@ -1,33 +1,33 @@
 package com.paulribe.memowords.restclient;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.model.UserConfig;
 import com.paulribe.memowords.model.Word;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {
-    private FirebaseDatabase dataBase;
+    private static FirebaseDatabase dataBase;
     private DatabaseReference referenceWords;
+    private DatabaseReference referenceUserConfig;
     private List<Word> words = new ArrayList<>();
-    private ValueEventListener listener;
     private Integer cpt = 0;
+    private ValueEventListener configListener;
 
     public FirebaseDataHelper() {
-        dataBase = FirebaseDatabase.getInstance();
-        dataBase.setPersistenceEnabled(true);
-        referenceWords = dataBase.getReference("user1/words/german");
-        referenceWords.keepSynced(true);
+        if(dataBase == null) {
+            dataBase = FirebaseDatabase.getInstance();
+            dataBase.setPersistenceEnabled(true);
+        }
     }
 
     public interface DataStatus {
@@ -35,10 +35,14 @@ public class FirebaseDataHelper implements Serializable {
         void dataIsInserted();
         void dataIsUpdated(List<Word> words);
         void dataIsDeleted();
+    }
 
+    public interface UserConfigLoadedStatus {
+        void UserConfigIsLoaded(UserConfig userConfig);
     }
 
     public void readWords(final DataStatus dataStatus) {
+        //TODO : check if doesn't happen many times ...
         referenceWords.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -47,9 +51,6 @@ public class FirebaseDataHelper implements Serializable {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Word word = keyNode.getValue(Word.class);
-                    if (word != null) {
-                        word.setId(Integer.parseInt(Objects.requireNonNull(keyNode.getKey())));
-                    }
                     words.add(word);
                 }
                 if(cpt == 0 ) {
@@ -58,8 +59,6 @@ public class FirebaseDataHelper implements Serializable {
                 } else {
                     dataStatus.dataIsUpdated(words);
                 }
-
-
             }
 
             @Override
@@ -69,6 +68,25 @@ public class FirebaseDataHelper implements Serializable {
         });
     }
 
+    public void loadUserConfig(final UserConfigLoadedStatus userConfigLoadedStatus) {
+        if(configListener != null) {
+            referenceUserConfig.removeEventListener(configListener);
+        }
+        configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserConfig userConfig = dataSnapshot.getValue(UserConfig.class);
+                userConfigLoadedStatus.UserConfigIsLoaded(userConfig);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        referenceUserConfig.addValueEventListener(configListener);
+    }
+
     public void setWordEasy(final Word word) {
         Date now = new Date();
         word.setLastSuccess(now.getTime());
@@ -76,7 +94,7 @@ public class FirebaseDataHelper implements Serializable {
         word.setNumberSuccess(word.getNumberSuccess() + 1);
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(word.getKnowledgeLevel() + 1);
-        referenceWords.child(word.getId().toString()).setValue(word);
+        referenceWords.child(word.getWordId()).setValue(word);
     }
 
     public void setWordDifficult(final Word word) {
@@ -84,25 +102,46 @@ public class FirebaseDataHelper implements Serializable {
         word.setLastTry(now.getTime());
         word.setNumberTry(word.getNumberTry() + 1);
         word.setKnowledgeLevel(0);
-        referenceWords.child(word.getId().toString()).setValue(word);
+        referenceWords.child(word.getWordId()).setValue(word);
     }
 
     public void addWord(final Word word) {
-        int id = words.size() + 1;
-        referenceWords.child(Integer.toString(id)).setValue(word);
+        DatabaseReference pushedWordRef = referenceWords.push();
+        String id = pushedWordRef.getKey();
+        word.setWordId(id);
+        pushedWordRef.setValue(word);
     }
 
     public void updateWord(final Word word) {
-        int id = word.getId();
-        referenceWords.child(Integer.toString(id)).setValue(word);
+        String id = word.getWordId();
+        referenceWords.child(id).setValue(word);
+    }
+
+    public void deleteWord(final Word word) {
+        String id = word.getWordId();
+        referenceWords.child(id).removeValue();
     }
 
     public DatabaseReference getReferenceWords() {
         return referenceWords;
     }
 
-    public void setReferenceWords(LanguageEnum languageEnum) {
-        referenceWords = dataBase.getReference("user1/words/" + languageEnum.getLanguage());
+    public void setReferenceWords(LanguageEnum languageEnum, FirebaseUser currentUser) {
+        referenceWords = dataBase.getReference(currentUser.getUid() + "/words/" + languageEnum.getLanguage());
+        referenceWords.keepSynced(true);
+    }
 
+    public void setReferenceUserConfig(FirebaseUser currentUser) {
+        referenceUserConfig = dataBase.getReference(currentUser.getUid() + "/config");
+        referenceUserConfig.keepSynced(true);
+    }
+
+    public void updateCurrentLanguage(LanguageEnum language) {
+        referenceUserConfig.child("currentLanguage").setValue(language.name());
+    }
+
+    public void addUser(LanguageEnum nativeLanguage) {
+        referenceUserConfig.child("/currentLanguage/").setValue("GERMAN");
+        referenceUserConfig.child("/nativeLanguage/").setValue(nativeLanguage.name());
     }
 }

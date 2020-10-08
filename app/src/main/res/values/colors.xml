@@ -6,5 +6,20 @@
     <color name="colorAccentDark">#4aa87a</color>
     <color name="white">#FFFFFF</color>
     <color name="themeColor">#FF9800</color>
+    <color name="themeColorSecondary">#ebb184</color>
+    <color name="themeColorThird">#e5985b</color>
     <color name="themeColor2">#4A3516</color>
+
+
+    <color name="greyBackground">#A8E1E1E1</color>
+    <color name="greyBackgroundLight">#E2F1EEEE</color>
+
+
+
+    <color name="red">#D82C2C</color>
+    <color name="orange">#ED812F</color>
+    <color name="yellow">#EDCC2C</color>
+    <color name="clearGreen">#C6EF2D</color>
+    <color name="green">#2EBF0D</color>
+
 </resources>

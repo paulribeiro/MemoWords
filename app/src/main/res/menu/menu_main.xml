@@ -1,28 +1,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.paulribe.memowords.MainActivity">
+    tools:context="com.paulribe.memowords.views.MainActivity">
+
     <item
         android:id="@+id/action_select_language"
         android:icon="@drawable/flag_germany_24dp"
-        android:orderInCategory="100"
-        android:title="German"
+        android:orderInCategory="1"
+        android:title="@string/german"
         app:showAsAction="always">
 
         <menu>
             <item android:id="@+id/action_german"
                 android:icon="@drawable/flag_germany_24dp"
                 app:showAsAction="ifRoom"
-                android:title="German" />
+                android:title="@string/german"/>
             <item android:id="@+id/action_portuguese"
                 android:icon="@drawable/flag_portugal_24dp"
                 app:showAsAction="ifRoom"
-                android:title="Portuguese" />
+                android:title="@string/portuguese" />
 
             <item android:id="@+id/action_english"
                 android:icon="@drawable/flag_england_24dp"
                 app:showAsAction="ifRoom"
-                android:title="English" />
+                android:title="@string/english" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_log_user"
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom"
+        android:title="@string/logout">
+        <menu>
+            <item
+                android:id="@+id/action_logout"
+                android:icon="@drawable/logout_icon"
+                app:showAsAction="ifRoom"
+                android:title="@string/logout" />
         </menu>
     </item>
 </menu>

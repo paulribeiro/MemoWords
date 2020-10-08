@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".RevisionFinishedFragment">
+    tools:context=".views.RevisionFinishedFragment">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -17,7 +17,8 @@
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/congratulation_image_description" />
 
     <TextView
         android:id="@+id/textView4"
@@ -28,7 +29,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Congratulation !"
+        android:text="@string/congratulation"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +45,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="You finished the daily revision "
+        android:text="@string/you_finished_the_daily_revision"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/button_begin_learning"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +62,7 @@
         android:layout_marginBottom="50dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="Learn new words"
+        android:text="@string/learn_new_words"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

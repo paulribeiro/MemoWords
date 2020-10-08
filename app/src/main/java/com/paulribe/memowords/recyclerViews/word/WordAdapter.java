@@ -17,13 +17,15 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private OnFavoriteClickListener favoriteCLickListener;
     private View.OnClickListener ponsClickListener;
     private View.OnClickListener mymemoryClickListener;
+    private String searchedWord;
 
-    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener mymemoryClickListener) {
+    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener mymemoryClickListener, String searchedWord) {
         this.words = words;
         this.favoriteCLickListener = listener;
         this.ponsClickListener = ponsClickListener;
         this.mymemoryClickListener = mymemoryClickListener;
         this.isNativeLanguageToTranslation = Boolean.TRUE;
+        this.searchedWord = searchedWord;
     }
 
     @Override
@@ -33,6 +35,9 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(viewType == 0) {
             View view = inflater.inflate(R.layout.word_item, parent, false);
             return new WordViewHolder(view, favoriteCLickListener);
+        } else if(viewType == 1) {
+            View view = inflater.inflate(R.layout.no_result_item, parent, false);
+            return new NoContentViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.translate_word_buttons_item, parent, false);
             return new TranslateButtonsViewHolder(view, ponsClickListener, mymemoryClickListener);
@@ -41,26 +46,44 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if(position != words.size()) {
-            ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation, viewHolder.itemView.getContext());
-        } else {
-            ((TranslateButtonsViewHolder)viewHolder).updateWithTranslateCallView();
+        switch (viewHolder.getItemViewType()) {
+            case 0:
+                ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation, viewHolder.itemView.getContext());
+                break;
+            case 1:
+                ((NoContentViewHolder)viewHolder).updateNoContentItemWithoutImage();
+                break;
+            case 2:
+                ((TranslateButtonsViewHolder)viewHolder).updateWithTranslateCallView(searchedWord, viewHolder.itemView.getContext());
+                break;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         super.getItemViewType(position);
-        if(position != words.size()) {
-            return 0;
+        if(words.size() == 0) {
+            if(position == 0) {
+                return 1;
+            } else {
+                return 2;
+            }
         } else {
-            return 1;
+            if(position != words.size()) {
+                return 0;
+            } else {
+                return 2;
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return this.words.size() + 1;
+        if(this.words.size() == 0) {
+            return this.words.size() + 2;
+        } else {
+            return this.words.size() + 1;
+        }
     }
 
     public List<Word> getWords() {
@@ -77,5 +100,13 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setNativeLanguageToTranslation(Boolean nativeLanguageToTranslation) {
         isNativeLanguageToTranslation = nativeLanguageToTranslation;
+    }
+
+    public String getSearchedWord() {
+        return searchedWord;
+    }
+
+    public void setSearchedWord(String searchedWord) {
+        this.searchedWord = searchedWord;
     }
 }

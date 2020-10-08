@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         if(loadingDialog == null) {
             loadingDialog = new LoadingDialog(this);
         }
-        loadingDialog.startLoadingDialog(this);
+        loadingDialog.startLoadingDialog(this, this.getResources().getString(R.string.loading_data));
     }
 
     public void stopLoader() {

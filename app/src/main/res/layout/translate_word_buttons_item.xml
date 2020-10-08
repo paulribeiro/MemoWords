@@ -18,7 +18,6 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_rounded"
             android:backgroundTint="#04B833"
@@ -30,14 +29,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonCallMyMemory"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/TranslateWithTextView" />
 
         <ImageButton
             android:id="@+id/buttonCallMyMemory"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="13dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_rounded"
@@ -49,9 +48,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonCallPons"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/TranslateWithTextView"
             app:srcCompat="@drawable/button_background_mymemory" />
+
+        <TextView
+            android:id="@+id/TranslateWithTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="left"
+            android:text="@string/translate_with"
+            app:layout_constraintBottom_toTopOf="@+id/buttonCallPons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

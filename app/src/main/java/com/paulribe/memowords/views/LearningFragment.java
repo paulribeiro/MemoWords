@@ -99,7 +99,7 @@ public class LearningFragment extends Fragment {
     private void initDataBinding() {
 
         loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.startLoadingDialog(getContext());
+        loadingDialog.startLoadingDialog(getContext(), getResources().getString(R.string.loading_data));
 
         learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
         learningViewModel.init();

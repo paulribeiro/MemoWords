@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
+import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.enumeration.LanguageEnum;
@@ -68,6 +69,8 @@ public class ListFragment extends Fragment {
     private ImageButton swapLanguageButton;
     private View listFragmentView;
     private SwipeHelper swipeHelper;
+    private LoadingDialog loadingDialog;
+
 
     @Override
     public View onCreateView(
@@ -143,7 +146,8 @@ public class ListFragment extends Fragment {
             }
             View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
             List<Word> wordList = listWordsViewModel.getFilteredWords();
-            this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener);
+            this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener,
+                    listWordsViewModel.getSearchedString().getValue());
         }
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -196,7 +200,7 @@ public class ListFragment extends Fragment {
         };
 
         this.adapterTranslationResult = new TranslationResultAdapter(listWordsViewModel.getTranslatedWordResults().getValue(),
-                onTranslationClickListener, onExpandSectionClickListener);
+                onTranslationClickListener, onExpandSectionClickListener, listWordsViewModel.getSearchedString().getValue());
         this.recyclerView.setAdapter(this.adapterTranslationResult);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -215,6 +219,7 @@ public class ListFragment extends Fragment {
 
     private View.OnClickListener createPonsClickListener() {
         return view -> {
+                startLoader();
                 hideKeyboard();
                 PonsService service = RetrofitClientInstance.getRetrofitInstance().create(PonsService.class);
                 Call<List<PonsResult>> call = service.getAllTranslations(listWordsViewModel.getTranslationLanguagesPrefix(), listWordsViewModel.getSearchedString().getValue(),
@@ -223,6 +228,7 @@ public class ListFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<PonsResult>> call, Response<List<PonsResult>> response) {
                         int code = response.code();
+                        stopLoader();
                         if(response.isSuccessful()) {
                             listWordsViewModel.buildTranslation(response.body());
                             //TODO : is result is empty, display no result
@@ -233,7 +239,7 @@ public class ListFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<List<PonsResult>> call, Throwable t) {
-                        //progressDoalog.dismiss();
+                        stopLoader();
                         Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -242,6 +248,7 @@ public class ListFragment extends Fragment {
 
     private View.OnClickListener createMyMemoryClickListener() {
         return view -> {
+            startLoader();
             hideKeyboard();
             MyMemoryService service = RetrofitClientInstance.getRetrofitMyMemoryInstance().create(MyMemoryService.class);
             Call<MyMemoryResult> call = service.getTranslations(listWordsViewModel.getSearchedString().getValue(),
@@ -250,6 +257,7 @@ public class ListFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MyMemoryResult> call, Response<MyMemoryResult> response) {
                     int code = response.code();
+                    stopLoader();
                     if(response.isSuccessful()) {
                         listWordsViewModel.buildTranslationForMyMemory(response.body());
                         //TODO : is result is empty, display no result
@@ -260,7 +268,7 @@ public class ListFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<MyMemoryResult> call, Throwable t) {
-                    //progressDoalog.dismiss();
+                    stopLoader();
                     Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -278,6 +286,7 @@ public class ListFragment extends Fragment {
            configureRecyclerView();
         }
         List<Word> words = listWordsViewModel.filterWordsToDisplay();
+        adapter.setSearchedWord(listWordsViewModel.getSearchedString().getValue());
         adapter.setWords(words);
         adapter.notifyDataSetChanged();
     }
@@ -290,6 +299,7 @@ public class ListFragment extends Fragment {
         for(TranslatedWord translatedWord : subSectionsAndRows) {
             translatedWord.setHidden(translatedSection.getHidden());
         }
+        adapterTranslationResult.setSearchedWord(listWordsViewModel.getSearchedString().getValue());
         adapterTranslationResult.setPossibleTranslations(translatedWords);
         adapterTranslationResult.notifyDataSetChanged();
     }
@@ -369,7 +379,19 @@ public class ListFragment extends Fragment {
             searchBar.setText("");
             hideKeyboard();
         });
+    }
 
+    public void startLoader() {
+        if(loadingDialog == null) {
+            loadingDialog = new LoadingDialog(getActivity());
+        }
+        loadingDialog.startLoadingDialog(getActivity(), getResources().getString(R.string.loading_translation));
+    }
+
+    public void stopLoader() {
+        if(loadingDialog != null) {
+            loadingDialog.dismissDialog();
+        }
     }
 
     private void initDataBinding() {

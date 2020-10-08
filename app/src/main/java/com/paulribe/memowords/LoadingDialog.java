@@ -24,7 +24,7 @@ public class LoadingDialog {
         this.activity = activity;
     }
 
-    public void startLoadingDialog(Context context){
+    public void startLoadingDialog(Context context, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -42,7 +42,7 @@ public class LoadingDialog {
         loadingImage.setBackgroundResource(R.drawable.loader_animation);
         animationDrawable = (AnimationDrawable)loadingImage.getBackground();
         animationDrawable.start();
-        loadingMessage.setText(context.getResources().getString(R.string.loading_data));
+        loadingMessage.setText(message);
         builder.setCancelable(false);
         window.setContentView(loadingView);
 

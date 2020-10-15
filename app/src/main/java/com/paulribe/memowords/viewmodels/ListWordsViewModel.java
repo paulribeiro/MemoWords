@@ -112,7 +112,7 @@ public class ListWordsViewModel extends BaseViewModel {
         isNativeLanguageToTranslation = new MutableLiveData<>(Boolean.TRUE);
         knowledgeFilterSelected = new MutableLiveData<>(new HashSet<>());
 
-        possiblePonsTranslations = Arrays.asList("enfr", "deen", "ensp", "enpt", "defr", "frsp", "dept", "desp", "ptsp");
+        possiblePonsTranslations = Arrays.asList("enfr", "deen", "enes", "enpt", "defr", "esfr", "dept", "dees", "espt");
     }
 
     public void readWords() {

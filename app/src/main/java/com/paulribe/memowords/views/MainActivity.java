@@ -2,6 +2,8 @@ package com.paulribe.memowords.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -119,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     private void switchWordsLanguage(LanguageEnum language) {
         if(!language.equals(baseViewModel.getCurrentLanguage().getValue())) {
             startLoader();
-            fm.beginTransaction().hide(activeFragment.get(0)).commit();
             deleteBadge();
             baseViewModel.updateLanguage(language);
         }
@@ -163,13 +164,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayListFragment() {
-        fm.beginTransaction().hide(activeFragment.get(0)).show(listFragment).commit();
-        activeFragment.add(0, listFragment);
+        displayFragment(listFragment);
         toolbar.setVisibility(View.GONE);
     }
 
     private void defineFragments() {
-        activeFragment = new ArrayList<>();
+        if(activeFragment == null) {
+            activeFragment = new ArrayList<>();
+        } else {
+            emptyActiveFragment();
+        }
         learningFragment = new LearningFragment();
         newWordFragment = new NewWordFragment();
         listFragment = new ListFragment();
@@ -185,8 +189,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayNewWordFragment(Word word, Boolean isEditWordMode) {
-        fm.beginTransaction().hide(activeFragment.get(0)).show(newWordFragment).commit();
-        activeFragment.add(0, newWordFragment);
+        displayFragment(newWordFragment);
         createOptionMenuSelectLanguage();
         if(isEditWordMode) {
             newWordFragment.switchToEditWordMode(word);
@@ -218,23 +221,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayNoMoreWords(boolean forced) {
         if(!activeFragment.get(0).equals(fragmentNoMoreWords) && isTriggeredFromLearningFragmentOrForced(forced)) {
-            fm.beginTransaction().hide(activeFragment.get(0)).show(fragmentNoMoreWords).commit();
-            activeFragment.add(0, fragmentNoMoreWords);
+            displayFragment(fragmentNoMoreWords);
         }
     }
 
     public void displayRevisionFinished(boolean forced) {
         if(!activeFragment.get(0).equals(fragmentRevisionFinished) && isTriggeredFromLearningFragmentOrForced(forced)) {
             deleteBadge();
-            fm.beginTransaction().hide(activeFragment.get(0)).show(fragmentRevisionFinished).commit();
-            activeFragment.add(0, fragmentRevisionFinished);
+            displayFragment(fragmentRevisionFinished);
         }
     }
 
     public void displayLearningFragment(boolean forced){
         if(!activeFragment.get(0).equals(learningFragment) && isTriggeredFromLearningFragmentOrForced(forced)) {
-            fm.beginTransaction().hide(activeFragment.get(0)).show(learningFragment).commit();
-            activeFragment.add(0, learningFragment);
+            displayFragment(learningFragment);
         }
     }
 
@@ -243,9 +243,9 @@ public class MainActivity extends AppCompatActivity {
         return Arrays.asList(learningFragment, fragmentNoMoreWords, fragmentRevisionFinished).contains(currentFragment) || forced;
     }
 
-    public void comeBackLearningFragment() {
+    public void comeBackLearningFragmentLearnNewWords() {
         learningFragment.getLearningViewModel().getIsRevisionFinished().setValue(true);
-        learningFragment.getLearningViewModel().calculateWordsToLearn();
+        learningFragment.getLearningViewModel().prepareWordsToLearn();
         learningFragment.getLearningViewModel().updateLearningState();
     }
 
@@ -282,5 +282,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeBottomMenuItemSelected(int itemMenuSelected) {
         bottomMenu.setSelectedItemId(itemMenuSelected);
+    }
+
+    private void displayFragment(Fragment fragment) {
+        emptyActiveFragment();
+        fm.beginTransaction().show(fragment).commit();
+        activeFragment.add(0, fragment);
+    }
+
+    private void emptyActiveFragment() {
+        while (!CollectionUtils.isEmpty(activeFragment)) {
+            fm.beginTransaction().hide(activeFragment.get(0)).commit();
+            activeFragment.remove(0);
+        }
     }
 }

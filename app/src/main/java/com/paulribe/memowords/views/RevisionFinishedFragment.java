@@ -24,6 +24,6 @@ public class RevisionFinishedFragment extends Fragment {
         beginLearningButton = view.findViewById(R.id.button_begin_learning);
 
         beginLearningButton.setOnClickListener(view1 ->
-                ((MainActivity)getActivity()).comeBackLearningFragment());
+                ((MainActivity)getActivity()).comeBackLearningFragmentLearnNewWords());
     }
 }

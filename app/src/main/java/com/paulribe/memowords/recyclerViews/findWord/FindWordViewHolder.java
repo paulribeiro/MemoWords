@@ -4,10 +4,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.paulribe.memowords.R;
-import com.paulribe.memowords.model.Word;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import androidx.recyclerview.widget.RecyclerView;
 

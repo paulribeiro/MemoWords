@@ -3,6 +3,7 @@ package com.paulribe.memowords.recyclerViews.knowledgeLevelFilter;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.KnowledgeLevelFilter;
 

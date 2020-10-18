@@ -3,6 +3,7 @@ package com.paulribe.memowords.viewmodels;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 

@@ -2,6 +2,10 @@ package com.paulribe.memowords.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -14,17 +18,15 @@ import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.viewmodels.BaseViewModel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {

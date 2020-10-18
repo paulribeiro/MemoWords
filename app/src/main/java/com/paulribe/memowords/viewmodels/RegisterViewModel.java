@@ -4,8 +4,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.countrypicker.CountryItem;
 import com.paulribe.memowords.enumeration.LanguageEnum;
-import java.util.ArrayList;;
+
+import java.util.ArrayList;
+
 import androidx.lifecycle.MutableLiveData;
+
+;
 
 public class RegisterViewModel extends BaseViewModel {
 

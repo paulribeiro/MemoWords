@@ -15,6 +15,7 @@ import com.paulribe.memowords.model.pons.SearchWordResultList;
 import com.paulribe.memowords.model.pons.Translation;
 import com.paulribe.memowords.model.pons.WordMeaning;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

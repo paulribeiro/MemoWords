@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.paulribe.memowords.R;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TranslateButtonsViewHolder extends RecyclerView.ViewHolder {

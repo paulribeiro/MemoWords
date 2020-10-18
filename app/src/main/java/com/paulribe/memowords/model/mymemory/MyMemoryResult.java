@@ -1,7 +1,6 @@
 package com.paulribe.memowords.model.mymemory;
 
 import com.google.gson.annotations.SerializedName;
-import com.paulribe.memowords.model.pons.SearchWordResultList;
 
 import java.util.List;
 

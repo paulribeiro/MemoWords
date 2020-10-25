@@ -4,6 +4,7 @@ import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -32,6 +33,10 @@ public class LearningViewModel extends BaseViewModel {
         isRevisionFinished = new MutableLiveData<>(Boolean.FALSE);
         learningFragmentStateEnum = new MutableLiveData<>(LearningFragmentStateEnum.LEARNING_FRAGMENT);
         isDataLoaded = new MutableLiveData<>(Boolean.FALSE);
+    }
+
+    public void setWords(List<Word> words) {
+        this.words = words;
     }
 
     public LiveData<Word> getCurrentWord() {
@@ -92,9 +97,9 @@ public class LearningViewModel extends BaseViewModel {
         List<Word> wordsToOrder = new ArrayList<>(words);
         List<Word> wordsToRevise = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(wordsToRevise)) {
-            Collections.sort(wordsToOrder, Comparator.comparing(Word::getKnowledgeLevel)
+            Collections.sort(wordsToRevise, Comparator.comparing(Word::getKnowledgeLevel)
                     .thenComparing(Word::getDateAdded).reversed());
-            wordsToDisplay = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
+            wordsToDisplay = wordsToRevise;
         } else {
             prepareWordsToLearn();
         }

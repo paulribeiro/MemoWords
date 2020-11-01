@@ -83,7 +83,7 @@ public class LearningFragment extends Fragment {
         textViewWord = view.findViewById(R.id.textview_word);
         textViewTranslation = view.findViewById(R.id.textview_translation);
         textViewContext = view.findViewById(R.id.textViewContext);
-        showAnswerButton = view.findViewById(R.id.button);
+        showAnswerButton = view.findViewById(R.id.showTranslationButton);
         easyButton = view.findViewById(R.id.button2);
         difficultButton = view.findViewById(R.id.button3);
         layoutNew = view.findViewById(R.id.newLayout);

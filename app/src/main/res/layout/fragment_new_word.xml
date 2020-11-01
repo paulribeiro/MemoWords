@@ -235,7 +235,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewWordDE">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputWordDE"
+                        android:id="@+id/inputWordTranslation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -277,7 +277,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textview_word_fr">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputWordFR"
+                        android:id="@+id/inputWordNative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"

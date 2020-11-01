@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 menuItem -> {
                     int id = menuItem.getItemId();
                     switch (id) {
-                        case R.id.FirstFragment:
+                        case R.id.learningFragmentButton:
                             if (learningFragment.getLearningViewModel() != null && learningFragment.getLearningViewModel().getLearningFragmentStateEnum() != null) {
                                 switch (learningFragment.getLearningViewModel().getLearningFragmentStateEnum().getValue()) {
                                     case NO_MORE_WORDS:

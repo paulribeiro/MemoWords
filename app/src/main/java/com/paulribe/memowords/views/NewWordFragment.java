@@ -158,8 +158,8 @@ public class NewWordFragment extends Fragment {
         addButton.setEnabled(false);
         deleteButton = view.findViewById(R.id.popupDeleteButton);
         deleteButton.setVisibility(View.GONE);
-        inputWordFR = view.findViewById(R.id.inputWordFR);
-        inputWordDE = view.findViewById(R.id.inputWordDE);
+        inputWordFR = view.findViewById(R.id.inputWordNative);
+        inputWordDE = view.findViewById(R.id.inputWordTranslation);
         inputWordContext = view.findViewById(R.id.inputWordContext);
         suggestionWordFRRecyclerView = view.findViewById(R.id.suggestionWordFR);
         suggestionWordDERecyclerView = view.findViewById(R.id.suggestionWordDE);

@@ -7,7 +7,6 @@ import com.paulribe.memowords.restclient.FirebaseDataHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -66,8 +65,12 @@ public class LearningViewModel extends BaseViewModel {
             @Override
             public void dataIsLoaded(List<Word> w, List<String> keys) {
                 words = w;
-                prepareWords();
-                updateLearningState();
+                if(words.isEmpty()) {
+                    learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
+                } else {
+                    prepareWords();
+                    updateLearningState();
+                }
                 if(!isDataLoaded.getValue()) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
@@ -79,8 +82,12 @@ public class LearningViewModel extends BaseViewModel {
             @Override
             public void dataIsUpdated(List<Word> w) {
                 words = w;
-                prepareWords();
-                updateLearningState();
+                if(words.isEmpty()) {
+                    learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
+                } else {
+                    prepareWords();
+                    updateLearningState();
+                }
                 if(!isDataLoaded.getValue()) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
@@ -97,7 +104,7 @@ public class LearningViewModel extends BaseViewModel {
         List<Word> wordsToOrder = new ArrayList<>(words);
         List<Word> wordsToRevise = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(wordsToRevise)) {
-            Collections.sort(wordsToRevise, Comparator.comparing(Word::getKnowledgeLevel)
+            wordsToRevise.sort(Comparator.comparing(Word::getKnowledgeLevel)
                     .thenComparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToRevise;
         } else {
@@ -108,7 +115,7 @@ public class LearningViewModel extends BaseViewModel {
     public void prepareWordsToLearn() {
         List<Word> wordsToOrder = new ArrayList<>(words);
         if(isRevisionFinished.getValue()) {
-            Collections.sort(wordsToOrder, Comparator.comparing(Word::getDateAdded).reversed());
+            wordsToOrder.sort(Comparator.comparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToOrder.stream().filter(w -> w.getNumberTry().equals(0)).collect(Collectors.toList());
         }
     }

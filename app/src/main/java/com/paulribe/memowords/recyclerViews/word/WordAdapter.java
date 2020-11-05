@@ -82,10 +82,11 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        int wordsAndTranslationButtonItemsNumber = this.words.size() + (!searchedWord.equals("") ? 1 : 0);
         if(this.words.size() == 0) {
-            return this.words.size() + 2;
+            return wordsAndTranslationButtonItemsNumber + 1;
         } else {
-            return this.words.size() + 1;
+            return wordsAndTranslationButtonItemsNumber;
         }
     }
 

@@ -84,7 +84,7 @@
     <string name="loader_description">loader</string>
     <string name="user_login_title">Login</string>
     <string name="loading_translation">Loading Translation ...</string>
-    <string name="sorry_we_couldn_t_find_any_matches">Sorry we couldn\'t find any translations for \"%1$s\"</string>
-    <string name="please_try_searching_another_term">Please try searching with another term</string>
+    <string name="sorry_we_couldn_t_find_any_matches">Sorry we couldn\'t find any translations for \"%1$s\."</string>
+    <string name="please_try_searching_another_term">Please try searching another term or verify the direction of the translation.</string>
     <string name="translate_with">Translate \"%1$s\" with :</string>
 </resources>

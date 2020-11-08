@@ -52,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initDataBinding();
-        setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbar);
-
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser == null) {
             finish();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            return;
         }
+        initDataBinding();
+        setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar);
     }
 
     private void createOptionMenuSelectLanguage() {
@@ -254,12 +254,25 @@ public class MainActivity extends AppCompatActivity {
     private void initDataBinding() {
         baseViewModel = new ViewModelProvider(this).get(BaseViewModel.class);
         baseViewModel.init();
+        if(Boolean.FALSE.equals(baseViewModel.getNormalState().getValue())) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+            return;
+        }
         setUpChangeValueListener();
         baseViewModel.loadUserConfig();
     }
 
     private void setUpChangeValueListener() {
+        baseViewModel.getNormalState().observe(this, this::onNormalStateChange);
         baseViewModel.getCurrentLanguage().observe(this, this::onCurrentLanguageChange);
+    }
+
+    private void onNormalStateChange(Boolean normalState) {
+        if(!normalState) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+        }
     }
 
     private void onCurrentLanguageChange(LanguageEnum languageEnum) {

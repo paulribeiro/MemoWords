@@ -60,7 +60,13 @@ public class ListWordsViewModel extends BaseViewModel {
         return searchedString;
     }
 
-    public MutableLiveData<List<TranslatedWord>> getTranslatedWordResults() { return translatedWordResults; }
+    public MutableLiveData<List<TranslatedWord>> getTranslatedWordResults() {
+        return translatedWordResults;
+    }
+
+    public void setTranslatedWordResults(List<TranslatedWord> translatedWordResults) {
+        this.translatedWordResults.setValue(translatedWordResults);
+    }
 
     public MutableLiveData<LanguageEnum> getCurrentSourceLanguage() { return currentSourceLanguage; }
 
@@ -166,9 +172,9 @@ public class ListWordsViewModel extends BaseViewModel {
                     }
                 }
             }
-            translatedWordResults.setValue(translatedWords);
+            setTranslatedWordResults(translatedWords);
         } else {
-            translatedWordResults.setValue(new ArrayList<>());
+            setTranslatedWordResults(new ArrayList<>());
         }
     }
 
@@ -182,9 +188,9 @@ public class ListWordsViewModel extends BaseViewModel {
                      translatedWords.add(createTranslatedWordForRow(new Translation(match.getSegment(), match.getTranslation()), sectionNumber, subSectionNumber));
                 }
             }
-            translatedWordResults.setValue(translatedWords);
+            setTranslatedWordResults(translatedWords);
         } else {
-            translatedWordResults.setValue(new ArrayList<>());
+            setTranslatedWordResults(new ArrayList<>());
         }
     }
 
@@ -236,22 +242,22 @@ public class ListWordsViewModel extends BaseViewModel {
         }
         switch(orderByEnum) {
             case AZ:
-                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
+                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
                         .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
                 break;
             case ZA:
-                Collections.sort(words, (word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
+                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
                         .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
                 Collections.reverse(words);
                 break;
             case LAST_TRY:
-                Collections.sort(words, Comparator.comparing(Word::getLastTry).reversed());
+                words.sort(Comparator.comparing(Word::getLastTry).reversed());
                 break;
             case KNOWLEDGE_LEVEL:
-                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel));
+                words.sort(Comparator.comparing(Word::getKnowledgeLevel));
                 break;
             case KNOWLEDGE_LEVEL_DESC:
-                Collections.sort(words, Comparator.comparing(Word::getKnowledgeLevel).reversed());
+                words.sort(Comparator.comparing(Word::getKnowledgeLevel).reversed());
                 break;
         }
         wordsToDisplay = words;
@@ -289,7 +295,8 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public static String html2text(String html) {
-        return android.text.Html.fromHtml(html).toString();
+        return html.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ").trim();
+//        return android.text.Html.fromHtml(html).toString();
     }
 
     public void exchangeSourceTargetLanguage() {

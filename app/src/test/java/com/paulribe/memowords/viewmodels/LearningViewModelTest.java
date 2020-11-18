@@ -1,5 +1,6 @@
 package com.paulribe.memowords.viewmodels;
 
+import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 
 import org.junit.Assert;
@@ -14,12 +15,14 @@ import java.util.List;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(JUnit4.class)
 public class LearningViewModelTest {
 
-    private static Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_0_1 = 48;
-    private static Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_2_3 = 24*7 + 24;
-    private static Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_4 = 21*24*7 + 24;
+    private static final Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_0_1 = 48;
+    private static final Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_2_3 = 24*7 + 24;
+    private static final Integer HOURS_TO_WAIT_KNOWLEDGELEVEL_4 = 21*24*7 + 24;
 
     private LearningViewModel viewModel;
 
@@ -62,7 +65,7 @@ public class LearningViewModelTest {
         viewModel.prepareWords();
 
         List<Word> wordsToDisplay = viewModel.getWordsToDisplay();
-        Assert.assertEquals(5, wordsToDisplay.size());
+        assertEquals(5, wordsToDisplay.size());
     }
 
 
@@ -91,7 +94,7 @@ public class LearningViewModelTest {
         viewModel.prepareWords();
 
         List<Word> wordsToDisplay = viewModel.getWordsToDisplay();
-        Assert.assertEquals(0, wordsToDisplay.size());
+        assertEquals(0, wordsToDisplay.size());
     }
 
     @Test
@@ -120,11 +123,40 @@ public class LearningViewModelTest {
         viewModel.prepareWords();
 
         List<Word> wordsToDisplay = viewModel.getWordsToDisplay();
-        Assert.assertEquals(2, wordsToDisplay.size());
+        assertEquals(2, wordsToDisplay.size());
     }
 
     @Test
-    public void updateLearningStateTest() {
+    public void updateLearningStateRevisionFinishedNoWordsToDisplayTest() {
+        viewModel.getIsRevisionFinished().setValue(Boolean.TRUE);
+        assertEquals(0, viewModel.getWordsToDisplay().size());
+        viewModel.updateLearningState();
+        assertEquals(LearningFragmentStateEnum.NO_MORE_WORDS, viewModel.getLearningFragmentStateEnum().getValue());
+    }
 
+    @Test
+    public void updateLearningStateRevisionFinishedTest() {
+        viewModel.getIsRevisionFinished().setValue(Boolean.TRUE);
+        assertEquals(0, viewModel.getWordsToDisplay().size());
+        viewModel.getWordsToDisplay().add(TestData.createWord("word", 0,0,0));
+        viewModel.updateLearningState();
+        assertEquals(LearningFragmentStateEnum.LEARNING_FRAGMENT, viewModel.getLearningFragmentStateEnum().getValue());
+    }
+
+    @Test
+    public void updateLearningStateRevisionNotFinishedNoWordsToDisplayTest() {
+        viewModel.getIsRevisionFinished().setValue(Boolean.FALSE);
+        assertEquals(0, viewModel.getWordsToDisplay().size());
+        viewModel.updateLearningState();
+        assertEquals(LearningFragmentStateEnum.REVISION_FINISHED, viewModel.getLearningFragmentStateEnum().getValue());
+    }
+
+    @Test
+    public void updateLearningStateRevisionNotFinishedTest() {
+        viewModel.getIsRevisionFinished().setValue(Boolean.FALSE);
+        assertEquals(0, viewModel.getWordsToDisplay().size());
+        viewModel.getWordsToDisplay().add(TestData.createWord("word", 0,0,0));
+        viewModel.updateLearningState();
+        assertEquals(LearningFragmentStateEnum.LEARNING_FRAGMENT, viewModel.getLearningFragmentStateEnum().getValue());
     }
 }

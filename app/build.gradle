@@ -92,6 +92,10 @@ dependencies {
     apply plugin: "androidx.navigation.safeargs"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestUtil 'androidx.test:orchestrator:1.1.0'
 }

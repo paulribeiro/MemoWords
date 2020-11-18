@@ -109,7 +109,7 @@ public class ListFragment extends Fragment {
     private void showUndoDeleteWordSnackBar() {
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
-                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordFR() + " removed from the list", Snackbar.LENGTH_LONG);
+                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordNative() + " removed from the list", Snackbar.LENGTH_LONG);
         snackbar.setAction("UNDO", view -> listWordsViewModel.restoreLastWordDeleted());
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
@@ -148,7 +148,7 @@ public class ListFragment extends Fragment {
                 ponsClickListener = createPonsClickListener();
             }
             View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
-            List<Word> wordList = listWordsViewModel.getFilteredWords();
+            List<Word> wordList = listWordsViewModel.getFilteredWordsByKnowledgeLevel();
             this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener,
                     listWordsViewModel.getSearchedString().getValue());
         }
@@ -285,7 +285,7 @@ public class ListFragment extends Fragment {
     }
 
     private void updateRecyclerView() {
-        if(listWordsViewModel.getRecyclerViewOnTranslateResults()) {
+        if(listWordsViewModel.getIsRecyclerViewOnTranslateResults()) {
            configureRecyclerView();
         }
         List<Word> words = listWordsViewModel.filterWordsToDisplay();

@@ -74,8 +74,8 @@ public class LearningFragment extends Fragment {
     }
 
     private void setTextViewWithNextWord() {
-        textViewWord.setText(learningViewModel.getCurrentWord().getValue().getWordFR());
-        textViewTranslation.setText(learningViewModel.getCurrentWord().getValue().getWordDE());
+        textViewWord.setText(learningViewModel.getCurrentWord().getValue().getWordNative());
+        textViewTranslation.setText(learningViewModel.getCurrentWord().getValue().getWordTranslated());
         textViewContext.setText(learningViewModel.getCurrentWord().getValue().getContext());
     }
 

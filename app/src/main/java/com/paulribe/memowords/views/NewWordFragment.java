@@ -85,7 +85,7 @@ public class NewWordFragment extends Fragment {
                         suggestionWordFRRecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordFRRecyclerView.setVisibility(View.VISIBLE);
-                        adapterFR.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordFR().toLowerCase().contains(s.toString().toLowerCase()))
+                        adapterFR.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordNative().toLowerCase().contains(s.toString().toLowerCase()))
                                 .collect(Collectors.toList()));
                         adapterFR.notifyDataSetChanged();
                     }
@@ -114,7 +114,7 @@ public class NewWordFragment extends Fragment {
                         suggestionWordDERecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordDERecyclerView.setVisibility(View.VISIBLE);
-                        adapterDE.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordDE().toLowerCase().contains(s.toString().toLowerCase()))
+                        adapterDE.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordTranslated().toLowerCase().contains(s.toString().toLowerCase()))
                                 .collect(Collectors.toList()));
                         adapterDE.notifyDataSetChanged();
                     }
@@ -254,7 +254,7 @@ public class NewWordFragment extends Fragment {
         popupEditTitleTextView.setVisibility(View.VISIBLE);
         exitEditWordButton.setVisibility(View.VISIBLE);
         popupAddTitleTextView.setVisibility(View.GONE);
-        popupCurrentWordEditedTextView.setText(word.getWordFR() + " - " + word.getWordDE());
+        popupCurrentWordEditedTextView.setText(word.getWordNative() + " - " + word.getWordTranslated());
         deleteButton.setVisibility(View.VISIBLE);
     }
 
@@ -264,8 +264,8 @@ public class NewWordFragment extends Fragment {
     }
 
     public void updateInputFields(Word word) {
-        inputWordDE.setText(word.getWordDE());
-        inputWordFR.setText(word.getWordFR());
+        inputWordDE.setText(word.getWordTranslated());
+        inputWordFR.setText(word.getWordNative());
         inputWordContext.setText(word.getContext());
     }
 

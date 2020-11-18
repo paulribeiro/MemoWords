@@ -1,6 +1,5 @@
 package com.paulribe.memowords.viewmodels;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;

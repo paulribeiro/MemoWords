@@ -43,11 +43,11 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
 
         view.setBackgroundColor(0xFFFFFFFF);
         if(isNativeLanguageToTranslation) {
-            this.textViewWord.setText(word.getWordFR());
-            this.textViewTranslation.setText(word.getWordDE());
+            this.textViewWord.setText(word.getWordNative());
+            this.textViewTranslation.setText(word.getWordTranslated());
         } else {
-            this.textViewWord.setText(word.getWordDE());
-            this.textViewTranslation.setText(word.getWordFR());
+            this.textViewWord.setText(word.getWordTranslated());
+            this.textViewTranslation.setText(word.getWordNative());
         }
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
         //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

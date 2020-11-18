@@ -23,89 +23,58 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import androidx.lifecycle.MutableLiveData;
+import lombok.Getter;
 
 public class ListWordsViewModel extends BaseViewModel {
 
+    @Getter
     private MutableLiveData<List<Word>> words;
+
+    @Getter
     private List<Word> wordsToDisplay;
+
+    @Getter
     private MutableLiveData<OrderByEnum> orderByEnum;
+
+    @Getter
     private MutableLiveData<Boolean> isFavoriteSelected;
+
+    @Getter
     private MutableLiveData<String> searchedString;
+
+    @Getter
     private MutableLiveData<List<TranslatedWord>> translatedWordResults;
+
+    @Getter
     private Boolean isRecyclerViewOnTranslateResults = Boolean.FALSE;
+
+    @Getter
     private MutableLiveData<LanguageEnum> currentSourceLanguage;
+
+    @Getter
     private MutableLiveData<LanguageEnum> currentTargetLanguage;
+
+    @Getter
     private MutableLiveData<Boolean> isNativeLanguageToTranslation;
+
+    @Getter
     private Word lastWordDeleted;
+
+    @Getter
     private MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected;
+
+    @Getter
     private List<String> possiblePonsTranslations;
 
-    public MutableLiveData<List<Word>> getWords() {
-        return words;
-    }
-
-    public MutableLiveData<OrderByEnum> getOrderByEnum() {
-        return orderByEnum;
-    }
-
-    public MutableLiveData<Boolean> getIsFavoriteSelected() {
-        return isFavoriteSelected;
-    }
-
-    public MutableLiveData<String> getSearchedString() {
-        return searchedString;
-    }
-
-    public MutableLiveData<List<TranslatedWord>> getTranslatedWordResults() {
-        return translatedWordResults;
+    public void setRecyclerViewOnTranslateResults(Boolean recyclerViewOnTranslateResults) {
+        isRecyclerViewOnTranslateResults = recyclerViewOnTranslateResults;
     }
 
     public void setTranslatedWordResults(List<TranslatedWord> translatedWordResults) {
         this.translatedWordResults.setValue(translatedWordResults);
-    }
-
-    public MutableLiveData<LanguageEnum> getCurrentSourceLanguage() { return currentSourceLanguage; }
-
-    public void setCurrentSourceLanguage(MutableLiveData<LanguageEnum> currentSourceLanguage) {
-        this.currentSourceLanguage = currentSourceLanguage;
-    }
-
-    public MutableLiveData<LanguageEnum> getCurrentTargetLanguage() { return currentTargetLanguage; }
-
-    public void setCurrentTargetLanguage(MutableLiveData<LanguageEnum> currentTargetLanguage) {
-        this.currentTargetLanguage = currentTargetLanguage;
-    }
-
-    public MutableLiveData<Boolean> getIsNativeLanguageToTranslation() {
-        return isNativeLanguageToTranslation;
-    }
-
-    public List<Word> getWordsToDisplay() {
-        return wordsToDisplay;
-    }
-
-    public void setWordsToDisplay(List<Word> wordsToDisplay) {
-        this.wordsToDisplay = wordsToDisplay;
-    }
-
-    public Word getLastWordDeleted() {
-        return lastWordDeleted;
-    }
-
-    public MutableLiveData<HashSet<KnowledgeLevelEnum>> getKnowledgeFilterSelected() {
-        return knowledgeFilterSelected;
-    }
-
-    public void setKnowledgeFilterSelected(MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected) {
-        this.knowledgeFilterSelected = knowledgeFilterSelected;
-    }
-
-    public List<String> getPossiblePonsTranslations() {
-        return possiblePonsTranslations;
     }
 
     public void init() {
@@ -194,13 +163,16 @@ public class ListWordsViewModel extends BaseViewModel {
         }
     }
 
-    public List<Word> getFilteredWords(){
-        List<Word> allWords = words.getValue();
-        if(!CollectionUtils.isEmpty(knowledgeFilterSelected.getValue())) {
-            return allWords.stream().filter(w -> knowledgeFilterSelected.getValue().contains(convertToKnowledgeLevelEnum(w.getKnowledgeLevel()))).collect(Collectors.toList());
-        } else {
-            return allWords;
+    public List<Word> getFilteredWordsByKnowledgeLevel(){
+        List<Word> allWords = getWords().getValue();
+        if(allWords != null) {
+            if(!CollectionUtils.isEmpty(getKnowledgeFilterSelected().getValue())) {
+                return allWords.stream().filter(w -> getKnowledgeFilterSelected().getValue().contains(convertToKnowledgeLevelEnum(w.getKnowledgeLevel()))).collect(Collectors.toList());
+            } else {
+                return allWords;
+            }
         }
+        return new ArrayList<>();
     }
 
     public KnowledgeLevelEnum convertToKnowledgeLevelEnum (Integer knowledgeLevel) {
@@ -219,7 +191,7 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public List<Word> filterWordsToDisplay() {
-        List<Word> words = getFilteredWords();
+        List<Word> words = getFilteredWordsByKnowledgeLevel();
         String searchWord = getSearchedString().getValue();
         Boolean isFavorite = getIsFavoriteSelected().getValue();
         OrderByEnum orderByEnum = getOrderByEnum().getValue();
@@ -230,11 +202,11 @@ public class ListWordsViewModel extends BaseViewModel {
             searchWord = updateStringWithIgnoredCharacter(searchWord);
             String finalSearchWord = searchWord;
             if(getIsNativeLanguageToTranslation().getValue()) {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordFR())
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordNative())
                         .contains(finalSearchWord))
                         .collect(Collectors.toList());
             } else {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordDE())
+                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordTranslated())
                         .contains(finalSearchWord))
                         .collect(Collectors.toList());
             }
@@ -242,12 +214,12 @@ public class ListWordsViewModel extends BaseViewModel {
         }
         switch(orderByEnum) {
             case AZ:
-                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
-                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
+                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
+                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordNative())));
                 break;
             case ZA:
-                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordFR())
-                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordFR())));
+                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
+                        .compareTo(updateStringWithIgnoredCharacter(word2.getWordNative())));
                 Collections.reverse(words);
                 break;
             case LAST_TRY:
@@ -276,7 +248,7 @@ public class ListWordsViewModel extends BaseViewModel {
 
     private TranslatedWord createTranslatedWordForSection(SearchWordResult searchWordResult, Integer sectionNumber) {
         TranslatedWord translatedWord;
-        if(searchWordResult.getHeadwordfull() != null) {
+        if(!searchWordResult.getHeadwordfull().isEmpty()) {
             translatedWord = new TranslatedWord(SectionRowEnum.SECTION, html2text(searchWordResult.getHeadwordfull()),
                     searchWordResult.getWordclass(), sectionNumber, Boolean.FALSE);
         } else {
@@ -286,17 +258,8 @@ public class ListWordsViewModel extends BaseViewModel {
         return translatedWord;
     }
 
-    public Boolean getRecyclerViewOnTranslateResults() {
-        return isRecyclerViewOnTranslateResults;
-    }
-
-    public void setRecyclerViewOnTranslateResults(Boolean recyclerViewOnTranslateResults) {
-        isRecyclerViewOnTranslateResults = recyclerViewOnTranslateResults;
-    }
-
     public static String html2text(String html) {
         return html.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ").trim();
-//        return android.text.Html.fromHtml(html).toString();
     }
 
     public void exchangeSourceTargetLanguage() {
@@ -315,24 +278,15 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public Word getNewTranslatedWord(TranslatedWord translatedWord) {
-        Optional<TranslatedWord> subsectionForTranslatedWord = getTranslatedWordResults().getValue().stream()
-                .filter(w -> w.getSectionRowtype().equals(SectionRowEnum.SUBSECTION) && w.getSubSectionNumber().equals(w.getSubSectionNumber()))
-                .findFirst();
-        String contextNewWord = "";
-        if(subsectionForTranslatedWord.isPresent()) {
-            contextNewWord = subsectionForTranslatedWord.get().getSourceWord();
-        }
-        Word word;
-        if(isNativeLanguageToTranslation.getValue()) {
-            word = new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
+        if(getIsNativeLanguageToTranslation().getValue()) {
+            return new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
                     new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
-                    0, 0, contextNewWord, 0, false);
+                    0, 0, "", 0, false);
         } else {
-            word = new Word(translatedWord.getTargetWord(), translatedWord.getSourceWord(),
+            return new Word(translatedWord.getTargetWord(), translatedWord.getSourceWord(),
                     new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
-                    0, 0, contextNewWord, 0, false);
+                    0, 0, "", 0, false);
         }
-        return word;
     }
 
     public void deleteWord(int pos) {
@@ -354,7 +308,7 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public void addKnowledgeLevelFilter (KnowledgeLevelEnum knowledgeLevelEnum) {
-        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = this.knowledgeFilterSelected.getValue();
+        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = getKnowledgeFilterSelected().getValue();
         if(knowledgeFilterSelectedValue != null) {
             knowledgeFilterSelectedValue.add(knowledgeLevelEnum);
             knowledgeFilterSelected.setValue(knowledgeFilterSelectedValue);
@@ -362,7 +316,7 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public void deleteKnowledgeLevelFilter (KnowledgeLevelEnum knowledgeLevelEnum) {
-        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = this.knowledgeFilterSelected.getValue();
+        HashSet<KnowledgeLevelEnum> knowledgeFilterSelectedValue = getKnowledgeFilterSelected().getValue();
         if(knowledgeFilterSelectedValue != null) {
             knowledgeFilterSelectedValue.remove(knowledgeLevelEnum);
             knowledgeFilterSelected.setValue(knowledgeFilterSelectedValue);

@@ -6,8 +6,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Word {
 
     private String wordId;
-    private String wordFR;
-    private String wordDE;
+    private String wordNative;
+    private String wordTranslated;
     private long dateAdded;
     private long lastSuccess;
     private long lastTry;
@@ -21,9 +21,9 @@ public class Word {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(String wordFR, String wordDE, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
-        this.wordFR = wordFR;
-        this.wordDE = wordDE;
+    public Word(String wordNative, String wordTranslated, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
+        this.wordNative = wordNative;
+        this.wordTranslated = wordTranslated;
         this.dateAdded = dateAdded;
         this.lastSuccess = lastSuccess;
         this.lastTry = lastTry;
@@ -58,20 +58,20 @@ public class Word {
         this.lastTry = lastTry;
     }
 
-    public String getWordFR() {
-        return wordFR;
+    public String getWordNative() {
+        return wordNative;
     }
 
-    public void setWordFR(String wordFR) {
-        this.wordFR = wordFR;
+    public void setWordNative(String wordNative) {
+        this.wordNative = wordNative;
     }
 
-    public String getWordDE() {
-        return wordDE;
+    public String getWordTranslated() {
+        return wordTranslated;
     }
 
-    public void setWordDE(String wordDE) {
-        this.wordDE = wordDE;
+    public void setWordTranslated(String wordTranslated) {
+        this.wordTranslated = wordTranslated;
     }
 
     public Integer getNumberTry() {

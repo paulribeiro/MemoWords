@@ -1,7 +1,6 @@
 package com.paulribe.memowords.recyclerViews.word;
 
 import android.content.Context;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;

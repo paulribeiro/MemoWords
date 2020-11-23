@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -21,6 +22,7 @@ import com.paulribe.memowords.countrypicker.CountryAdapter;
 import com.paulribe.memowords.countrypicker.CountryItem;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.viewmodels.RegisterViewModel;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -45,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextEmail = findViewById(R.id.editTextEmailRegister);
         editTextPassword = findViewById(R.id.editTextPassword);
         textViewSignin = findViewById(R.id.textViewSignin);
         buttonSignup = findViewById(R.id.buttonSignup);

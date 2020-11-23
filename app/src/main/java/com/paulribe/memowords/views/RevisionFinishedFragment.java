@@ -1,13 +1,15 @@
 package com.paulribe.memowords.views;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import com.paulribe.memowords.R;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class RevisionFinishedFragment extends Fragment {
 
@@ -24,6 +26,6 @@ public class RevisionFinishedFragment extends Fragment {
         beginLearningButton = view.findViewById(R.id.button_begin_learning);
 
         beginLearningButton.setOnClickListener(view1 ->
-                ((MainActivity)getActivity()).comeBackLearningFragment());
+                ((MainActivity)getActivity()).comeBackLearningFragmentLearnNewWords());
     }
 }

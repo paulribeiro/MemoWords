@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.recyclerViews.OnFavoriteClickListener;
+
 import java.util.List;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -79,10 +82,11 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        int wordsAndTranslationButtonItemsNumber = this.words.size() + (!searchedWord.equals("") ? 1 : 0);
         if(this.words.size() == 0) {
-            return this.words.size() + 2;
+            return wordsAndTranslationButtonItemsNumber + 1;
         } else {
-            return this.words.size() + 1;
+            return wordsAndTranslationButtonItemsNumber;
         }
     }
 

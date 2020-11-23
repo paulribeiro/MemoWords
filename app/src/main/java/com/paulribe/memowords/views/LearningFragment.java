@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.viewmodels.LearningViewModel;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
@@ -73,8 +74,8 @@ public class LearningFragment extends Fragment {
     }
 
     private void setTextViewWithNextWord() {
-        textViewWord.setText(learningViewModel.getCurrentWord().getValue().getWordFR());
-        textViewTranslation.setText(learningViewModel.getCurrentWord().getValue().getWordDE());
+        textViewWord.setText(learningViewModel.getCurrentWord().getValue().getWordNative());
+        textViewTranslation.setText(learningViewModel.getCurrentWord().getValue().getWordTranslated());
         textViewContext.setText(learningViewModel.getCurrentWord().getValue().getContext());
     }
 
@@ -82,7 +83,7 @@ public class LearningFragment extends Fragment {
         textViewWord = view.findViewById(R.id.textview_word);
         textViewTranslation = view.findViewById(R.id.textview_translation);
         textViewContext = view.findViewById(R.id.textViewContext);
-        showAnswerButton = view.findViewById(R.id.button);
+        showAnswerButton = view.findViewById(R.id.showTranslationButton);
         easyButton = view.findViewById(R.id.button2);
         difficultButton = view.findViewById(R.id.button3);
         layoutNew = view.findViewById(R.id.newLayout);

@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.viewmodels.LoginViewModel;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -46,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void defineViews() {
-        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextEmail = findViewById(R.id.editTextEmailRegister);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup  = findViewById(R.id.textViewSignUp);

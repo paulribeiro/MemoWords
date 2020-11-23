@@ -8,7 +8,9 @@ import com.paulribe.memowords.restclient.FirebaseDataHelper;
 public class SplashViewModel extends BaseViewModel {
 
     public void init() {
-        setFirebaseDataHelper(new FirebaseDataHelper());
+        if(getFirebaseDataHelper() == null) {
+            setFirebaseDataHelper(new FirebaseDataHelper());
+        }
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null) {
             setCurrentUser(currentUser);

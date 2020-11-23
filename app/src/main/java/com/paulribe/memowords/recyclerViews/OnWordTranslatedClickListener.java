@@ -1,6 +1,7 @@
 package com.paulribe.memowords.recyclerViews;
 
 import android.view.View;
+
 import com.paulribe.memowords.model.TranslatedWord;
 
 public class OnWordTranslatedClickListener implements View.OnClickListener {

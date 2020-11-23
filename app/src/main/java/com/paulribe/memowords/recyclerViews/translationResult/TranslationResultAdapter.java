@@ -13,6 +13,7 @@ import com.paulribe.memowords.recyclerViews.OnWordTranslatedClickListener;
 import com.paulribe.memowords.recyclerViews.word.NoContentViewHolder;
 
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 

@@ -51,8 +51,8 @@ public class NewWordViewModel extends BaseViewModel {
     }
 
     public void updateWord(String wordDE, String wordFR, String context) {
-        newWord.setWordDE(wordDE);
-        newWord.setWordFR(wordFR);
+        newWord.setWordTranslated(wordDE);
+        newWord.setWordNative(wordFR);
         newWord.setContext(context);
         firebaseDataHelper.updateWord(newWord);
     }

@@ -1,6 +1,7 @@
 package com.paulribe.memowords.viewmodels;
 
 import com.google.firebase.auth.FirebaseAuth;
+
 import androidx.lifecycle.MutableLiveData;
 
 public class LoginViewModel extends BaseViewModel {

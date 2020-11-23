@@ -3,12 +3,10 @@ package com.paulribe.memowords.recyclerViews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {

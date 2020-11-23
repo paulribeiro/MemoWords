@@ -12,7 +12,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/learningFragmentConstraintLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:backgroundTint="@color/themeColor"
@@ -120,7 +120,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/showTranslationButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="24dp"

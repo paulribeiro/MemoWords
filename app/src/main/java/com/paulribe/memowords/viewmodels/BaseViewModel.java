@@ -3,6 +3,7 @@ package com.paulribe.memowords.viewmodels;
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,11 +15,17 @@ public class BaseViewModel extends ViewModel {
     private static MutableLiveData<LanguageEnum> currentLanguage;
     private static String xApiKeyPons;
     private static FirebaseUser currentUser;
+    private static MutableLiveData<Boolean> normalState;
     static FirebaseDataHelper firebaseDataHelper;
 
     public void init() {
-        firebaseDataHelper.setReferenceUserConfig(getCurrentUser());
-        currentLanguage = new MutableLiveData<>();
+        if(firebaseDataHelper != null) {
+            firebaseDataHelper.setReferenceUserConfig(getCurrentUser());
+            currentLanguage = new MutableLiveData<>();
+            normalState = new MutableLiveData<>(Boolean.TRUE);
+        } else {
+            normalState = new MutableLiveData<>(Boolean.FALSE);
+        }
     }
 
     public void loadUserConfig() {
@@ -65,5 +72,9 @@ public class BaseViewModel extends ViewModel {
 
     public void setNativeLanguage(LanguageEnum nativeLanguage) {
         BaseViewModel.nativeLanguage = nativeLanguage;
+    }
+
+    public static MutableLiveData<Boolean> getNormalState() {
+        return normalState;
     }
 }

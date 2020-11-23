@@ -27,14 +27,15 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/editTextEmail"
+            android:id="@+id/editTextEmailRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="15dp"
             android:hint="@string/enter_email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textCursorDrawable="@drawable/color_cursor"/>
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -42,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@drawable/color_cursor"/>
 
         <Spinner
             android:id="@+id/flags_spinner"

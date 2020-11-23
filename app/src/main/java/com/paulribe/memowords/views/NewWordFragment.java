@@ -2,13 +2,6 @@ package com.paulribe.memowords.views;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -30,6 +23,13 @@ import com.paulribe.memowords.viewmodels.NewWordViewModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -85,7 +85,7 @@ public class NewWordFragment extends Fragment {
                         suggestionWordFRRecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordFRRecyclerView.setVisibility(View.VISIBLE);
-                        adapterFR.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordFR().toLowerCase().contains(s.toString().toLowerCase()))
+                        adapterFR.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordNative().toLowerCase().contains(s.toString().toLowerCase()))
                                 .collect(Collectors.toList()));
                         adapterFR.notifyDataSetChanged();
                     }
@@ -114,7 +114,7 @@ public class NewWordFragment extends Fragment {
                         suggestionWordDERecyclerView.setVisibility(View.GONE);
                     } else {
                         suggestionWordDERecyclerView.setVisibility(View.VISIBLE);
-                        adapterDE.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordDE().toLowerCase().contains(s.toString().toLowerCase()))
+                        adapterDE.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordTranslated().toLowerCase().contains(s.toString().toLowerCase()))
                                 .collect(Collectors.toList()));
                         adapterDE.notifyDataSetChanged();
                     }
@@ -158,8 +158,8 @@ public class NewWordFragment extends Fragment {
         addButton.setEnabled(false);
         deleteButton = view.findViewById(R.id.popupDeleteButton);
         deleteButton.setVisibility(View.GONE);
-        inputWordFR = view.findViewById(R.id.inputWordFR);
-        inputWordDE = view.findViewById(R.id.inputWordDE);
+        inputWordFR = view.findViewById(R.id.inputWordNative);
+        inputWordDE = view.findViewById(R.id.inputWordTranslation);
         inputWordContext = view.findViewById(R.id.inputWordContext);
         suggestionWordFRRecyclerView = view.findViewById(R.id.suggestionWordFR);
         suggestionWordDERecyclerView = view.findViewById(R.id.suggestionWordDE);
@@ -254,7 +254,7 @@ public class NewWordFragment extends Fragment {
         popupEditTitleTextView.setVisibility(View.VISIBLE);
         exitEditWordButton.setVisibility(View.VISIBLE);
         popupAddTitleTextView.setVisibility(View.GONE);
-        popupCurrentWordEditedTextView.setText(word.getWordFR() + " - " + word.getWordDE());
+        popupCurrentWordEditedTextView.setText(word.getWordNative() + " - " + word.getWordTranslated());
         deleteButton.setVisibility(View.VISIBLE);
     }
 
@@ -264,8 +264,8 @@ public class NewWordFragment extends Fragment {
     }
 
     public void updateInputFields(Word word) {
-        inputWordDE.setText(word.getWordDE());
-        inputWordFR.setText(word.getWordFR());
+        inputWordDE.setText(word.getWordTranslated());
+        inputWordFR.setText(word.getWordNative());
         inputWordContext.setText(word.getContext());
     }
 

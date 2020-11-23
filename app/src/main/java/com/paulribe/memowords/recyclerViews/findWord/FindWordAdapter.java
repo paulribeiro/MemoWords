@@ -45,9 +45,9 @@ public class FindWordAdapter extends RecyclerView.Adapter<FindWordViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FindWordViewHolder holder, int position) {
         if(isLanguageFR) {
-            holder.updateWithWordTitle(this.words.get(position).getWordFR(), position);
+            holder.updateWithWordTitle(this.words.get(position).getWordNative(), position);
         } else {
-            holder.updateWithWordTitle(this.words.get(position).getWordDE(), position);
+            holder.updateWithWordTitle(this.words.get(position).getWordTranslated(), position);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

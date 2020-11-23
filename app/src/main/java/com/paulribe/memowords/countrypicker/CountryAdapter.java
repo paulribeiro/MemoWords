@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.paulribe.memowords.R;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;

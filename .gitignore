@@ -16,3 +16,7 @@ app/google-services.json
 app/proguard-rules.pro
 .idea/
 /app/release
+
+app/src/debug/google-services.json
+
+app/src/release/google-services.json

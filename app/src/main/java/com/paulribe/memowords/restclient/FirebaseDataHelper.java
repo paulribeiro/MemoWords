@@ -1,18 +1,20 @@
 package com.paulribe.memowords.restclient;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.paulribe.memowords.enumeration.LanguageEnum;
-import com.paulribe.memowords.model.UserConfig;
-import com.paulribe.memowords.model.Word;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.paulribe.memowords.enumeration.LanguageEnum;
+import com.paulribe.memowords.model.UserConfig;
+import com.paulribe.memowords.model.Word;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {

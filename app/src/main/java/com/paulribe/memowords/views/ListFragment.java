@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.R;
@@ -22,6 +23,7 @@ import com.paulribe.memowords.enumeration.LanguageEnum;
 import com.paulribe.memowords.enumeration.OrderByEnum;
 import com.paulribe.memowords.model.KnowledgeLevelFilter;
 import com.paulribe.memowords.model.TranslatedWord;
+import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.model.mymemory.MyMemoryResult;
 import com.paulribe.memowords.model.pons.PonsResult;
 import com.paulribe.memowords.recyclerViews.OnExpandSectionClickListener;
@@ -31,15 +33,16 @@ import com.paulribe.memowords.recyclerViews.SwipeHelper;
 import com.paulribe.memowords.recyclerViews.knowledgeLevelFilter.KnowledgeLevelFilterAdapter;
 import com.paulribe.memowords.recyclerViews.translationResult.TranslationResultAdapter;
 import com.paulribe.memowords.recyclerViews.word.WordAdapter;
-import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.MyMemoryService;
 import com.paulribe.memowords.restclient.PonsService;
 import com.paulribe.memowords.restclient.RetrofitClientInstance;
 import com.paulribe.memowords.viewmodels.ListWordsViewModel;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -106,7 +109,7 @@ public class ListFragment extends Fragment {
     private void showUndoDeleteWordSnackBar() {
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
-                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordFR() + " removed from the list", Snackbar.LENGTH_LONG);
+                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordNative() + " removed from the list", Snackbar.LENGTH_LONG);
         snackbar.setAction("UNDO", view -> listWordsViewModel.restoreLastWordDeleted());
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
@@ -145,7 +148,7 @@ public class ListFragment extends Fragment {
                 ponsClickListener = createPonsClickListener();
             }
             View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
-            List<Word> wordList = listWordsViewModel.getFilteredWords();
+            List<Word> wordList = listWordsViewModel.getFilteredWordsByKnowledgeLevel();
             this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener,
                     listWordsViewModel.getSearchedString().getValue());
         }
@@ -282,7 +285,7 @@ public class ListFragment extends Fragment {
     }
 
     private void updateRecyclerView() {
-        if(listWordsViewModel.getRecyclerViewOnTranslateResults()) {
+        if(listWordsViewModel.getIsRecyclerViewOnTranslateResults()) {
            configureRecyclerView();
         }
         List<Word> words = listWordsViewModel.filterWordsToDisplay();

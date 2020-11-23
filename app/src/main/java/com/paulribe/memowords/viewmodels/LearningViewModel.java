@@ -1,15 +1,18 @@
 package com.paulribe.memowords.viewmodels;
 
+import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
 import com.paulribe.memowords.model.Word;
 import com.paulribe.memowords.restclient.FirebaseDataHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.ObservableArrayList;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -29,6 +32,10 @@ public class LearningViewModel extends BaseViewModel {
         isRevisionFinished = new MutableLiveData<>(Boolean.FALSE);
         learningFragmentStateEnum = new MutableLiveData<>(LearningFragmentStateEnum.LEARNING_FRAGMENT);
         isDataLoaded = new MutableLiveData<>(Boolean.FALSE);
+    }
+
+    public void setWords(List<Word> words) {
+        this.words = words;
     }
 
     public LiveData<Word> getCurrentWord() {
@@ -58,9 +65,12 @@ public class LearningViewModel extends BaseViewModel {
             @Override
             public void dataIsLoaded(List<Word> w, List<String> keys) {
                 words = w;
-                calculateWordsToRevise();
-                calculateWordsToLearn();
-                updateLearningState();
+                if(words.isEmpty()) {
+                    learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
+                } else {
+                    prepareWords();
+                    updateLearningState();
+                }
                 if(!isDataLoaded.getValue()) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
@@ -72,9 +82,12 @@ public class LearningViewModel extends BaseViewModel {
             @Override
             public void dataIsUpdated(List<Word> w) {
                 words = w;
-                calculateWordsToRevise();
-                calculateWordsToLearn();
-                updateLearningState();
+                if(words.isEmpty()) {
+                    learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
+                } else {
+                    prepareWords();
+                    updateLearningState();
+                }
                 if(!isDataLoaded.getValue()) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
@@ -87,24 +100,27 @@ public class LearningViewModel extends BaseViewModel {
         });
     }
 
-    public void calculateWordsToLearn() {
+    public void prepareWords() {
+        List<Word> wordsToOrder = new ArrayList<>(words);
+        List<Word> wordsToRevise = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
+        if(!CollectionUtils.isEmpty(wordsToRevise)) {
+            wordsToRevise.sort(Comparator.comparing(Word::getKnowledgeLevel)
+                    .thenComparing(Word::getDateAdded).reversed());
+            wordsToDisplay = wordsToRevise;
+        } else {
+            prepareWordsToLearn();
+        }
+    }
+
+    public void prepareWordsToLearn() {
+        List<Word> wordsToOrder = new ArrayList<>(words);
         if(isRevisionFinished.getValue()) {
-            List<Word> wordsToOrder = new ArrayList<>(words);
-            Collections.sort(wordsToOrder, Comparator.comparing(Word::getDateAdded).reversed());
+            wordsToOrder.sort(Comparator.comparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToOrder.stream().filter(w -> w.getNumberTry().equals(0)).collect(Collectors.toList());
         }
     }
 
-    private void calculateWordsToRevise() {
-        if(!isRevisionFinished.getValue()) {
-            List<Word> wordsToOrder = new ArrayList<>(words);
-            Collections.sort(wordsToOrder, Comparator.comparing(Word::getKnowledgeLevel)
-                    .thenComparing(Word::getDateAdded).reversed());
-            wordsToDisplay = wordsToOrder.stream().filter(w -> !w.getNumberTry().equals(0) && hasToBeRevise(w)).collect(Collectors.toList());
-            //isRevisionFinished.setValue(CollectionUtils.isEmpty(wordsToDisplay));
-        }
-    }
-
+    @VisibleForTesting
     private static boolean hasToBeRevise(Word word) {
         Date today = getTodayDateRevision();
         // TODO : use LocalDateTime ?
@@ -147,12 +163,17 @@ public class LearningViewModel extends BaseViewModel {
     }
 
     public void updateLearningState() {
-        if(wordsToDisplay.size() > 0) {
-            learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
-            currentWord.setValue(wordsToDisplay.get(0));
-        } else {
-            if(isRevisionFinished.getValue()) {
+        if(isRevisionFinished.getValue()) {
+            if(wordsToDisplay.size() > 0) {
+                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
+                currentWord.setValue(wordsToDisplay.get(0));
+            } else {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
+            }
+        } else {
+            if(wordsToDisplay.size() > 0) {
+                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
+                currentWord.setValue(wordsToDisplay.get(0));
             } else {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.REVISION_FINISHED);
             }

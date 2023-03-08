@@ -78,7 +78,9 @@ public class FirebaseDataHelper implements Serializable {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserConfig userConfig = dataSnapshot.getValue(UserConfig.class);
-                userConfigLoadedStatus.UserConfigIsLoaded(userConfig);
+                if(userConfig != null) {
+                    userConfigLoadedStatus.UserConfigIsLoaded(userConfig);
+                }
             }
 
             @Override

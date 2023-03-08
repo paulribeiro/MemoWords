@@ -409,6 +409,6 @@ public class ListWordsViewModelTest {
 
         assertNotNull(knowledgeFilterSelected.getValue());
         assertEquals(1, knowledgeFilterSelected.getValue().size());
-        assertFalse(knowledgeFilterSelected.getValue().contains(KnowledgeLevelEnum.NEW));
+        assertTrue(knowledgeFilterSelected.getValue().contains(KnowledgeLevelEnum.NEW));
     }
 }

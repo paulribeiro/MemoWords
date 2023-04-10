@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
+apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 
 android {
 
@@ -30,6 +31,12 @@ android {
     }
     testOptions {
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+                excludes = ['jdk.internal.*']
+            }
+        }
     }
 
     buildTypes {
@@ -40,6 +47,7 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
+            testCoverageEnabled = true
         }
     }
 
@@ -55,6 +63,15 @@ android {
     lintOptions {
         abortOnError false
     }
+}
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+jacocoAndroidUnitTestReport {
+    csv.enabled false
+    html.enabled false
+    xml.enabled true
 }
 
 dependencies {

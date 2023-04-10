@@ -12,6 +12,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.0.1'
         classpath 'com.google.gms:google-services:4.3.3'  // Google Services plugin
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.dicedmelon.gradle:jacoco-android:0.1.5"
 
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,11 +20,39 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "4.0.0.2929"
+}
+
 allprojects {
     repositories {
         google()
         jcenter()
         
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "com.paulribe.memowords"
+        property "sonar.projectName", "Memowords"
+        property "sonar.login", "sqp_29e99e3f6ce20d4253534c3e20f5e3c48058d3a9"
+        property "sonar.projectVersion", "1.0"
+        //property "sonar.exclusions", "robospice/**/*"
+        property "sonar.host.url", "http://localhost:9000"
+
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.java.test.binaries", "build/intermediates/classes/debug"
+
+        property 'sonar.core.codeCoveragePlugin', 'jacoco'
+        property 'sonar.coverage.jacoco.xmlReportPaths', "**/build/jacoco/jacoco.xml"
+
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest"
+        property "sonar.android.lint.report", "build/reports/lint-results.xml"
     }
 }
 

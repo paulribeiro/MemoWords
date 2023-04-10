@@ -36,7 +36,6 @@ sonarqube {
     properties {
         property "sonar.projectKey", "com.paulribe.memowords"
         property "sonar.projectName", "Memowords"
-        property "sonar.login", "sqp_29e99e3f6ce20d4253534c3e20f5e3c48058d3a9"
         property "sonar.projectVersion", "1.0"
         //property "sonar.exclusions", "robospice/**/*"
         property "sonar.host.url", "http://localhost:9000"

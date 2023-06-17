@@ -80,11 +80,12 @@ public class CreateWordsUITest {
         onView(withId(R.id.popupEditTitle)).check(matches(isDisplayed()));
 
         updateWordInfo(WORD_UPDATED_1, WORD_TRANSLATED_UPDATED_1, WORD_CONTEXT_UPDATED_1);
+
+        onView(withId(R.id.popupButton)).perform(click());
         onView(withId(R.id.learningFragmentButton)).perform(click());
-        //TODO: answer button already clicked
-        // onView(withId(R.id.popupButton)).perform(click());
 
         checkLearningFragmentBeforeAnswerIsDisplayed();
+        onView(withId(R.id.showTranslationButton)).perform(click());
         checkLearningFragmentAfterAnswerIsDisplayed(WORD_UPDATED_1, WORD_TRANSLATED_UPDATED_1, WORD_CONTEXT_UPDATED_1);
 
         //delete
@@ -93,6 +94,10 @@ public class CreateWordsUITest {
         onView(withId(R.id.popupEditTitle)).check(matches(isDisplayed()));
 
         onView(withId(R.id.popupDeleteButton)).perform(click());
+
+        onView(withId(R.id.learningFragmentButton)).perform(click());
+
+        onView(withId(R.id.noMoreWordsFragment)).check(matches(isDisplayed()));
     }
 
     private void startLearningNewWords() {
@@ -111,7 +116,7 @@ public class CreateWordsUITest {
     private void checkLearningFragmentBeforeAnswerIsDisplayed() {
         onView(withId(R.id.learningFragmentConstraintLayout)).check(matches(isDisplayed()));
         onView(withId(R.id.textview_word)).check(matches(isDisplayed()));
-        //TODO: onView(withId(R.id.textview_translation)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textview_translation)).check(matches(not(isDisplayed())));
     }
 
     private void addNewWord(String wordNative, String wordTranslated, String wordContext) {

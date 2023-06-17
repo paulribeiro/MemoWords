@@ -54,13 +54,13 @@ public class CreateWordsUITest {
     }
 
     @After
-    public void cleanUp() throws InterruptedException {
+    public void cleanUp() {
         cleanUserWordsList();
         logout();
     }
 
     @Test
-    public void CreateUpdateDeleteWordsTest() throws InterruptedException {
+    public void CreateUpdateDeleteWordsTest() {
 
         signIn(EXISTING_EMAIL, PASSWORD);
 
@@ -141,7 +141,7 @@ public class CreateWordsUITest {
         onView(withId(R.id.inputWordContext)).perform(replaceText(wordContext), closeSoftKeyboard());
     }
 
-    private void cleanUserWordsList() throws InterruptedException {
+    private void cleanUserWordsList() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null) {
             DatabaseReference wordsForUserReferenceDB = FirebaseDatabase.getInstance().getReference(currentUser.getUid() + "/words");

@@ -313,8 +313,9 @@ public class ListFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu_order_by);
         MenuItem menuItemOrderByLastTry = toolbar.getMenu().getItem(1).getSubMenu().getItem(0);
         MenuItem menuItemOrderByKnowledgeLevel = toolbar.getMenu().getItem(1).getSubMenu().getItem(1);
-        MenuItem menuItemOrderByAZ = toolbar.getMenu().getItem(1).getSubMenu().getItem(2);
-        MenuItem menuItemOrderByZA = toolbar.getMenu().getItem(1).getSubMenu().getItem(3);
+        MenuItem menuItemOrderByKnowledgeLevelDesc = toolbar.getMenu().getItem(1).getSubMenu().getItem(2);
+        MenuItem menuItemOrderByAZ = toolbar.getMenu().getItem(1).getSubMenu().getItem(3);
+        MenuItem menuItemOrderByZA = toolbar.getMenu().getItem(1).getSubMenu().getItem(4);
 
         MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
             switch (menuItem.getItemId()) {
@@ -341,6 +342,7 @@ public class ListFragment extends Fragment {
 
         menuItemOrderByLastTry.setOnMenuItemClickListener(menuItemClickListener);
         menuItemOrderByKnowledgeLevel.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemOrderByKnowledgeLevelDesc.setOnMenuItemClickListener(menuItemClickListener);
         menuItemOrderByAZ.setOnMenuItemClickListener(menuItemClickListener);
         menuItemOrderByZA.setOnMenuItemClickListener(menuItemClickListener);
 

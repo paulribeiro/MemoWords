@@ -9,6 +9,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.paulribe.memowords.common.UITestHelper.cleanUserWordsList;
 import static com.paulribe.memowords.common.UITestHelper.logout;
 import static com.paulribe.memowords.common.UITestHelper.signIn;
 import static com.paulribe.memowords.common.UITestHelper.waitForElementUntilDisplayed;
@@ -17,10 +18,6 @@ import static org.hamcrest.Matchers.not;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.paulribe.memowords.views.SplashActivity;
 
 import org.junit.After;
@@ -139,13 +136,5 @@ public class CreateWordsUITest {
         onView(withId(R.id.inputWordNative)).perform(replaceText(wordNative), closeSoftKeyboard());
         onView(withId(R.id.inputWordTranslation)).perform(replaceText(wordTranslate), closeSoftKeyboard());
         onView(withId(R.id.inputWordContext)).perform(replaceText(wordContext), closeSoftKeyboard());
-    }
-
-    private void cleanUserWordsList() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null) {
-            DatabaseReference wordsForUserReferenceDB = FirebaseDatabase.getInstance().getReference(currentUser.getUid() + "/words");
-            wordsForUserReferenceDB.removeValue();
-        }
     }
 }

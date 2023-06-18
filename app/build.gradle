@@ -63,6 +63,18 @@ android {
     lintOptions {
         abortOnError false
     }
+    sourceSets {
+        debug {
+            java {
+                srcDirs 'src\\debug\\java'
+            }
+        }
+        release {
+            java {
+                srcDirs 'src\\release\\java'
+            }
+        }
+    }
 }
 
 jacoco {
@@ -107,6 +119,8 @@ dependencies {
     testImplementation 'android.arch.core:core-testing:1.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    debugImplementation 'com.android.support.test.espresso.idling:idling-concurrent:3.0.2'
+    debugImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.powermock:powermock-core:1.7.4'
     testImplementation 'org.powermock:powermock-module-testng:1.7.4'
@@ -121,4 +135,10 @@ dependencies {
 
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestUtil 'androidx.test:orchestrator:1.4.2'
+
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
 }

@@ -1,17 +1,18 @@
 package com.paulribe.memowords.viewmodels;
 
-import com.paulribe.memowords.enumeration.KnowledgeLevelEnum;
-import com.paulribe.memowords.enumeration.LanguageEnum;
-import com.paulribe.memowords.enumeration.OrderByEnum;
-import com.paulribe.memowords.enumeration.SectionRowEnum;
-import com.paulribe.memowords.model.TranslatedWord;
-import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.mymemory.Match;
-import com.paulribe.memowords.model.mymemory.MyMemoryResult;
-import com.paulribe.memowords.model.pons.SearchWordResult;
-import com.paulribe.memowords.model.pons.SearchWordResultList;
-import com.paulribe.memowords.model.pons.Translation;
-import com.paulribe.memowords.model.pons.WordMeaning;
+import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
+import com.paulribe.memowords.common.enumeration.LanguageEnum;
+import com.paulribe.memowords.common.enumeration.OrderByEnum;
+import com.paulribe.memowords.common.enumeration.SectionRowEnum;
+import com.paulribe.memowords.common.model.TranslatedWord;
+import com.paulribe.memowords.common.model.Word;
+import com.paulribe.memowords.common.model.mymemory.Match;
+import com.paulribe.memowords.common.model.mymemory.MyMemoryResult;
+import com.paulribe.memowords.common.model.pons.SearchWordResult;
+import com.paulribe.memowords.common.model.pons.SearchWordResultList;
+import com.paulribe.memowords.common.model.pons.Translation;
+import com.paulribe.memowords.common.model.pons.WordMeaning;
+import com.paulribe.memowords.list.ListWordsViewModel;
 
 import org.junit.Assert;
 import org.junit.Before;

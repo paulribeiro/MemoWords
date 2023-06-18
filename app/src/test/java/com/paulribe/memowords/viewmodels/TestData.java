@@ -1,13 +1,13 @@
 package com.paulribe.memowords.viewmodels;
 
-import com.paulribe.memowords.enumeration.SectionRowEnum;
-import com.paulribe.memowords.model.TranslatedWord;
-import com.paulribe.memowords.model.Word;
-import com.paulribe.memowords.model.pons.PonsResult;
-import com.paulribe.memowords.model.pons.SearchWordResult;
-import com.paulribe.memowords.model.pons.SearchWordResultList;
-import com.paulribe.memowords.model.pons.Translation;
-import com.paulribe.memowords.model.pons.WordMeaning;
+import com.paulribe.memowords.common.enumeration.SectionRowEnum;
+import com.paulribe.memowords.common.model.TranslatedWord;
+import com.paulribe.memowords.common.model.Word;
+import com.paulribe.memowords.common.model.pons.PonsResult;
+import com.paulribe.memowords.common.model.pons.SearchWordResult;
+import com.paulribe.memowords.common.model.pons.SearchWordResultList;
+import com.paulribe.memowords.common.model.pons.Translation;
+import com.paulribe.memowords.common.model.pons.WordMeaning;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

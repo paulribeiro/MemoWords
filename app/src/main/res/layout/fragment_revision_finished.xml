@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:id="@+id/revisionFinishedFragment"
-    tools:context=".views.RevisionFinishedFragment">
+    tools:context=".learning.RevisionFinishedFragment">
 
     <ImageView
         android:id="@+id/imageView2"

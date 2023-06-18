@@ -7,13 +7,13 @@
     <data>
         <variable
             name="baseViewModel"
-            type="com.paulribe.memowords.viewmodels.BaseViewModel"/>
+            type="com.paulribe.memowords.BaseViewModel"/>
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.MainActivity">
+        tools:context=".MainActivity">
 
         <FrameLayout
             android:id="@+id/content"

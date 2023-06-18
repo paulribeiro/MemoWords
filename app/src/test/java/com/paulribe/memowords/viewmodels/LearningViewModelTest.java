@@ -1,9 +1,9 @@
 package com.paulribe.memowords.viewmodels;
 
-import com.paulribe.memowords.enumeration.LearningFragmentStateEnum;
-import com.paulribe.memowords.model.Word;
+import com.paulribe.memowords.common.enumeration.LearningFragmentStateEnum;
+import com.paulribe.memowords.common.model.Word;
+import com.paulribe.memowords.learning.LearningViewModel;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

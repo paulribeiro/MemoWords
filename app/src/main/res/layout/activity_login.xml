@@ -9,7 +9,7 @@
     android:paddingTop="24dp"
     android:paddingRight="24dp"
     android:paddingBottom="24dp"
-    tools:context=".views.LoginActivity">
+    tools:context=".authentication.login.LoginActivity">
 
 
     <LinearLayout

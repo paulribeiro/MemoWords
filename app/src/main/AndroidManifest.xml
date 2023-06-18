@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         android:allowBackup="true">
         <activity
-            android:name="com.paulribe.memowords.views.SplashActivity"
+            android:name="com.paulribe.memowords.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Splash"
             android:screenOrientation="portrait"
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.paulribe.memowords.views.MainActivity"
+            android:name="com.paulribe.memowords.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
@@ -37,21 +37,21 @@
             android:exported="true">
         </activity>
         <activity
-            android:name="com.paulribe.memowords.views.LoginActivity"
+            android:name="com.paulribe.memowords.authentication.login.LoginActivity"
             android:label="LoginMemowords"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
         <activity
-            android:name="com.paulribe.memowords.views.RegisterActivity"
+            android:name="com.paulribe.memowords.authentication.register.RegisterActivity"
             android:label="SigninMemowords"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false">
         </activity>
         <activity
-            android:name="com.paulribe.memowords.views.PasswordForgottenActivity"
+            android:name="com.paulribe.memowords.authentication.passwordforgotten.PasswordForgottenActivity"
             android:label="PasswordForgottenMemowords"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"

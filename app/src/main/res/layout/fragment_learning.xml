@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.LearningFragment">
+    tools:context=".learning.LearningFragment">
 
     <data>
         <variable
             name="learningViewModel"
-            type="com.paulribe.memowords.viewmodels.LearningViewModel" />
+            type="com.paulribe.memowords.learning.LearningViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

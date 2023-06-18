@@ -6,8 +6,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.paulribe.memowords.views.MainActivity;
-import com.paulribe.memowords.views.SplashActivity;
 
 import org.junit.After;
 import org.junit.Before;

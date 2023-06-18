@@ -19,8 +19,6 @@ import static org.hamcrest.Matchers.not;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.paulribe.memowords.views.SplashActivity;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

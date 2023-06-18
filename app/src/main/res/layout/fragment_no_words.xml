@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:backgroundTint="#EEECEC"
     android:id="@+id/noMoreWordsFragment"
-    tools:context=".views.NoWordsFragment">
+    tools:context=".learning.NoWordsFragment">
 
     <ImageView
         android:id="@+id/imageView"

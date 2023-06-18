@@ -8,6 +8,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
@@ -66,5 +67,34 @@ public class UITestHelper {
             DatabaseReference wordsForUserReferenceDB = FirebaseDatabase.getInstance().getReference(currentUser.getUid() + "/words");
             wordsForUserReferenceDB.removeValue();
         }
+    }
+
+    public static void addNewWord(String wordNative, String wordTranslated, String wordContext) {
+        onView(withId(R.id.newWordFragment)).perform(click());
+
+        onView(withId(R.id.popupAddTitle)).check(matches(isDisplayed()));
+        onView(withId(R.id.popupEditTitle)).check(matches(not(isDisplayed())));
+
+        fillNewWordInfo(wordNative, wordTranslated, wordContext);
+        onView(withId(R.id.popupButton)).perform(click());
+    }
+
+    public static void fillNewWordInfo(String wordNative, String wordTranslate, String wordContext) {
+        onView(withId(R.id.inputWordNative)).perform(typeText(wordNative), closeSoftKeyboard());
+        onView(withId(R.id.inputWordTranslation)).perform(typeText(wordTranslate), closeSoftKeyboard());
+        onView(withId(R.id.inputWordContext)).perform(typeText(wordContext), closeSoftKeyboard());
+    }
+
+    public static void startLearningNewWords() {
+        onView(withId(R.id.learningFragmentButton)).perform(click());
+        onView(withId(R.id.button_begin_learning)).perform(click());
+    }
+
+    public static void checkLearningFragmentAfterAnswerIsDisplayed(String word, String wordTranslated, String context) {
+        onView(withId(R.id.textview_word)).check(matches(isDisplayed()));
+        onView(withId(R.id.textview_translation)).check(matches(isDisplayed()));
+        onView(withId(R.id.textview_word)).check(matches(withText(word)));
+        onView(withId(R.id.textview_translation)).check(matches(withText(wordTranslated)));
+        onView(withId(R.id.textViewContext)).check(matches(withText(context)));
     }
 }

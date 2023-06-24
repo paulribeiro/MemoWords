@@ -51,6 +51,7 @@ import com.paulribe.memowords.common.restclient.RetrofitClientInstance;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -377,7 +378,7 @@ public class ListFragment extends Fragment {
                 } else {
                     deleteSearchWordButton.setVisibility(View.GONE);
                 }
-                listWordsViewModel.getSearchedString().setValue(s.toString());
+                listWordsViewModel.getSearchedString().setValue(Objects.toString(s, ""));
             }
         });
 

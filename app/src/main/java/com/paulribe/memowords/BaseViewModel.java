@@ -1,27 +1,26 @@
 package com.paulribe.memowords;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 public class BaseViewModel extends ViewModel {
 
-    public final long NO_LAST_SUCCESS = 946684800;
-    public final long NO_LAST_TRY = 915148800;
+    public static final long NO_LAST_SUCCESS = 946684800;
+    public static final long NO_LAST_TRY = 915148800;
     private static LanguageEnum nativeLanguage;
-    private static MutableLiveData<LanguageEnum> currentLanguage;
+    private static MutableLiveData<LanguageEnum> currentLanguage = new MutableLiveData<>();
     private static String xApiKeyPons;
     private static FirebaseUser currentUser;
     private static MutableLiveData<Boolean> normalState;
-    public static FirebaseDataHelper firebaseDataHelper;
+    protected static FirebaseDataHelper firebaseDataHelper;
 
     public void init() {
         if(firebaseDataHelper != null) {
             firebaseDataHelper.setReferenceUserConfig(getCurrentUser());
-            currentLanguage = new MutableLiveData<>();
             normalState = new MutableLiveData<>(Boolean.TRUE);
         } else {
             normalState = new MutableLiveData<>(Boolean.FALSE);
@@ -37,7 +36,6 @@ public class BaseViewModel extends ViewModel {
     }
 
     public void updateLanguage(LanguageEnum language) {
-        FirebaseDataHelper firebaseDataHelper = getFirebaseDataHelper();
         firebaseDataHelper.setReferenceWords(language, getCurrentUser());
         firebaseDataHelper.updateCurrentLanguage(language);
     }

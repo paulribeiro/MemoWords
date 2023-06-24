@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.MainActivity;
@@ -72,7 +73,6 @@ public class ListFragment extends Fragment {
     private Button deleteSearchWordButton;
     private TextView sourceLanguageTextView;
     private TextView targetLanguageTextView;
-    private ImageButton swapLanguageButton;
     private View listFragmentView;
     private SwipeHelper swipeHelper;
     private LoadingDialog loadingDialog;
@@ -85,6 +85,7 @@ public class ListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initDataBinding();
@@ -96,7 +97,7 @@ public class ListFragment extends Fragment {
         deleteSearchWordButton = view.findViewById(R.id.delete_search_word);
         sourceLanguageTextView = view.findViewById(R.id.sourceLanguageTextView);
         targetLanguageTextView = view.findViewById(R.id.targetLanguageTextView);
-        swapLanguageButton = view.findViewById(R.id.swapLanguageButton);
+        ImageButton swapLanguageButton = view.findViewById(R.id.swapLanguageButton);
         listFragmentView = view;
 
         createOptionMenuOrderBy();
@@ -109,10 +110,10 @@ public class ListFragment extends Fragment {
         });
     }
 
-    private void showUndoDeleteWordSnackBar() {
-        // showing snack bar with Undo option
+    private void showDeleteWordSnackBarWithUndoOption() {
         Snackbar snackbar = Snackbar
-                .make(listFragmentView, listWordsViewModel.getLastWordDeleted().getWordNative() + " removed from the list", Snackbar.LENGTH_LONG);
+                .make(listFragmentView, String.format("%s removed from the list", listWordsViewModel.getLastWordDeleted().getWordNative()),
+                        BaseTransientBottomBar.LENGTH_LONG);
         snackbar.setAction("UNDO", view -> listWordsViewModel.restoreLastWordDeleted());
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
@@ -169,7 +170,7 @@ public class ListFragment extends Fragment {
                         Color.parseColor("#FF3C30"),
                         pos -> {
                             listWordsViewModel.deleteWord(pos);
-                            showUndoDeleteWordSnackBar();
+                            showDeleteWordSnackBarWithUndoOption();
                         }
                 ));
 
@@ -232,8 +233,7 @@ public class ListFragment extends Fragment {
                         listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons(), listWordsViewModel.getxApiKeyPons());
                 call.enqueue(new Callback<List<PonsResult>>() {
                     @Override
-                    public void onResponse(Call<List<PonsResult>> call, Response<List<PonsResult>> response) {
-                        int code = response.code();
+                    public void onResponse(@NonNull Call<List<PonsResult>> call, @NonNull Response<List<PonsResult>> response) {
                         stopLoader();
                         if(response.isSuccessful()) {
                             listWordsViewModel.buildTranslation(response.body());
@@ -244,7 +244,7 @@ public class ListFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<List<PonsResult>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<PonsResult>> call, @NonNull Throwable t) {
                         stopLoader();
                         Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     }
@@ -261,8 +261,7 @@ public class ListFragment extends Fragment {
                     listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons() + "|" + listWordsViewModel.getCurrentTargetLanguage().getValue().getPrefixForPons());
             call.enqueue(new Callback<MyMemoryResult>() {
                 @Override
-                public void onResponse(Call<MyMemoryResult> call, Response<MyMemoryResult> response) {
-                    int code = response.code();
+                public void onResponse(@NonNull Call<MyMemoryResult> call, @NonNull Response<MyMemoryResult> response) {
                     stopLoader();
                     if(response.isSuccessful()) {
                         listWordsViewModel.buildTranslationForMyMemory(response.body());
@@ -273,17 +272,11 @@ public class ListFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<MyMemoryResult> call, Throwable t) {
+                public void onFailure(@NonNull Call<MyMemoryResult> call, @NonNull Throwable t) {
                     stopLoader();
                     Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 }
             });
-        };
-    }
-
-    private View.OnClickListener createGoogleTranslateClickListener() {
-        return view -> {
-            hideKeyboard();
         };
     }
 
@@ -363,11 +356,7 @@ public class ListFragment extends Fragment {
         searchBar.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
@@ -379,6 +368,11 @@ public class ListFragment extends Fragment {
                     deleteSearchWordButton.setVisibility(View.GONE);
                 }
                 listWordsViewModel.getSearchedString().setValue(Objects.toString(s, ""));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

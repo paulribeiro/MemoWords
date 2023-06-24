@@ -1,5 +1,14 @@
 package com.paulribe.memowords.viewmodels;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+
 import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 import com.paulribe.memowords.common.enumeration.OrderByEnum;
@@ -31,15 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.MutableLiveData;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class ListWordsViewModelTest {
@@ -85,9 +85,9 @@ public class ListWordsViewModelTest {
         List<TranslatedWord> sections = translatedWordResults.stream().filter(t -> t.getSectionRowtype().equals(SectionRowEnum.SECTION))
                 .collect(Collectors.toList());
         assertEquals(2, sections.size());
-        assertEquals("chercher  [ʃɛʀʃe] VB trans", sections.get(0).getSourceWord());
+        assertEquals("chercher [ʃɛʀʃe] VB trans", sections.get(0).getSourceWord());
         assertEquals("transitive verb", sections.get(0).getWordClass());
-        assertEquals("chercher  [ʃɛʀʃe] VB trans", sections.get(1).getSourceWord());
+        assertEquals("chercher [ʃɛʀʃe] VB trans", sections.get(1).getSourceWord());
         assertEquals("transitive verb", sections.get(1).getWordClass());
 
         List<TranslatedWord> subSections = translatedWordResults.stream().filter(t -> t.getSectionRowtype().equals(SectionRowEnum.SUBSECTION))

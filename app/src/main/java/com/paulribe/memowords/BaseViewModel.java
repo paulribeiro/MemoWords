@@ -9,8 +9,6 @@ import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
 
 public class BaseViewModel extends ViewModel {
 
-    public static final long NO_LAST_SUCCESS = 946684800;
-    public static final long NO_LAST_TRY = 915148800;
     private static LanguageEnum nativeLanguage;
     private static MutableLiveData<LanguageEnum> currentLanguage = new MutableLiveData<>();
     private static String xApiKeyPons;

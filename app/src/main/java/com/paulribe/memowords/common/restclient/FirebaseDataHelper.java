@@ -1,5 +1,7 @@
 package com.paulribe.memowords.common.restclient;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,8 +16,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 public class FirebaseDataHelper implements Serializable {
     private static FirebaseDatabase dataBase;

@@ -17,9 +17,6 @@ import java.util.List;
 
 public class TestData {
 
-    public static long NO_LAST_SUCCESS = 946684800;
-    public static long NO_LAST_TRY = 915148800;
-
     public static long BASE_LAST_SUCCESS_TIMESTAMP = Timestamp.valueOf("2000-01-01 00:00:00.000000000").getTime();
     public static long BASE_LAST_TRY_TIMESTAMP = Timestamp.valueOf("1999-01-01 00:00:00.000000000").getTime();
 

@@ -54,8 +54,8 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
         }
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
         //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = new Date(word.getLastTry());
-        if(d.after(new Date(920000000))) {
+        if(word.getLastTry() != null) {
+            Date d = new Date(word.getLastTry());
             textViewLastTry.setVisibility(View.VISIBLE);
             textViewLastTry.setText(String.format("%s %s", context.getResources().getString(R.string.last_try), dateFormat.format(d)));
         }

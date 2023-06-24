@@ -9,8 +9,8 @@ public class Word {
     private String wordNative;
     private String wordTranslated;
     private long dateAdded;
-    private long lastSuccess;
-    private long lastTry;
+    private Long lastSuccess;
+    private Long lastTry;
     private Integer numberTry;
     private Integer numberSuccess;
     private String context;
@@ -21,7 +21,7 @@ public class Word {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(String wordNative, String wordTranslated, long dateAdded, long lastSuccess, long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
+    public Word(String wordNative, String wordTranslated, long dateAdded, Long lastSuccess, Long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
         this.wordNative = wordNative;
         this.wordTranslated = wordTranslated;
         this.dateAdded = dateAdded;
@@ -38,7 +38,7 @@ public class Word {
         this.dateAdded = dateAdded;
     }
 
-    public void setLastSuccess(long lastSuccess) {
+    public void setLastSuccess(Long lastSuccess) {
         this.lastSuccess = lastSuccess;
     }
 
@@ -46,15 +46,15 @@ public class Word {
         return dateAdded;
     }
 
-    public long getLastSuccess() {
+    public Long getLastSuccess() {
         return lastSuccess;
     }
 
-    public long getLastTry() {
+    public Long getLastTry() {
         return lastTry;
     }
 
-    public void setLastTry(long lastTry) {
+    public void setLastTry(Long lastTry) {
         this.lastTry = lastTry;
     }
 

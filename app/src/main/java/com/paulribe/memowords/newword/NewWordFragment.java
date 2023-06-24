@@ -1,5 +1,7 @@
 package com.paulribe.memowords.newword;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.Word;
@@ -22,15 +31,6 @@ import com.paulribe.memowords.common.recyclerviews.findword.FindWordAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class NewWordFragment extends Fragment {
 
@@ -210,7 +210,7 @@ public class NewWordFragment extends Fragment {
     private void addWord() {
         if(newWordViewModel.getNewWord() == null) {
             Word word = new Word(inputWordFR.getText().toString(), inputWordDE.getText().toString(),
-                    new Date().getTime(), newWordViewModel.NO_LAST_SUCCESS, newWordViewModel.NO_LAST_TRY,
+                    new Date().getTime(), null, null,
                     0,0, inputWordContext.getText().toString(), 0, false);
             newWordViewModel.addWord(word);
         } else {

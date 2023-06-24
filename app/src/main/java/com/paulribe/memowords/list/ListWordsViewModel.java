@@ -227,7 +227,9 @@ public class ListWordsViewModel extends BaseViewModel {
                 Collections.reverse(words);
                 break;
             case LAST_TRY:
-                words.sort(Comparator.comparing(Word::getLastTry).reversed());
+                words.sort(Comparator.comparing(Word::getLastTry,
+                        Comparator.nullsFirst(Comparator.naturalOrder()))
+                                .reversed());
                 break;
             case KNOWLEDGE_LEVEL:
                 words.sort(Comparator.comparing(Word::getKnowledgeLevel));
@@ -284,11 +286,11 @@ public class ListWordsViewModel extends BaseViewModel {
     public Word getNewTranslatedWord(TranslatedWord translatedWord) {
         if(getIsNativeLanguageToTranslation().getValue()) {
             return new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
-                    new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
+                    new Date().getTime(), null, null,
                     0, 0, "", 0, false);
         } else {
             return new Word(translatedWord.getTargetWord(), translatedWord.getSourceWord(),
-                    new Date().getTime(), NO_LAST_SUCCESS, NO_LAST_TRY,
+                    new Date().getTime(), null, null,
                     0, 0, "", 0, false);
         }
     }

@@ -3,6 +3,7 @@ package com.paulribe.memowords.viewmodels;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 
@@ -276,8 +277,8 @@ public class ListWordsViewModelTest {
         assertEquals("source", newTranslatedWord.getWordNative());
         assertEquals("target", newTranslatedWord.getWordTranslated());
 
-        assertEquals(TestData.NO_LAST_SUCCESS, newTranslatedWord.getLastSuccess());
-        assertEquals(TestData.NO_LAST_TRY, newTranslatedWord.getLastTry());
+        assertNull(newTranslatedWord.getLastSuccess());
+        assertNull(newTranslatedWord.getLastTry());
 
         assertEquals(new Integer(0), newTranslatedWord.getNumberTry());
         assertEquals(new Integer(0), newTranslatedWord.getNumberSuccess());
@@ -298,8 +299,8 @@ public class ListWordsViewModelTest {
         assertEquals("target", newTranslatedWord.getWordNative());
         assertEquals("source", newTranslatedWord.getWordTranslated());
 
-        assertEquals(TestData.NO_LAST_SUCCESS, newTranslatedWord.getLastSuccess());
-        assertEquals(TestData.NO_LAST_TRY, newTranslatedWord.getLastTry());
+        assertNull(newTranslatedWord.getLastSuccess());
+        assertNull(newTranslatedWord.getLastTry());
 
         assertEquals(new Integer(0), newTranslatedWord.getNumberTry());
         assertEquals(new Integer(0), newTranslatedWord.getNumberSuccess());

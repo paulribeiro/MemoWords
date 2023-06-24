@@ -4,10 +4,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,7 +19,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.Word;
 import com.paulribe.memowords.common.recyclerviews.DividerItemDecoration;
@@ -30,35 +26,34 @@ import com.paulribe.memowords.common.recyclerviews.findword.FindWordAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.stream.Collectors;
+
+import lombok.Getter;
 
 public class NewWordFragment extends Fragment {
 
+
+    @Getter
+    private NewWordViewModel newWordViewModel;
+    @Getter
     private Button addButton;
     private Button deleteButton;
-    private EditText inputWordFR;
-    private EditText inputWordDE;
-    private EditText inputWordContext;
-    private RecyclerView suggestionWordFRRecyclerView;
-    private RecyclerView suggestionWordDERecyclerView;
     private Button exitEditWordButton;
+    @Getter
+    private EditText inputWordNative;
+    @Getter
+    private EditText inputWordTranslation;
+    private EditText inputWordContext;
+    @Getter
+    private RecyclerView suggestionWordNativeRecyclerView;
+    @Getter
+    private RecyclerView suggestionWordTranslationRecyclerView;
     private TextView popupCurrentWordEditedTextView;
     private TextView popupAddTitleTextView;
     private TextView popupEditTitleTextView;
-
-    private TextView textViewWordTranslation;
-    private TextView textViewWordNative;
-
-    private FindWordAdapter adapterFR;
-    private FindWordAdapter adapterDE;
-
-    private NewWordViewModel newWordViewModel;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    @Getter
+    private FindWordAdapter adapterWordNative;
+    @Getter
+    private FindWordAdapter adapterWordTranslation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,75 +71,35 @@ public class NewWordFragment extends Fragment {
         exitEditWordButton.setOnClickListener(view1 -> switchToAddWordMode());
         deleteButton.setOnClickListener(view1 -> deleteWord());
 
-        inputWordFR.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords()) || s.toString().length() < 3) {
-                        suggestionWordFRRecyclerView.setVisibility(View.GONE);
-                    } else {
-                        suggestionWordFRRecyclerView.setVisibility(View.VISIBLE);
-                        adapterFR.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordNative().toLowerCase().contains(s.toString().toLowerCase()))
-                                .collect(Collectors.toList()));
-                        adapterFR.notifyDataSetChanged();
-                    }
-                }
-                checkRequiredFields();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-        });
-
-        inputWordFR.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                suggestionWordFRRecyclerView.setVisibility(View.GONE);
-            }
-        });
-
-        inputWordDE.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(newWordViewModel.getNewWord() == null) {
-                    if(s.toString().isEmpty() || CollectionUtils.isEmpty(newWordViewModel.getWords()) || s.toString().length() < 3) {
-                        suggestionWordDERecyclerView.setVisibility(View.GONE);
-                    } else {
-                        suggestionWordDERecyclerView.setVisibility(View.VISIBLE);
-                        adapterDE.setWords(newWordViewModel.getWords().stream().filter(w -> w.getWordTranslated().toLowerCase().contains(s.toString().toLowerCase()))
-                                .collect(Collectors.toList()));
-                        adapterDE.notifyDataSetChanged();
-                    }
-                }
-                checkRequiredFields();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-        });
-
-        inputWordDE.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                suggestionWordDERecyclerView.setVisibility(View.GONE);
-            }
-        });
-
         hideKeyboardWhenTouchingOutside(view);
 
         Drawable drawable = getActivity().getDrawable(R.drawable.divider);
-        suggestionWordDERecyclerView.addItemDecoration(
+        suggestionWordTranslationRecyclerView.addItemDecoration(
                 new DividerItemDecoration(drawable,
                         false, false));
-        suggestionWordFRRecyclerView.addItemDecoration(
+        suggestionWordNativeRecyclerView.addItemDecoration(
                 new DividerItemDecoration(drawable,
                         false, false));
 
         configureRecyclerView();
+        configureInputWordEditTexts();
+    }
+
+    private void configureInputWordEditTexts() {
+        inputWordNative.addTextChangedListener(
+                new InputWordTextWatcher(this, true));
+        inputWordNative.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                suggestionWordNativeRecyclerView.setVisibility(View.GONE);
+            }
+        });
+        inputWordTranslation.addTextChangedListener(
+                new InputWordTextWatcher(this, false));
+        inputWordTranslation.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                suggestionWordTranslationRecyclerView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void initDataBinding() {
@@ -157,65 +112,51 @@ public class NewWordFragment extends Fragment {
         addButton.setEnabled(false);
         deleteButton = view.findViewById(R.id.popupDeleteButton);
         deleteButton.setVisibility(View.GONE);
-        inputWordFR = view.findViewById(R.id.inputWordNative);
-        inputWordDE = view.findViewById(R.id.inputWordTranslation);
+        inputWordNative = view.findViewById(R.id.inputWordNative);
+        inputWordTranslation = view.findViewById(R.id.inputWordTranslation);
         inputWordContext = view.findViewById(R.id.inputWordContext);
-        suggestionWordFRRecyclerView = view.findViewById(R.id.suggestionWordFR);
-        suggestionWordDERecyclerView = view.findViewById(R.id.suggestionWordDE);
+        suggestionWordNativeRecyclerView = view.findViewById(R.id.suggestionWordFR);
+        suggestionWordTranslationRecyclerView = view.findViewById(R.id.suggestionWordDE);
         popupEditTitleTextView = view.findViewById(R.id.popupEditTitle);
         exitEditWordButton = view.findViewById(R.id.exitEditWordButton);
         popupCurrentWordEditedTextView = view.findViewById(R.id.popupCurrentWordEdited);
         popupAddTitleTextView = view.findViewById(R.id.popupAddTitle);
-        textViewWordTranslation = view.findViewById(R.id.textViewWordDE);
-        textViewWordNative = view.findViewById(R.id.textview_word_fr);
+        TextView textViewWordTranslation = view.findViewById(R.id.textViewWordDE);
+        TextView textViewWordNative = view.findViewById(R.id.textview_word_fr);
         if(newWordViewModel.getCurrentLanguage().getValue() != null) {
             textViewWordTranslation.setText(getString(R.string.word_in, newWordViewModel.getCurrentLanguage().getValue().toString(getContext())));
         }
         textViewWordNative.setText(getString(R.string.word_in, newWordViewModel.getNativeLanguage().toString(getContext())));
-        suggestionWordFRRecyclerView.setHasFixedSize(true);
-        suggestionWordDERecyclerView.setHasFixedSize(true);
+        suggestionWordNativeRecyclerView.setHasFixedSize(true);
+        suggestionWordTranslationRecyclerView.setHasFixedSize(true);
         popupCurrentWordEditedTextView.setVisibility(View.GONE);
         popupEditTitleTextView.setVisibility(View.GONE);
         exitEditWordButton.setVisibility(View.GONE);
-        suggestionWordFRRecyclerView.setVisibility(View.GONE);
-        suggestionWordDERecyclerView.setVisibility(View.GONE);
+        suggestionWordNativeRecyclerView.setVisibility(View.GONE);
+        suggestionWordTranslationRecyclerView.setVisibility(View.GONE);
     }
 
     private void hideKeyboardWhenTouchingOutside(@NonNull View view) {
-        view.findViewById(R.id.outPopup).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
-                return true;
-            }
+        view.findViewById(R.id.outPopup).setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            return true;
         });
 
-        view.findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
-                return true;
-            }
+        view.findViewById(R.id.scrollView).setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            return true;
         });
-    }
-
-    private void checkRequiredFields() {
-        if (!inputWordFR.getText().toString().isEmpty() && !inputWordDE.getText().toString().isEmpty()) {
-            addButton.setEnabled(true);
-        } else {
-            addButton.setEnabled(false);
-        }
     }
 
     private void addWord() {
         if(newWordViewModel.getNewWord() == null) {
-            Word word = new Word(inputWordFR.getText().toString(), inputWordDE.getText().toString(),
+            Word word = new Word(inputWordNative.getText().toString(), inputWordTranslation.getText().toString(),
                     new Date().getTime(), null, null,
                     0,0, inputWordContext.getText().toString(), 0, false);
             newWordViewModel.addWord(word);
         } else {
-            newWordViewModel.updateWord(inputWordDE.getText().toString(),
-                    inputWordFR.getText().toString(), inputWordContext.getText().toString());
+            newWordViewModel.updateWord(inputWordTranslation.getText().toString(),
+                    inputWordNative.getText().toString(), inputWordContext.getText().toString());
             switchToAddWordMode();
         }
         emptyInputFields();
@@ -223,32 +164,22 @@ public class NewWordFragment extends Fragment {
     }
 
     private void configureRecyclerView(){
-        this.adapterFR = new FindWordAdapter(new ArrayList<>(), true, new FindWordAdapter.OnViewClickListener() {
-            @Override
-            public void onViewClick(Word word) {
-                switchToEditWordMode(word);
-            }
-        });
-        this.suggestionWordFRRecyclerView.setAdapter(this.adapterFR);
-        this.suggestionWordFRRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        this.suggestionWordFRRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        this.adapterWordNative = new FindWordAdapter(new ArrayList<>(), true, this::switchToEditWordMode);
+        this.suggestionWordNativeRecyclerView.setAdapter(this.adapterWordNative);
+        this.suggestionWordNativeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        this.suggestionWordNativeRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        this.adapterDE = new FindWordAdapter(new ArrayList<>(), false, new FindWordAdapter.OnViewClickListener() {
-            @Override
-            public void onViewClick(Word word) {
-                switchToEditWordMode(word);
-            }
-        });
-        this.suggestionWordDERecyclerView.setAdapter(this.adapterDE);
-        this.suggestionWordDERecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        this.suggestionWordDERecyclerView.setItemAnimator(new DefaultItemAnimator());
+        this.adapterWordTranslation = new FindWordAdapter(new ArrayList<>(), false, this::switchToEditWordMode);
+        this.suggestionWordTranslationRecyclerView.setAdapter(this.adapterWordTranslation);
+        this.suggestionWordTranslationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        this.suggestionWordTranslationRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void switchToEditWordMode(Word word) {
         updateWithWord(word);
         addButton.setText(R.string.update_word);
-        suggestionWordDERecyclerView.setVisibility(View.GONE);
-        suggestionWordFRRecyclerView.setVisibility(View.GONE);
+        suggestionWordTranslationRecyclerView.setVisibility(View.GONE);
+        suggestionWordNativeRecyclerView.setVisibility(View.GONE);
         popupCurrentWordEditedTextView.setVisibility(View.VISIBLE);
         popupEditTitleTextView.setVisibility(View.VISIBLE);
         exitEditWordButton.setVisibility(View.VISIBLE);
@@ -263,8 +194,8 @@ public class NewWordFragment extends Fragment {
     }
 
     public void updateInputFields(Word word) {
-        inputWordDE.setText(word.getWordTranslated());
-        inputWordFR.setText(word.getWordNative());
+        inputWordTranslation.setText(word.getWordTranslated());
+        inputWordNative.setText(word.getWordNative());
         inputWordContext.setText(word.getContext());
     }
 
@@ -285,8 +216,8 @@ public class NewWordFragment extends Fragment {
     }
 
     private void emptyInputFields() {
-        inputWordFR.setText("");
-        inputWordDE.setText("");
+        inputWordNative.setText("");
+        inputWordTranslation.setText("");
         inputWordContext.setText("");
     }
 
@@ -294,4 +225,6 @@ public class NewWordFragment extends Fragment {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
+
+
 }

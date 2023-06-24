@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews.word;
+package com.paulribe.memowords.common.recyclerviews.word;
 
 import android.content.Context;
 import android.text.Spannable;

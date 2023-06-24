@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews.translationResult;
+package com.paulribe.memowords.common.recyclerviews.translationresult;
 
 import android.view.View;
 import android.widget.TextView;

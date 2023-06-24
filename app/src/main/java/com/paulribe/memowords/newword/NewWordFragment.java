@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.Word;
-import com.paulribe.memowords.common.recyclerViews.DividerItemDecoration;
-import com.paulribe.memowords.common.recyclerViews.findWord.FindWordAdapter;
+import com.paulribe.memowords.common.recyclerviews.DividerItemDecoration;
+import com.paulribe.memowords.common.recyclerviews.findword.FindWordAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;

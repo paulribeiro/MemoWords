@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews.knowledgeLevelFilter;
+package com.paulribe.memowords.common.recyclerviews.knowledgelevelfilter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

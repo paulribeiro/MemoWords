@@ -1,17 +1,17 @@
-package com.paulribe.memowords.common.recyclerViews.word;
+package com.paulribe.memowords.common.recyclerviews.word;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.Word;
-import com.paulribe.memowords.common.recyclerViews.OnFavoriteClickListener;
+import com.paulribe.memowords.common.recyclerviews.OnFavoriteClickListener;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -51,7 +51,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
             case 0:
-                ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), position, isNativeLanguageToTranslation, viewHolder.itemView.getContext());
+                ((WordViewHolder)viewHolder).updateWithWord(this.words.get(position), isNativeLanguageToTranslation, viewHolder.itemView.getContext());
                 break;
             case 1:
                 ((NoContentViewHolder)viewHolder).updateNoContentItemWithoutImage();
@@ -96,10 +96,6 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setWords(List<Word> words) {
         this.words = words;
-    }
-
-    public Boolean getNativeLanguageToTranslation() {
-        return isNativeLanguageToTranslation;
     }
 
     public void setNativeLanguageToTranslation(Boolean nativeLanguageToTranslation) {

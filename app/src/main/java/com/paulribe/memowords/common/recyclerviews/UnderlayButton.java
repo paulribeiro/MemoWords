@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews;
+package com.paulribe.memowords.common.recyclerviews;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

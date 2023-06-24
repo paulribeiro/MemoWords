@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews.translationResult;
+package com.paulribe.memowords.common.recyclerviews.translationresult;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.TranslatedWord;
-import com.paulribe.memowords.common.recyclerViews.OnExpandSectionClickListener;
-import com.paulribe.memowords.common.recyclerViews.OnWordTranslatedClickListener;
-import com.paulribe.memowords.common.recyclerViews.word.NoContentViewHolder;
+import com.paulribe.memowords.common.recyclerviews.OnExpandSectionClickListener;
+import com.paulribe.memowords.common.recyclerviews.OnWordTranslatedClickListener;
+import com.paulribe.memowords.common.recyclerviews.word.NoContentViewHolder;
 
 import java.util.List;
 

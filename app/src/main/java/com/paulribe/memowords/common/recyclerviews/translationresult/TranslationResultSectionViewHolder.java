@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.recyclerViews.translationResult;
+package com.paulribe.memowords.common.recyclerviews.translationresult;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.TranslatedWord;
-import com.paulribe.memowords.common.recyclerViews.OnExpandSectionClickListener;
+import com.paulribe.memowords.common.recyclerviews.OnExpandSectionClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

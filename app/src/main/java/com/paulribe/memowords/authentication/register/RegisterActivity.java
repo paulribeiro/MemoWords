@@ -14,6 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -24,9 +27,6 @@ import com.paulribe.memowords.common.countrypicker.CountryAdapter;
 import com.paulribe.memowords.common.countrypicker.CountryItem;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextEmail;
@@ -35,6 +35,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private TextView textViewSignin;
     private ProgressDialog progressDialog;
     private RegisterViewModel registerViewModel;
+
+    private final TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        @Override
+        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+            checkRequiredFieldsForButtonSignup();
+        }
+        @Override
+        public void afterTextChanged(Editable editable) { }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,28 +68,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progressDialog = new ProgressDialog(this);
         buttonSignup.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
-        editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                checkRequiredFieldsForButtonSignup();
-            }
-            @Override
-            public void afterTextChanged(Editable editable) { }
-        });
-
-        editTextEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                checkRequiredFieldsForButtonSignup();
-            }
-            @Override
-            public void afterTextChanged(Editable editable) { }
-        });
-
+        editTextPassword.addTextChangedListener(textWatcher);
+        editTextEmail.addTextChangedListener(textWatcher);
 
         Spinner spinnerCountries = findViewById(R.id.flags_spinner);
         CountryAdapter mAdapter = new CountryAdapter(this, registerViewModel.getmCountryList());
@@ -129,12 +120,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void checkRequiredFieldsForButtonSignup() {
-        if (!editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty() &&
-                registerViewModel.getNativeLanguage() != null && registerViewModel.getNativeLanguage() != LanguageEnum.NONE) {
-            buttonSignup.setEnabled(true);
-        } else {
-            buttonSignup.setEnabled(false);
-        }
+        buttonSignup.setEnabled(textFieldsAreNotEmpty() && nativeLanguageIsSelected());
+    }
+
+    private boolean textFieldsAreNotEmpty() {
+        //TODO: further verification needed ?
+        return !editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty();
+    }
+
+    private boolean nativeLanguageIsSelected() {
+        return registerViewModel.getNativeLanguage() != null && registerViewModel.getNativeLanguage() != LanguageEnum.NONE;
     }
 
     private void initDataBinding() {

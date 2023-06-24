@@ -1,6 +1,9 @@
 package com.paulribe.memowords.list;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.common.util.CollectionUtils;
+import com.paulribe.memowords.BaseViewModel;
 import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 import com.paulribe.memowords.common.enumeration.OrderByEnum;
@@ -15,7 +18,8 @@ import com.paulribe.memowords.common.model.pons.SearchWordResultList;
 import com.paulribe.memowords.common.model.pons.Translation;
 import com.paulribe.memowords.common.model.pons.WordMeaning;
 import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
-import com.paulribe.memowords.BaseViewModel;
+
+import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import androidx.lifecycle.MutableLiveData;
 import lombok.Getter;
 
 public class ListWordsViewModel extends BaseViewModel {
@@ -259,8 +262,8 @@ public class ListWordsViewModel extends BaseViewModel {
         return translatedWord;
     }
 
-    public static String html2text(String html) {
-        return html.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ").trim();
+    public static String html2text(String htmlText) {
+        return Jsoup.parse(htmlText).text().trim();
     }
 
     public void exchangeSourceTargetLanguage() {

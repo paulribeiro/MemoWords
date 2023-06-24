@@ -1,15 +1,16 @@
 package com.paulribe.memowords.common.recyclerViews;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,31 +19,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     public static final int BUTTON_WIDTH = 300;
-    private RecyclerView recyclerView;
+    private final RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
     private int swipedPos = -1;
     private float swipeThreshold = 0.5f;
-    private Map<Integer, List<UnderlayButton>> buttonsBuffer;
-    private Queue<Integer> recoverQueue;
+    private final Map<Integer, List<UnderlayButton>> buttonsBuffer;
+    private final Queue<Integer> recoverQueue;
     private ItemTouchHelper itemTouchHelper;
-
-    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            for (UnderlayButton button : buttons){
-                if(button.onClick(e.getX(), e.getY()))
-                    break;
-            }
-            return true;
-        }
-    };
 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
@@ -72,6 +59,16 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         super(0, ItemTouchHelper.LEFT);
         this.recyclerView = recyclerView;
         this.buttons = new ArrayList<>();
+        GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                for (UnderlayButton button : buttons) {
+                    if (button.onClick(e.getX(), e.getY()))
+                        break;
+                }
+                return true;
+            }
+        };
         this.gestureDetector = new GestureDetector(context, gestureListener);
         this.recyclerView.setOnTouchListener(onTouchListener);
         buttonsBuffer = new HashMap<>();
@@ -195,55 +192,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     public abstract void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons);
-
-    public static class UnderlayButton {
-        private String text;
-        private Bitmap bitmap;
-        private int color;
-        private int pos;
-        private RectF clickRegion;
-        private UnderlayButtonClickListener clickListener;
-
-        public UnderlayButton(String text, Bitmap bitmap, int color, UnderlayButtonClickListener clickListener) {
-            this.text = text;
-            this.bitmap = bitmap;
-            this.color = color;
-            this.clickListener = clickListener;
-        }
-
-        public boolean onClick(float x, float y){
-            if (clickRegion != null && clickRegion.contains(x, y)){
-                clickListener.onClick(pos);
-                return true;
-            }
-            return false;
-        }
-
-        public void onDraw(Canvas c, RectF rect, int pos){
-            Paint p = new Paint();
-
-            // Draw background
-            p.setColor(color);
-            c.drawRect(rect, p);
-
-            // Draw Text
-            //p.setColor(Color.WHITE);
-            //p.setTextSize(50);
-
-
-            float spaceHeight = 0; // change to whatever you deem looks better
-            //float textWidth = p.measureText(text);
-            Rect bounds = new Rect();
-            p.getTextBounds(text, 0, text.length(), bounds);
-            float combinedHeight = bitmap.getHeight() + spaceHeight + bounds.height();
-            c.drawBitmap(bitmap, rect.centerX() - (bitmap.getWidth() / 2), rect.centerY() - (combinedHeight / 2), null);
-            //If you want text as well with bitmap
-            //c.drawText(text, rect.centerX() - (textWidth / 2), rect.centerY() + (combinedHeight / 2), p);
-
-            clickRegion = rect;
-            this.pos = pos;
-        }
-    }
 
     public interface UnderlayButtonClickListener {
         void onClick(int pos);

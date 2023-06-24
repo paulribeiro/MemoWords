@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.paulribe.memowords.LoadingDialog;
+import com.paulribe.memowords.MainActivity;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
@@ -39,13 +40,13 @@ import com.paulribe.memowords.common.recyclerViews.OnExpandSectionClickListener;
 import com.paulribe.memowords.common.recyclerViews.OnFavoriteClickListener;
 import com.paulribe.memowords.common.recyclerViews.OnWordTranslatedClickListener;
 import com.paulribe.memowords.common.recyclerViews.SwipeHelper;
+import com.paulribe.memowords.common.recyclerViews.UnderlayButton;
 import com.paulribe.memowords.common.recyclerViews.knowledgeLevelFilter.KnowledgeLevelFilterAdapter;
 import com.paulribe.memowords.common.recyclerViews.translationResult.TranslationResultAdapter;
 import com.paulribe.memowords.common.recyclerViews.word.WordAdapter;
 import com.paulribe.memowords.common.restclient.MyMemoryService;
 import com.paulribe.memowords.common.restclient.PonsService;
 import com.paulribe.memowords.common.restclient.RetrofitClientInstance;
-import com.paulribe.memowords.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -160,7 +161,7 @@ public class ListFragment extends Fragment {
         swipeHelper = new SwipeHelper(getContext(), recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                underlayButtons.add(new UnderlayButton(
                         "Delete",
                         BitmapFactory.decodeResource(getContext().getResources(),
                                 R.drawable.bin_icon_48),
@@ -171,7 +172,7 @@ public class ListFragment extends Fragment {
                         }
                 ));
 
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                underlayButtons.add(new UnderlayButton(
                         "Edit",
                         BitmapFactory.decodeResource(getContext().getResources(),
                                 R.drawable.edit_icon_40),

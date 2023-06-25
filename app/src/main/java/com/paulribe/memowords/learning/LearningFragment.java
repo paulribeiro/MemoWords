@@ -8,16 +8,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.paulribe.memowords.LoadingDialog;
-import com.paulribe.memowords.R;
-import com.paulribe.memowords.common.enumeration.LearningFragmentStateEnum;
-import com.paulribe.memowords.common.model.Word;
-import com.paulribe.memowords.MainActivity;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.paulribe.memowords.LoadingDialog;
+import com.paulribe.memowords.MainActivity;
+import com.paulribe.memowords.R;
+import com.paulribe.memowords.common.enumeration.LearningFragmentStateEnum;
+import com.paulribe.memowords.common.model.Word;
 
 public class LearningFragment extends Fragment {
 
@@ -100,7 +100,7 @@ public class LearningFragment extends Fragment {
     private void initDataBinding() {
 
         loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.startLoadingDialog(getContext(), getResources().getString(R.string.loading_data));
+        loadingDialog.startLoadingDialog(getResources().getString(R.string.loading_data));
 
         learningViewModel = new ViewModelProvider(getActivity()).get(LearningViewModel.class);
         learningViewModel.init();

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
-import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
+import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
 
 public class BaseViewModel extends ViewModel {
 

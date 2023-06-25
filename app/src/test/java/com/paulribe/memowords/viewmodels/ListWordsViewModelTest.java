@@ -75,7 +75,7 @@ public class ListWordsViewModelTest {
 
         SearchWordResultList searchWordResultList = TestData.createSearchWordResultList(Arrays.asList(searchWordResult, searchWordResult2));
 
-        viewModelMock.buildTranslation(Collections.singletonList(TestData.createPonsResult(Collections.singletonList(searchWordResultList))));
+        viewModelMock.buildTranslationForPons(Collections.singletonList(TestData.createPonsResult(Collections.singletonList(searchWordResultList))));
 
         final ArgumentCaptor<List<TranslatedWord>> captor = ArgumentCaptor.forClass(ArrayList.class);
         verify(viewModelMock).setTranslatedWordResults(captor.capture());
@@ -117,7 +117,7 @@ public class ListWordsViewModelTest {
     @Test
     public void buildTranslationEmptyTest() {
 
-        viewModelMock.buildTranslation(null);
+        viewModelMock.buildTranslationForPons(null);
 
         final ArgumentCaptor<List<TranslatedWord>> captor = ArgumentCaptor.forClass(ArrayList.class);
         verify(viewModelMock).setTranslatedWordResults(captor.capture());

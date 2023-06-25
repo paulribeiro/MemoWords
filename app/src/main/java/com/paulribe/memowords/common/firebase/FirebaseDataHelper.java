@@ -1,4 +1,4 @@
-package com.paulribe.memowords.common.restclient;
+package com.paulribe.memowords.common.firebase;
 
 import androidx.annotation.NonNull;
 
@@ -9,15 +9,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
-import com.paulribe.memowords.common.model.UserConfig;
 import com.paulribe.memowords.common.model.Word;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class FirebaseDataHelper implements Serializable {
+public class FirebaseDataHelper {
     private static FirebaseDatabase dataBase;
     private DatabaseReference referenceWords;
     private DatabaseReference referenceUserConfig;
@@ -39,12 +37,7 @@ public class FirebaseDataHelper implements Serializable {
         void dataIsDeleted();
     }
 
-    public interface UserConfigLoadedStatus {
-        void UserConfigIsLoaded(UserConfig userConfig);
-    }
-
     public void readWords(final DataStatus dataStatus) {
-        //TODO : check if doesn't happen many times ...
         referenceWords.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -65,7 +58,7 @@ public class FirebaseDataHelper implements Serializable {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // No action to be performed.
             }
         });
     }
@@ -74,20 +67,7 @@ public class FirebaseDataHelper implements Serializable {
         if(configListener != null) {
             referenceUserConfig.removeEventListener(configListener);
         }
-        configListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserConfig userConfig = dataSnapshot.getValue(UserConfig.class);
-                if(userConfig != null) {
-                    userConfigLoadedStatus.UserConfigIsLoaded(userConfig);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
+        configListener = new UserConfigValueEventListener(userConfigLoadedStatus);
         referenceUserConfig.addValueEventListener(configListener);
     }
 

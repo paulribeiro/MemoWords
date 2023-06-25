@@ -1,6 +1,5 @@
 package com.paulribe.memowords.authentication.register;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.paulribe.memowords.LoadingDialog;
 import com.paulribe.memowords.MainActivity;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.authentication.login.LoginActivity;
@@ -33,18 +33,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText editTextPassword;
     private Button buttonSignup;
     private TextView textViewSignin;
-    private ProgressDialog progressDialog;
     private RegisterViewModel registerViewModel;
+    private LoadingDialog loadingDialog;
+
 
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            //No action to be performed.
+        }
+
         @Override
         public void onTextChanged(CharSequence s, int i, int i1, int i2) {
             checkRequiredFieldsForButtonSignup();
         }
+
         @Override
-        public void afterTextChanged(Editable editable) { }
+        public void afterTextChanged(Editable editable) {
+            //No action to be performed.
+        }
     };
 
     @Override
@@ -65,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         buttonSignup = findViewById(R.id.buttonSignup);
 
         buttonSignup.setEnabled(false);
-        progressDialog = new ProgressDialog(this);
+        loadingDialog = new LoadingDialog(this);
         buttonSignup.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
         editTextPassword.addTextChangedListener(textWatcher);
@@ -86,12 +93,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                //No action to be performed.
             }
         });
     }
 
     private void registerUser(){
-
         String email = editTextEmail.getText().toString().trim();
         String password  = editTextPassword.getText().toString().trim();
 
@@ -106,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         registerViewModel.registerUser(email, password);
-
     }
 
     @Override
@@ -124,7 +130,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean textFieldsAreNotEmpty() {
-        //TODO: further verification needed ?
         return !editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty();
     }
 
@@ -145,10 +150,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage(getString(R.string.registering));
-            progressDialog.show();
+            loadingDialog.startLoadingDialog(getString(R.string.registering));
         } else {
-            progressDialog.dismiss();
+            loadingDialog.dismissDialog();
         }
     }
 

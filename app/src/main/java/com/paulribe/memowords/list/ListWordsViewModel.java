@@ -8,6 +8,7 @@ import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 import com.paulribe.memowords.common.enumeration.OrderByEnum;
 import com.paulribe.memowords.common.enumeration.SectionRowEnum;
+import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
 import com.paulribe.memowords.common.model.TranslatedWord;
 import com.paulribe.memowords.common.model.Word;
 import com.paulribe.memowords.common.model.mymemory.Match;
@@ -17,9 +18,7 @@ import com.paulribe.memowords.common.model.pons.SearchWordResult;
 import com.paulribe.memowords.common.model.pons.SearchWordResultList;
 import com.paulribe.memowords.common.model.pons.Translation;
 import com.paulribe.memowords.common.model.pons.WordMeaning;
-import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
-
-import org.jsoup.Jsoup;
+import com.paulribe.memowords.common.restclient.HtmlHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +27,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
@@ -81,6 +82,7 @@ public class ListWordsViewModel extends BaseViewModel {
         this.translatedWordResults.setValue(translatedWordResults);
     }
 
+    @Override
     public void init() {
         words = new MutableLiveData<>(new ArrayList<>());
         orderByEnum = new MutableLiveData<>(OrderByEnum.LAST_TRY);
@@ -106,7 +108,9 @@ public class ListWordsViewModel extends BaseViewModel {
             }
 
             @Override
-            public void dataIsInserted() {}
+            public void dataIsInserted() {
+                // No action to perform.
+            }
 
             @Override
             public void dataIsUpdated(List<Word> w) {
@@ -114,41 +118,86 @@ public class ListWordsViewModel extends BaseViewModel {
             }
 
             @Override
-            public void dataIsDeleted() {}
+            public void dataIsDeleted() {
+                // No action to perform.
+            }
         });
     }
 
-    public void buildTranslation(List<PonsResult> ponsResults) {
-        Integer sectionNumber = 1;
-        Integer subSectionNumber = 1;
-        List<TranslatedWord> translatedWords = new ArrayList<>();
+    public void buildTranslationForPons(List<PonsResult> ponsResults) {
         if(!CollectionUtils.isEmpty(ponsResults)) {
-            PonsResult ponsResult = ponsResults.get(0);
-            if(ponsResult.getHits() != null) {
-                for(SearchWordResultList searchWordResultList : ponsResult.getHits()) {
-                    if(searchWordResultList.getRoms() != null) {
-                        for(SearchWordResult searchWordResult : searchWordResultList.getRoms()) {
-                            translatedWords.add(createTranslatedWordForSection(searchWordResult, sectionNumber));
-                            if(searchWordResult.getArabs() != null) {
-                                for(WordMeaning wordMeaning : searchWordResult.getArabs()) {
-                                    translatedWords.add(createTranslatedWordForSubSection(wordMeaning, sectionNumber, subSectionNumber));
-                                    if(wordMeaning.getTranslations() != null) {
-                                        for(Translation translation : wordMeaning.getTranslations()) {
-                                            translatedWords.add(createTranslatedWordForRow(translation, sectionNumber, subSectionNumber));
-                                        }
-                                    }
-                                    subSectionNumber++;
-                                }
-                            }
-                            sectionNumber ++;
-                        }
-                    }
-                }
-            }
+            List<TranslatedWord> translatedWords = convertPonsResultToTranslatedWords(ponsResults.get(0));
             setTranslatedWordResults(translatedWords);
         } else {
             setTranslatedWordResults(new ArrayList<>());
         }
+    }
+
+    private List<TranslatedWord> convertPonsResultToTranslatedWords(PonsResult ponsResult) {
+        List<TranslatedWord> translatedWords = new ArrayList<>();
+        if(ponsResult.getHits() != null) {
+            AtomicInteger sectionNumber = new AtomicInteger(1);
+            ponsResult.getHits().stream()
+                    .map(SearchWordResultList::getRoms)
+                    .filter(Objects::nonNull)
+                    .flatMap(List::stream)
+                    .filter(Objects::nonNull)
+                    .forEach(searchWordResult ->
+                            createTranslatedWordForSectionAndChildren(sectionNumber.getAndIncrement(),
+                                    translatedWords, searchWordResult));
+        }
+        return translatedWords;
+    }
+
+    private void createTranslatedWordForSectionAndChildren(Integer sectionNumber, List<TranslatedWord> translatedWords, SearchWordResult searchWordResult) {
+        TranslatedWord translatedWordForSection = createTranslatedWordForSection(searchWordResult, sectionNumber);
+        if(translatedWordForSection != null) {
+            translatedWords.add(translatedWordForSection);
+        }
+        if(searchWordResult.getArabs() != null) {
+            AtomicInteger subSectionNumber = new AtomicInteger(1);
+            searchWordResult.getArabs().stream()
+                    .filter(Objects::nonNull)
+                    .forEach(wordMeaning -> createTranslatedWordForSubSectionAndChildren(sectionNumber, translatedWords, subSectionNumber.getAndIncrement(), wordMeaning));
+        }
+    }
+
+    private TranslatedWord createTranslatedWordForSection(SearchWordResult searchWordResult, Integer sectionNumber) {
+        if(!searchWordResult.getHeadwordfull().isEmpty()) {
+            return new TranslatedWord(SectionRowEnum.SECTION, HtmlHelper.html2text(searchWordResult.getHeadwordfull()),
+                    searchWordResult.getWordclass(), sectionNumber, Boolean.FALSE);
+        } else if(searchWordResult.getHeadword() != null && !searchWordResult.getHeadword().isEmpty()){
+            return new TranslatedWord(SectionRowEnum.SECTION, HtmlHelper.html2text(searchWordResult.getHeadword()),
+                    searchWordResult.getWordclass(), sectionNumber, Boolean.FALSE);
+        } else {
+            return null;
+        }
+    }
+
+    private void createTranslatedWordForSubSectionAndChildren(Integer sectionNumber, List<TranslatedWord> translatedWords, int subSectionNumber, WordMeaning wordMeaning) {
+        TranslatedWord translatedWordForSubSection = createTranslatedWordForSubSection(wordMeaning, sectionNumber, subSectionNumber);
+        if(translatedWordForSubSection != null) {
+            translatedWords.add(translatedWordForSubSection);
+        }
+        if(wordMeaning.getTranslations() != null) {
+            wordMeaning.getTranslations().forEach(
+                translation -> translatedWords.add(
+                        createTranslatedWordForRow(translation, sectionNumber, subSectionNumber)));
+        }
+    }
+
+    private TranslatedWord createTranslatedWordForSubSection(WordMeaning wordMeaning, Integer sectionNumber, Integer subSectionNumber) {
+        if(wordMeaning.getHeader() != null && !wordMeaning.getHeader().isEmpty()) {
+            return new TranslatedWord(SectionRowEnum.SUBSECTION, HtmlHelper.html2text(wordMeaning.getHeader()),
+                    sectionNumber, subSectionNumber, Boolean.FALSE);
+        } else {
+            return null;
+        }
+    }
+
+    private TranslatedWord createTranslatedWordForRow(Translation translation, Integer sectionNumber, Integer subSectionNumber) {
+        return new TranslatedWord(SectionRowEnum.ROW, HtmlHelper.html2text(translation.getSource()), HtmlHelper.html2text(translation.getTarget()),
+                sectionNumber, subSectionNumber, Boolean.FALSE);
     }
 
     public void buildTranslationForMyMemory(MyMemoryResult myMemoryResult) {
@@ -195,77 +244,50 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public List<Word> filterWordsToDisplay() {
-        List<Word> words = getFilteredWordsByKnowledgeLevel();
+        List<Word> wordsToFilter = getFilteredWordsByKnowledgeLevel();
         String searchWord = getSearchedString().getValue();
         Boolean isFavorite = getIsFavoriteSelected().getValue();
-        OrderByEnum orderByEnum = getOrderByEnum().getValue();
         if(isFavorite != null && isFavorite) {
-            words = words.stream().filter(Word::isFavorite).collect(Collectors.toList());
+            wordsToFilter = wordsToFilter.stream().filter(Word::isFavorite).collect(Collectors.toList());
         }
         if(searchWord != null && !searchWord.isEmpty()) {
             searchWord = updateStringWithIgnoredCharacter(searchWord);
             String finalSearchWord = searchWord;
             if(getIsNativeLanguageToTranslation().getValue()) {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordNative())
+                wordsToFilter = wordsToFilter.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordNative())
                         .contains(finalSearchWord))
                         .collect(Collectors.toList());
             } else {
-                words = words.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordTranslated())
+                wordsToFilter = wordsToFilter.stream().filter(w -> updateStringWithIgnoredCharacter(w.getWordTranslated())
                         .contains(finalSearchWord))
                         .collect(Collectors.toList());
             }
 
         }
-        switch(orderByEnum) {
+        switch(getOrderByEnum().getValue()) {
             case AZ:
-                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
+                wordsToFilter.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
                         .compareTo(updateStringWithIgnoredCharacter(word2.getWordNative())));
                 break;
             case ZA:
-                words.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
+                wordsToFilter.sort((word, word2) -> updateStringWithIgnoredCharacter(word.getWordNative())
                         .compareTo(updateStringWithIgnoredCharacter(word2.getWordNative())));
-                Collections.reverse(words);
+                Collections.reverse(wordsToFilter);
                 break;
             case LAST_TRY:
-                words.sort(Comparator.comparing(Word::getLastTry,
+                wordsToFilter.sort(Comparator.comparing(Word::getLastTry,
                         Comparator.nullsFirst(Comparator.naturalOrder()))
                                 .reversed());
                 break;
             case KNOWLEDGE_LEVEL:
-                words.sort(Comparator.comparing(Word::getKnowledgeLevel));
+                wordsToFilter.sort(Comparator.comparing(Word::getKnowledgeLevel));
                 break;
             case KNOWLEDGE_LEVEL_DESC:
-                words.sort(Comparator.comparing(Word::getKnowledgeLevel).reversed());
+                wordsToFilter.sort(Comparator.comparing(Word::getKnowledgeLevel).reversed());
                 break;
         }
-        wordsToDisplay = words;
-        return words;
-    }
-
-    private TranslatedWord createTranslatedWordForRow(Translation translation, Integer sectionNumber, Integer subSectionNumber) {
-        return new TranslatedWord(SectionRowEnum.ROW, html2text(translation.getSource()), html2text(translation.getTarget()),
-                sectionNumber, subSectionNumber, Boolean.FALSE);
-    }
-
-    private TranslatedWord createTranslatedWordForSubSection(WordMeaning wordMeaning, Integer sectionNumber, Integer subSectionNumber) {
-        return new TranslatedWord(SectionRowEnum.SUBSECTION, html2text(wordMeaning.getHeader()),
-                                            sectionNumber, subSectionNumber, Boolean.FALSE);
-    }
-
-    private TranslatedWord createTranslatedWordForSection(SearchWordResult searchWordResult, Integer sectionNumber) {
-        TranslatedWord translatedWord;
-        if(!searchWordResult.getHeadwordfull().isEmpty()) {
-            translatedWord = new TranslatedWord(SectionRowEnum.SECTION, html2text(searchWordResult.getHeadwordfull()),
-                    searchWordResult.getWordclass(), sectionNumber, Boolean.FALSE);
-        } else {
-            translatedWord = new TranslatedWord(SectionRowEnum.SECTION, html2text(searchWordResult.getHeadword()),
-                    searchWordResult.getWordclass(), sectionNumber, Boolean.FALSE);
-        }
-        return translatedWord;
-    }
-
-    public static String html2text(String htmlText) {
-        return Jsoup.parse(htmlText).text().trim();
+        wordsToDisplay = wordsToFilter;
+        return wordsToFilter;
     }
 
     public void exchangeSourceTargetLanguage() {

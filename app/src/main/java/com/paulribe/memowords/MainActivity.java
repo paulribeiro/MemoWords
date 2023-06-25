@@ -7,29 +7,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.paulribe.memowords.authentication.login.LoginActivity;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 import com.paulribe.memowords.common.model.Word;
 import com.paulribe.memowords.learning.LearningFragment;
-import com.paulribe.memowords.list.ListFragment;
-import com.paulribe.memowords.authentication.login.LoginActivity;
-import com.paulribe.memowords.newword.NewWordFragment;
 import com.paulribe.memowords.learning.NoWordsFragment;
 import com.paulribe.memowords.learning.RevisionFinishedFragment;
+import com.paulribe.memowords.list.ListFragment;
+import com.paulribe.memowords.newword.NewWordFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private View notificationBadge;
     private FirebaseAuth firebaseAuth;
     private LoadingDialog loadingDialog;
-
     private BaseViewModel baseViewModel;
 
 
@@ -289,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         if(loadingDialog == null) {
             loadingDialog = new LoadingDialog(this);
         }
-        loadingDialog.startLoadingDialog(this, this.getResources().getString(R.string.loading_data));
+        loadingDialog.startLoadingDialog(this.getResources().getString(R.string.loading_data));
     }
 
     public void stopLoader() {

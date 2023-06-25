@@ -3,11 +3,12 @@ package com.paulribe.memowords.common.recyclerviews.translationresult;
 import android.view.View;
 import android.widget.TextView;
 
-import com.paulribe.memowords.R;
-import com.paulribe.memowords.common.model.TranslatedWord;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.paulribe.memowords.R;
+import com.paulribe.memowords.common.model.TranslatedWord;
+import com.paulribe.memowords.common.restclient.HtmlHelper;
 
 public class TranslationResultSubsectionViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,11 +26,7 @@ public class TranslationResultSubsectionViewHolder extends RecyclerView.ViewHold
             view.setVisibility(View.GONE);
         } else {
             view.setVisibility(View.VISIBLE);
-            textViewSubsectionTitle.setText(html2text(translatedWordRow.getSourceWord()));
+            textViewSubsectionTitle.setText(HtmlHelper.html2text(translatedWordRow.getSourceWord()));
         }
-    }
-
-    public static String html2text(String html) {
-        return android.text.Html.fromHtml(html).toString();
     }
 }

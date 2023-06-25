@@ -3,8 +3,7 @@ package com.paulribe.memowords;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.paulribe.memowords.BaseViewModel;
-import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
+import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
 
 public class SplashViewModel extends BaseViewModel {
 

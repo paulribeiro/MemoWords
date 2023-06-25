@@ -236,7 +236,7 @@ public class ListFragment extends Fragment {
                     public void onResponse(@NonNull Call<List<PonsResult>> call, @NonNull Response<List<PonsResult>> response) {
                         stopLoader();
                         if(response.isSuccessful()) {
-                            listWordsViewModel.buildTranslation(response.body());
+                            listWordsViewModel.buildTranslationForPons(response.body());
                             //TODO : is result is empty, display no result
                         } else {
                             //TODO : display no result
@@ -387,7 +387,7 @@ public class ListFragment extends Fragment {
         if(loadingDialog == null) {
             loadingDialog = new LoadingDialog(getActivity());
         }
-        loadingDialog.startLoadingDialog(getActivity(), getResources().getString(R.string.loading_translation));
+        loadingDialog.startLoadingDialog(getResources().getString(R.string.loading_translation));
     }
 
     public void stopLoader() {

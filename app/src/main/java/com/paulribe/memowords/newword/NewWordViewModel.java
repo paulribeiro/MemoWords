@@ -1,8 +1,8 @@
 package com.paulribe.memowords.newword;
 
-import com.paulribe.memowords.common.model.Word;
-import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
 import com.paulribe.memowords.BaseViewModel;
+import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
+import com.paulribe.memowords.common.model.Word;
 
 import java.util.List;
 

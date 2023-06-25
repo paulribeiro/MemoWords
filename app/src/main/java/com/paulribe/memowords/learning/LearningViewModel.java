@@ -1,10 +1,15 @@
 package com.paulribe.memowords.learning;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.databinding.ObservableArrayList;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.common.util.CollectionUtils;
-import com.paulribe.memowords.common.enumeration.LearningFragmentStateEnum;
-import com.paulribe.memowords.common.model.Word;
-import com.paulribe.memowords.common.restclient.FirebaseDataHelper;
 import com.paulribe.memowords.BaseViewModel;
+import com.paulribe.memowords.common.enumeration.LearningFragmentStateEnum;
+import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
+import com.paulribe.memowords.common.model.Word;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,11 +17,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import androidx.annotation.VisibleForTesting;
-import androidx.databinding.ObservableArrayList;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 public class LearningViewModel extends BaseViewModel {
 
@@ -27,6 +27,7 @@ public class LearningViewModel extends BaseViewModel {
     private MutableLiveData<LearningFragmentStateEnum> learningFragmentStateEnum;
     private MutableLiveData<Boolean> isDataLoaded;
 
+    @Override
     public void init() {
         currentWord = new MutableLiveData<>();
         wordsToDisplay = new ObservableArrayList<>();
@@ -78,9 +79,6 @@ public class LearningViewModel extends BaseViewModel {
             }
 
             @Override
-            public void dataIsInserted() {}
-
-            @Override
             public void dataIsUpdated(List<Word> w) {
                 words = w;
                 if(words.isEmpty()) {
@@ -95,8 +93,12 @@ public class LearningViewModel extends BaseViewModel {
             }
 
             @Override
+            public void dataIsInserted() {
+                //No action to perform.
+            }
+            @Override
             public void dataIsDeleted() {
-
+                //No action to perform.
             }
         });
     }
@@ -164,17 +166,12 @@ public class LearningViewModel extends BaseViewModel {
     }
 
     public void updateLearningState() {
-        if(isRevisionFinished.getValue()) {
-            if(wordsToDisplay.size() > 0) {
-                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
-                currentWord.setValue(wordsToDisplay.get(0));
-            } else {
-                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
-            }
+        if(!wordsToDisplay.isEmpty()) {
+            learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
+            currentWord.setValue(wordsToDisplay.get(0));
         } else {
-            if(wordsToDisplay.size() > 0) {
-                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
-                currentWord.setValue(wordsToDisplay.get(0));
+            if(isRevisionFinished.getValue()) {
+                learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
             } else {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.REVISION_FINISHED);
             }

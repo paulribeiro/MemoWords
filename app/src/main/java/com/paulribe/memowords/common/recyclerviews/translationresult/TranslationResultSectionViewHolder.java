@@ -4,12 +4,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.TranslatedWord;
 import com.paulribe.memowords.common.recyclerviews.OnExpandSectionClickListener;
+import com.paulribe.memowords.common.restclient.HtmlHelper;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Objects;
 
 public class TranslationResultSectionViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,15 +35,13 @@ public class TranslationResultSectionViewHolder extends RecyclerView.ViewHolder 
         } else {
             expandImageView.setRotation(0);
         }
-        textViewSectionTitle.setText(html2text(translatedWordSection.getSourceWord() + " " + translatedWordSection.getWordClass()));
+        textViewSectionTitle.setText(HtmlHelper.html2text(
+                String.format("%s %s",translatedWordSection.getSourceWord(),
+                        Objects.toString(translatedWordSection.getWordClass(), ""))));
         expandImageView.setOnClickListener(view1 -> {
             translatedWordSection.setHidden(!translatedWordSection.getHidden());
             onExpandSectionClickListener.setTranslatedSection(translatedWordSection);
             onExpandSectionClickListener.onClick(view1);
         });
-    }
-
-    public static String html2text(String html) {
-        return android.text.Html.fromHtml(html).toString();
     }
 }

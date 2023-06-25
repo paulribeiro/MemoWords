@@ -2,7 +2,6 @@ package com.paulribe.memowords;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ public class LoadingDialog {
         this.activity = activity;
     }
 
-    public void startLoadingDialog(Context context, String message){
+    public void startLoadingDialog(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();

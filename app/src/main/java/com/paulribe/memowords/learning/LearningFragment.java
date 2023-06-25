@@ -52,7 +52,7 @@ public class LearningFragment extends Fragment {
                 setElementVisibility(true);
         setButtonsOnClickListener();
         layoutNew.setVisibility(View.VISIBLE);
-        if (!learningViewModel.getIsRevisionFinished().getValue()) {
+        if (!Boolean.TRUE.equals(learningViewModel.getIsRevisionFinished().getValue())) {
             layoutNew.setVisibility(View.GONE);
         }
     }
@@ -117,7 +117,7 @@ public class LearningFragment extends Fragment {
     }
 
     private void onIsDataLoaded(Boolean isDataLoaded) {
-        if(isDataLoaded) {
+        if(Boolean.TRUE.equals(isDataLoaded)) {
             loadingDialog.dismissDialog();
         }
     }
@@ -137,7 +137,7 @@ public class LearningFragment extends Fragment {
     }
 
     private void onIsRevisionFinishedChanged(Boolean isRevisionFinished) {
-        if(isRevisionFinished) {
+        if(Boolean.TRUE.equals(isRevisionFinished)) {
             ((MainActivity) getActivity()).deleteBadge();
         }
     }
@@ -147,7 +147,7 @@ public class LearningFragment extends Fragment {
         setElementVisibility(true);
         setTextViewWithNextWord();
         layoutNew.setVisibility(View.VISIBLE);
-        if (!learningViewModel.getIsRevisionFinished().getValue()) {
+        if (!Boolean.TRUE.equals(learningViewModel.getIsRevisionFinished().getValue())) {
             layoutNew.setVisibility(View.GONE);
             int nbWordToRevise = learningViewModel.getWordsToDisplay().size();
             if (nbWordToRevise > 0) {

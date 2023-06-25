@@ -28,7 +28,7 @@ public class TranslationResultSectionViewHolder extends RecyclerView.ViewHolder 
     }
 
     public void updateSection(TranslatedWord translatedWordSection) {
-        if(translatedWordSection.getHidden()) {
+        if(Boolean.TRUE.equals(translatedWordSection.getHidden())) {
             expandImageView.setRotation(180);
         } else {
             expandImageView.setRotation(0);

@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onNormalStateChange(Boolean normalState) {
-        if(!normalState) {
+        if(!Boolean.TRUE.equals(normalState)) {
             finish();
             startActivity(new Intent(getApplicationContext(), SplashActivity.class));
         }

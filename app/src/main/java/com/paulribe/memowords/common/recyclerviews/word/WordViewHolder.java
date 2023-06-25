@@ -45,7 +45,7 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
     public void updateWithWord(Word word, Boolean isNativeLanguageToTranslation, Context context) {
 
         view.setBackgroundColor(0xFFFFFFFF);
-        if(isNativeLanguageToTranslation) {
+        if(Boolean.TRUE.equals(isNativeLanguageToTranslation)) {
             this.textViewWord.setText(word.getWordNative());
             this.textViewTranslation.setText(word.getWordTranslated());
         } else {

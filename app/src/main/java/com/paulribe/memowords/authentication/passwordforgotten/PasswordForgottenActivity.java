@@ -62,7 +62,7 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
     }
 
     public void onIsLoadingChanged(Boolean isLoading) {
-        if(isLoading) {
+        if(Boolean.TRUE.equals(isLoading)) {
             loadingDialog.startLoadingDialog(getString(R.string.sending_reset_email));
         } else {
             loadingDialog.dismissDialog();
@@ -70,7 +70,7 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
     }
 
     public void onIsPasswordResetSuccessfulChanged(Boolean isPasswordResetSuccessful) {
-        if(isPasswordResetSuccessful) {
+        if(Boolean.TRUE.equals(isPasswordResetSuccessful)) {
             Toast.makeText(PasswordForgottenActivity.this, R.string.email_sent,Toast.LENGTH_LONG).show();
             backToLogin();
         } else {

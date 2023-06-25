@@ -73,7 +73,7 @@ public class LearningViewModel extends BaseViewModel {
                     prepareWords();
                     updateLearningState();
                 }
-                if(!isDataLoaded.getValue()) {
+                if(!Boolean.TRUE.equals(isDataLoaded.getValue())) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
             }
@@ -87,7 +87,7 @@ public class LearningViewModel extends BaseViewModel {
                     prepareWords();
                     updateLearningState();
                 }
-                if(!isDataLoaded.getValue()) {
+                if(!Boolean.TRUE.equals(isDataLoaded.getValue())) {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
             }
@@ -117,7 +117,7 @@ public class LearningViewModel extends BaseViewModel {
 
     public void prepareWordsToLearn() {
         List<Word> wordsToOrder = new ArrayList<>(words);
-        if(isRevisionFinished.getValue()) {
+        if(Boolean.TRUE.equals(isRevisionFinished.getValue())) {
             wordsToOrder.sort(Comparator.comparing(Word::getDateAdded).reversed());
             wordsToDisplay = wordsToOrder.stream().filter(w -> w.getNumberTry().equals(0)).collect(Collectors.toList());
         }
@@ -170,7 +170,7 @@ public class LearningViewModel extends BaseViewModel {
             learningFragmentStateEnum.setValue(LearningFragmentStateEnum.LEARNING_FRAGMENT);
             currentWord.setValue(wordsToDisplay.get(0));
         } else {
-            if(isRevisionFinished.getValue()) {
+            if(Boolean.TRUE.equals(isRevisionFinished.getValue())) {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.NO_MORE_WORDS);
             } else {
                 learningFragmentStateEnum.setValue(LearningFragmentStateEnum.REVISION_FINISHED);

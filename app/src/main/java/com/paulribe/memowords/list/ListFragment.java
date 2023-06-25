@@ -281,7 +281,7 @@ public class ListFragment extends Fragment {
     }
 
     private void updateRecyclerView() {
-        if(listWordsViewModel.getIsRecyclerViewOnTranslateResults()) {
+        if(Boolean.TRUE.equals(listWordsViewModel.getIsRecyclerViewOnTranslateResults())) {
            configureRecyclerView();
         }
         List<Word> words = listWordsViewModel.filterWordsToDisplay();
@@ -344,7 +344,7 @@ public class ListFragment extends Fragment {
         MenuItem menuItemFavorite = toolbar.getMenu().getItem(0);
         menuItemFavorite.setOnMenuItemClickListener(menuItem -> {
             listWordsViewModel.getIsFavoriteSelected().setValue(!listWordsViewModel.getIsFavoriteSelected().getValue());
-            if(listWordsViewModel.getIsFavoriteSelected().getValue()) {
+            if(Boolean.TRUE.equals(listWordsViewModel.getIsFavoriteSelected().getValue())) {
                 menuItemFavorite.setIcon(R.drawable.star_filled);
             } else {
                 menuItemFavorite.setIcon(R.drawable.star_empty_white);

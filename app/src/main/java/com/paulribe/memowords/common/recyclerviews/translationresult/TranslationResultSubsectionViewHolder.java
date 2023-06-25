@@ -22,7 +22,7 @@ public class TranslationResultSubsectionViewHolder extends RecyclerView.ViewHold
     }
 
     public void updateSubsection(TranslatedWord translatedWordRow) {
-        if(translatedWordRow.getHidden()) {
+        if(Boolean.TRUE.equals(translatedWordRow.getHidden())) {
             view.setVisibility(View.GONE);
         } else {
             view.setVisibility(View.VISIBLE);

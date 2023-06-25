@@ -149,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onIsLoadingChanged(Boolean isLoading) {
-        if(isLoading) {
+        if(Boolean.TRUE.equals(isLoading)) {
             loadingDialog.startLoadingDialog(getString(R.string.registering));
         } else {
             loadingDialog.dismissDialog();
@@ -157,7 +157,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onIsRegisterSuccessfulChanged(Boolean isRegistrationSuccessful) {
-        if(isRegistrationSuccessful) {
+        if(Boolean.TRUE.equals(isRegistrationSuccessful)) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();

@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onIsLoadingChanged(Boolean isLoading) {
-        if(isLoading) {
+        if(Boolean.TRUE.equals(isLoading)) {
             loadingDialog.startLoadingDialog(getString(R.string.login_please_wait));
         } else {
             loadingDialog.dismissDialog();
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onIsLoginSuccessfulChanged(Boolean isLoginSuccessful) {
-        if(isLoginSuccessful) {
+        if(Boolean.TRUE.equals(isLoginSuccessful)) {
             openMainActivity();
         } else {
             displayLoginFailed();

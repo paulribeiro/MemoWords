@@ -8,18 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paulribe.memowords.R;
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.paulribe.memowords.R;
+
+import java.util.List;
 
 public class CountryAdapter extends ArrayAdapter<CountryItem> {
 
     private static final int ITEM_HEIGHT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-    public CountryAdapter(Context context, ArrayList<CountryItem> countryList) {
+    public CountryAdapter(Context context, List<CountryItem> countryList) {
         super(context, 0, countryList);
     }
 

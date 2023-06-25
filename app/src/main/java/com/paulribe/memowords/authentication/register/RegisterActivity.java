@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         editTextEmail.addTextChangedListener(textWatcher);
 
         Spinner spinnerCountries = findViewById(R.id.flags_spinner);
-        CountryAdapter mAdapter = new CountryAdapter(this, registerViewModel.getmCountryList());
+        CountryAdapter mAdapter = new CountryAdapter(this, registerViewModel.getCountryList());
         spinnerCountries.setAdapter(mAdapter);
         spinnerCountries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

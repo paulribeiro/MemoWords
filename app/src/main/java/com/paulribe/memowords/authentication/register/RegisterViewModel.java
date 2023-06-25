@@ -1,5 +1,7 @@
 package com.paulribe.memowords.authentication.register;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.BaseViewModel;
 import com.paulribe.memowords.R;
@@ -7,20 +9,18 @@ import com.paulribe.memowords.common.countrypicker.CountryItem;
 import com.paulribe.memowords.common.enumeration.LanguageEnum;
 
 import java.util.ArrayList;
-
-import androidx.lifecycle.MutableLiveData;
-
-;
+import java.util.List;
 
 public class RegisterViewModel extends BaseViewModel {
 
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isRegisterSuccessful = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isRegisterSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
     private Exception taskRegistrationResultException;
     private ArrayList<CountryItem> mCountryList;
 
 
+    @Override
     public void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         initPossibleLanguages();
@@ -65,7 +65,7 @@ public class RegisterViewModel extends BaseViewModel {
         return taskRegistrationResultException;
     }
 
-    public ArrayList<CountryItem> getmCountryList() {
+    public List<CountryItem> getCountryList() {
         return mCountryList;
     }
 }

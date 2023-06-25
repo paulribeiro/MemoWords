@@ -11,6 +11,7 @@ public class NewWordViewModel extends BaseViewModel {
     private Word newWord;
     private List<Word> words;
 
+    @Override
     public void init() {
         readWords();
     }

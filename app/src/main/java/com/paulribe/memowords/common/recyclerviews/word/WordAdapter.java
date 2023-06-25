@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.paulribe.memowords.R;
@@ -17,20 +18,21 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Word> words;
     private Boolean isNativeLanguageToTranslation;
-    private OnFavoriteClickListener favoriteCLickListener;
-    private View.OnClickListener ponsClickListener;
-    private View.OnClickListener mymemoryClickListener;
+    private final OnFavoriteClickListener favoriteCLickListener;
+    private final View.OnClickListener ponsClickListener;
+    private final View.OnClickListener myMemoryClickListener;
     private String searchedWord;
 
-    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener mymemoryClickListener, String searchedWord) {
+    public WordAdapter(List<Word> words, OnFavoriteClickListener listener, View.OnClickListener ponsClickListener, View.OnClickListener myMemoryClickListener, String searchedWord) {
         this.words = words;
         this.favoriteCLickListener = listener;
         this.ponsClickListener = ponsClickListener;
-        this.mymemoryClickListener = mymemoryClickListener;
+        this.myMemoryClickListener = myMemoryClickListener;
         this.isNativeLanguageToTranslation = Boolean.TRUE;
         this.searchedWord = searchedWord;
     }
 
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -43,7 +45,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return new NoContentViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.translate_word_buttons_item, parent, false);
-            return new TranslateButtonsViewHolder(view, ponsClickListener, mymemoryClickListener);
+            return new TranslateButtonsViewHolder(view, ponsClickListener, myMemoryClickListener);
         }
     }
 
@@ -59,13 +61,15 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 2:
                 ((TranslateButtonsViewHolder)viewHolder).updateWithTranslateCallView(searchedWord, viewHolder.itemView.getContext());
                 break;
+            default:
+                // not possible.
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         super.getItemViewType(position);
-        if(words.size() == 0) {
+        if(words.isEmpty()) {
             if(position == 0) {
                 return 1;
             } else {
@@ -83,7 +87,7 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         int wordsAndTranslationButtonItemsNumber = this.words.size() + (!searchedWord.equals("") ? 1 : 0);
-        if(this.words.size() == 0) {
+        if(this.words.isEmpty()) {
             return wordsAndTranslationButtonItemsNumber + 1;
         } else {
             return wordsAndTranslationButtonItemsNumber;
@@ -100,10 +104,6 @@ public class WordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setNativeLanguageToTranslation(Boolean nativeLanguageToTranslation) {
         isNativeLanguageToTranslation = nativeLanguageToTranslation;
-    }
-
-    public String getSearchedWord() {
-        return searchedWord;
     }
 
     public void setSearchedWord(String searchedWord) {

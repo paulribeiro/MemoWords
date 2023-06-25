@@ -89,4 +89,5 @@
     <string name="sorry_we_couldn_t_find_any_matches">Leider konnten wir keine Übersetzungen für \"%1$s\" finden.</string>
     <string name="please_try_searching_another_term">Bitte versuchen Sie es mit einem anderen Begriff oder überprüfen Sie die Übersetzungsrichtung</string>
     <string name="translate_with">Übersetzen \"%1$s\" mit :</string>
+    <string name="no_results">Keine Ergebnisse</string>
 </resources>

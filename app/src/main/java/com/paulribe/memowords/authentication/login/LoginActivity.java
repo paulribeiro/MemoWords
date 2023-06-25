@@ -1,6 +1,5 @@
 package com.paulribe.memowords.authentication.login;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,13 +9,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.paulribe.memowords.R;
-import com.paulribe.memowords.MainActivity;
-import com.paulribe.memowords.authentication.passwordforgotten.PasswordForgottenActivity;
-import com.paulribe.memowords.authentication.register.RegisterActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.paulribe.memowords.LoadingDialog;
+import com.paulribe.memowords.MainActivity;
+import com.paulribe.memowords.R;
+import com.paulribe.memowords.authentication.passwordforgotten.PasswordForgottenActivity;
+import com.paulribe.memowords.authentication.register.RegisterActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private TextView textViewSignup;
     private TextView textPasswordForgotten;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     private LoginViewModel loginViewModel;
 
     @Override
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         defineViews();
 
-        progressDialog = new ProgressDialog(this);
+        loadingDialog = new LoadingDialog(this);
 
         buttonLogin.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
@@ -87,10 +87,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage(getString(R.string.login_please_wait));
-            progressDialog.show();
+            loadingDialog.startLoadingDialog(getString(R.string.login_please_wait));
         } else {
-            progressDialog.dismiss();
+            loadingDialog.dismissDialog();
         }
     }
 

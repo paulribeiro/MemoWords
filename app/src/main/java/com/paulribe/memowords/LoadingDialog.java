@@ -57,7 +57,9 @@ public class LoadingDialog {
     }
 
     public void dismissDialog(){
-        animationDrawable.stop();
-        dialog.dismiss();
+        if(animationDrawable != null) {
+            animationDrawable.stop();
+            dialog.dismiss();
+        }
     }
 }

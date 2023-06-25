@@ -181,7 +181,7 @@ public class ListFragment extends Fragment {
                         Color.parseColor("#3BDC1F"),
                         pos -> {
                             ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
-                            ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), Boolean.TRUE);
+                            ((MainActivity)getActivity()).displayNewWordFragment(listWordsViewModel.getWordsToDisplay().get(pos), true);
                         }
                 ));
             }
@@ -195,7 +195,7 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
                 ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
                 Word newWord = listWordsViewModel.getNewTranslatedWord(this.getTranslatedWord());
-                ((MainActivity)getActivity()).displayNewWordFragment(newWord, Boolean.FALSE);
+                ((MainActivity)getActivity()).displayNewWordFragment(newWord, false);
             }
         };
 

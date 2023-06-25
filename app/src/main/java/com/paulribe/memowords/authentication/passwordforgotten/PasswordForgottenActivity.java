@@ -1,6 +1,5 @@
 package com.paulribe.memowords.authentication.passwordforgotten;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,18 +8,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.paulribe.memowords.R;
-import com.paulribe.memowords.authentication.login.LoginActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.paulribe.memowords.LoadingDialog;
+import com.paulribe.memowords.R;
+import com.paulribe.memowords.authentication.login.LoginActivity;
 
 public class PasswordForgottenActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText forgottenEmailEditText;
     private Button sendForgottenEmailButton;
     private TextView backToLoginTextView;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     private PasswordForgottenViewModel passwordForgottenViewModel;
 
     @Override
@@ -30,7 +30,7 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
 
         initDataBinding();
 
-        progressDialog = new ProgressDialog(this);
+        loadingDialog = new LoadingDialog(this);
 
         forgottenEmailEditText = findViewById(R.id.forgottenEmailEditText);
         sendForgottenEmailButton = findViewById(R.id.sendForgottenEmailButton);
@@ -63,10 +63,9 @@ public class PasswordForgottenActivity extends AppCompatActivity implements View
 
     public void onIsLoadingChanged(Boolean isLoading) {
         if(isLoading) {
-            progressDialog.setMessage(getString(R.string.sending_reset_email));
-            progressDialog.show();
+            loadingDialog.startLoadingDialog(getString(R.string.sending_reset_email));
         } else {
-            progressDialog.dismiss();
+            loadingDialog.dismissDialog();
         }
     }
 

@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.getMenu().clear();
         }
         toolbar.inflateMenu(R.menu.menu_main);
+        //TODO: display other languages but do not display native language
         switch(baseViewModel.getCurrentLanguage().getValue()) {
             case GERMAN:
                 toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_germany_24dp);
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                             toolbar.setVisibility(View.VISIBLE);
                             return true;
                         case R.id.newWordFragment:
-                            displayNewWordFragment(null, Boolean.FALSE);
+                            displayNewWordFragment(null, false);
                             return true;
                         case R.id.SecondFragment:
                             displayListFragment();
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         activeFragment.add(learningFragment);
     }
 
-    public void displayNewWordFragment(Word word, Boolean isEditWordMode) {
+    public void displayNewWordFragment(Word word, boolean isEditWordMode) {
         displayFragment(newWordFragment);
         createOptionMenuSelectLanguage();
         if(isEditWordMode) {

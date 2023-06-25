@@ -43,6 +43,7 @@ public class LearningFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_learning, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initDataBinding();
@@ -65,7 +66,7 @@ public class LearningFragment extends Fragment {
 
         editWordButton.setOnClickListener(view -> {
             ((MainActivity)getActivity()).changeBottomMenuItemSelected(R.id.newWordFragment);
-            ((MainActivity)getActivity()).displayNewWordFragment(learningViewModel.getCurrentWord().getValue(), Boolean.TRUE);
+            ((MainActivity)getActivity()).displayNewWordFragment(learningViewModel.getCurrentWord().getValue(), true);
         });
     }
 

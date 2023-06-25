@@ -151,8 +151,7 @@ public class NewWordFragment extends Fragment {
     private void addWord() {
         if(newWordViewModel.getNewWord() == null) {
             Word word = new Word(inputWordNative.getText().toString(), inputWordTranslation.getText().toString(),
-                    new Date().getTime(), null, null,
-                    0,0, inputWordContext.getText().toString(), 0, false);
+                    new Date().getTime(), inputWordContext.getText().toString());
             newWordViewModel.addWord(word);
         } else {
             newWordViewModel.updateWord(inputWordTranslation.getText().toString(),

@@ -130,8 +130,8 @@ public class ListWordsViewModelTest {
     @Test
     public void buildTranslationForMemoryTest() {
         MyMemoryResult myMemoryResult = new MyMemoryResult();
-        Match match = new Match(436210817, "word1", "translation1", "fr-FR", "pt-PT", 0, null, 1, "");
-        Match match2 = new Match(436210818, "word2", "translation2", "fr-FR", "pt-PT", 0, null, 1, "");
+        Match match = new Match(436210817, "word1", "translation1", "fr-FR", "pt-PT", 0, 1);
+        Match match2 = new Match(436210818, "word2", "translation2", "fr-FR", "pt-PT", 0, 1);
         myMemoryResult.setMatches(Arrays.asList(match, match2));
 
         viewModelMock.buildTranslationForMyMemory(myMemoryResult);
@@ -240,11 +240,11 @@ public class ListWordsViewModelTest {
         long yesterday = new Date(now - (1000 * 60 * 60 * 24)).getTime();
         long oneHourAgo = new Date(now - (1000 * 60 * 60)).getTime();
 
-        Word word1 = new Word("word1", "translation1", now, now, now, 1, 1, "", 1, true);
-        Word word2 = new Word("word2", "testa", oneHourAgo, oneHourAgo, oneHourAgo, 1, 1, "", 3, true);
-        Word word3 = new Word("word3", "testé", yesterday, yesterday, yesterday, 1, 2, "", 1, false);
-        Word word4 = new Word("ècrit", "translation4", now, now, now, 1, 1, "", 1, false);
-        Word word5 = new Word("école", "translation5", yesterday, yesterday, yesterday, 1, 4, "", 4, true);
+        Word word1 = TestData.createWord("word1", "translation1", now, 1, 1, 1, true);
+        Word word2 = TestData.createWord("word2", "testa", oneHourAgo, 1, 1, 3, true);
+        Word word3 = TestData.createWord("word3", "testé", yesterday, 1, 2, 1, false);
+        Word word4 = TestData.createWord("ècrit", "translation4", now, 1, 1, 1, false);
+        Word word5 = TestData.createWord("école", "translation5", yesterday, 1, 4, 4, true);
         return Arrays.asList(word1, word2, word3, word4, word5);
     }
 

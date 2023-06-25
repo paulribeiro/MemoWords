@@ -11,6 +11,7 @@ public class LoginViewModel extends BaseViewModel {
     private final MutableLiveData<Boolean> isLoginSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
 
+    @Override
     public void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         isLoading = new MutableLiveData<>(Boolean.FALSE);

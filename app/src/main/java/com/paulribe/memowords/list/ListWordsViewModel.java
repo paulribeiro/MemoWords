@@ -308,12 +308,10 @@ public class ListWordsViewModel extends BaseViewModel {
     public Word getNewTranslatedWord(TranslatedWord translatedWord) {
         if(getIsNativeLanguageToTranslation().getValue()) {
             return new Word(translatedWord.getSourceWord(), translatedWord.getTargetWord(),
-                    new Date().getTime(), null, null,
-                    0, 0, "", 0, false);
+                    new Date().getTime(), "");
         } else {
             return new Word(translatedWord.getTargetWord(), translatedWord.getSourceWord(),
-                    new Date().getTime(), null, null,
-                    0, 0, "", 0, false);
+                    new Date().getTime(), "");
         }
     }
 

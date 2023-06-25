@@ -34,16 +34,15 @@ public class Match {
     public Match() {
     }
 
-    public Match(Integer id, String segment, String translation, String source, String target, Integer quality, String reference, Integer usageCount, String model) {
+    public Match(Integer id, String segment, String translation, String source, String target, Integer quality, Integer usageCount) {
         this.id = id;
         this.segment = segment;
         this.translation = translation;
         this.source = source;
         this.target = target;
         this.quality = quality;
-        this.reference = reference;
         this.usageCount = usageCount;
-        this.model = model;
+        this.model = "";
     }
 
     public Integer getId() {

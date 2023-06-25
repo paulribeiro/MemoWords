@@ -53,7 +53,6 @@ public class WordViewHolder  extends RecyclerView.ViewHolder {
             this.textViewTranslation.setText(word.getWordNative());
         }
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         if(word.getLastTry() != null) {
             Date d = new Date(word.getLastTry());
             textViewLastTry.setVisibility(View.VISIBLE);

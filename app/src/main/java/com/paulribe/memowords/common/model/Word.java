@@ -20,21 +20,15 @@ public class Word {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Word(String wordNative, String wordTranslated, long dateAdded, Long lastSuccess, Long lastTry, Integer numberTry, Integer numberSuccess, String context, Integer knowledgeLevel, boolean isFavorite) {
+    public Word(String wordNative, String wordTranslated, long dateAdded, String context) {
         this.wordNative = wordNative;
         this.wordTranslated = wordTranslated;
         this.dateAdded = dateAdded;
-        this.lastSuccess = lastSuccess;
-        this.lastTry = lastTry;
-        this.numberTry = numberTry;
-        this.numberSuccess = numberSuccess;
+        this.numberTry = 0;
+        this.numberSuccess = 0;
         this.context = context;
-        this.knowledgeLevel = knowledgeLevel;
-        this.isFavorite = isFavorite;
-    }
-
-    public void setDateAdded(long dateAdded) {
-        this.dateAdded = dateAdded;
+        this.knowledgeLevel = 0;
+        this.isFavorite = false;
     }
 
     public void setLastSuccess(Long lastSuccess) {

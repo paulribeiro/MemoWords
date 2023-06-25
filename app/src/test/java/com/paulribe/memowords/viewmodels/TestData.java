@@ -26,12 +26,40 @@ public class TestData {
         LocalDateTime lastTry = LocalDateTime.now().minusHours(hoursSinceLastTry);
         long lastTryTimeStamp = lastTry.atZone(ZoneId.systemDefault()).getLong(ChronoField.INSTANT_SECONDS) * 1000;
 
-        return new Word(wordName, "DE1", dateAdded, lastTryTimeStamp, lastTryTimeStamp, numberTry, numberSuccess, "context", knowledgeLevel, false);
+        Word word = new Word(wordName, "DE1", dateAdded, "context");
+
+        word.setNumberTry(numberTry);
+        word.setNumberSuccess(numberSuccess);
+        word.setKnowledgeLevel(knowledgeLevel);
+        word.setFavorite(false);
+        word.setLastSuccess(lastTryTimeStamp);
+        word.setLastTry(lastTryTimeStamp);
+
+        return word;
     }
 
     public static Word createWord(String wordName, Integer numberTry, Integer numberSuccess, Integer knowledgeLevel) {
         long dateAdded = Timestamp.valueOf("2020-01-01 00:00:00.000000000").getTime();
-        return new Word(wordName, "DE1", dateAdded, BASE_LAST_SUCCESS_TIMESTAMP, BASE_LAST_TRY_TIMESTAMP, numberTry, numberSuccess, "context", knowledgeLevel, false);
+        Word word = new Word(wordName, "DE1", dateAdded, "context");
+        word.setNumberTry(numberTry);
+        word.setNumberSuccess(numberSuccess);
+        word.setKnowledgeLevel(knowledgeLevel);
+        word.setFavorite(false);
+        word.setLastSuccess(BASE_LAST_SUCCESS_TIMESTAMP);
+        word.setLastTry(BASE_LAST_TRY_TIMESTAMP);
+        return word;
+    }
+
+    public static Word createWord(String wordName, String wordTranslated, long date,
+                                  Integer numberTry, Integer numberSuccess, Integer knowledgeLevel, boolean isFavorite) {
+        Word word = new Word(wordName, wordTranslated, date, "");
+        word.setNumberTry(numberTry);
+        word.setNumberSuccess(numberSuccess);
+        word.setKnowledgeLevel(knowledgeLevel);
+        word.setFavorite(isFavorite);
+        word.setLastSuccess(date);
+        word.setLastTry(date);
+        return word;
     }
 
     public static PonsResult createPonsResult (List<SearchWordResultList> hits) {

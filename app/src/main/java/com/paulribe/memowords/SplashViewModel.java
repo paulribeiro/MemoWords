@@ -7,6 +7,7 @@ import com.paulribe.memowords.common.firebase.FirebaseDataHelper;
 
 public class SplashViewModel extends BaseViewModel {
 
+    @Override
     public void init() {
         if(getFirebaseDataHelper() == null) {
             setFirebaseDataHelper(new FirebaseDataHelper());

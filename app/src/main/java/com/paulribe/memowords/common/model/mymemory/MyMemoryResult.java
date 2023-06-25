@@ -31,17 +31,7 @@ public class MyMemoryResult {
     private List<Match> matches;
 
     public MyMemoryResult() {
-    }
-
-    public MyMemoryResult(ResponseData lang, Boolean quotaFinished, String mtLangSupported, String responseDetails, String responseStatus, String responderId, String exceptionCode, List<Match> matches) {
-        this.lang = lang;
-        this.quotaFinished = quotaFinished;
-        this.mtLangSupported = mtLangSupported;
-        this.responseDetails = responseDetails;
-        this.responseStatus = responseStatus;
-        this.responderId = responderId;
-        this.exceptionCode = exceptionCode;
-        this.matches = matches;
+        // default constructor.
     }
 
     public ResponseData getLang() {

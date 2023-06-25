@@ -11,6 +11,7 @@ public class PasswordForgottenViewModel extends BaseViewModel {
     private final MutableLiveData<Boolean> isPasswordResetSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
 
+    @Override
     public void init() {
         firebaseAuth = FirebaseAuth.getInstance();
     }

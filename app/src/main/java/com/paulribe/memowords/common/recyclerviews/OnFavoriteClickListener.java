@@ -17,7 +17,7 @@ public class OnFavoriteClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        // No action to perform.
     }
 
     public Word getWord() {

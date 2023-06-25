@@ -357,6 +357,7 @@ public class ListFragment extends Fragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action to perform.
             }
 
             @Override
@@ -372,7 +373,7 @@ public class ListFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // No action to perform.
             }
         });
 

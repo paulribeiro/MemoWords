@@ -14,7 +14,7 @@ public class OnExpandSectionClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        // No action to perform.
     }
 
     public TranslatedWord getTranslatedSection() {

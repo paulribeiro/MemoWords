@@ -136,21 +136,19 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             return;
         }
 
-        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-            if(dX < 0) {
-                List<UnderlayButton> buffer = new ArrayList<>();
+        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE && dX < 0) {
+            List<UnderlayButton> buffer = new ArrayList<>();
 
-                if (!buttonsBuffer.containsKey(pos)){
-                    instantiateUnderlayButton(viewHolder, buffer);
-                    buttonsBuffer.put(pos, buffer);
-                }
-                else {
-                    buffer = buttonsBuffer.get(pos);
-                }
-
-                translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
-                drawButtons(c, itemView, buffer, pos, translationX);
+            if (!buttonsBuffer.containsKey(pos)){
+                instantiateUnderlayButton(viewHolder, buffer);
+                buttonsBuffer.put(pos, buffer);
             }
+            else {
+                buffer = buttonsBuffer.get(pos);
+            }
+
+            translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
+            drawButtons(c, itemView, buffer, pos, translationX);
         }
 
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
@@ -192,10 +190,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     public abstract void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons);
-
-    public interface UnderlayButtonClickListener {
-        void onClick(int pos);
-    }
 
     public void stop() {
         itemTouchHelper.attachToRecyclerView(null);

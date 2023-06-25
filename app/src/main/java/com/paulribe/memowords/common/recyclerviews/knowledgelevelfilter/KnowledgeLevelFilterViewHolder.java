@@ -4,18 +4,19 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.KnowledgeLevelFilter;
 
-import androidx.recyclerview.widget.RecyclerView;
+public class KnowledgeLevelFilterViewHolder extends RecyclerView.ViewHolder {
 
-public class KnowledgeLevelViewHolder extends RecyclerView.ViewHolder {
-
-    private View itemTitleView;
-    private TextView textViewTitle;
+    private final View itemTitleView;
+    private final TextView textViewTitle;
 
 
-    public KnowledgeLevelViewHolder(View itemView) {
+    public KnowledgeLevelFilterViewHolder(View itemView) {
         super(itemView);
         textViewTitle = itemView.findViewById(R.id.textView_title);
         itemTitleView = itemView.findViewById(R.id.item_filter_view);
@@ -38,15 +39,17 @@ public class KnowledgeLevelViewHolder extends RecyclerView.ViewHolder {
                 backgroundResource = R.color.green;
                 break;
             default:
-                backgroundResource = R.color.red;
+                backgroundResource = R.color.white;
                 break;
         }
         if(knowledgeLevel.getSelected()) {
-            itemTitleView.setBackgroundTintList(itemView.getContext().getResources().getColorStateList(backgroundResource));
-            textViewTitle.setTextColor(itemView.getContext().getResources().getColorStateList(R.color.white));
-        } else {
-            itemTitleView.setBackgroundTintList(itemView.getContext().getResources().getColorStateList(R.color.white));
-            textViewTitle.setTextColor(itemView.getContext().getResources().getColorStateList(backgroundResource));
+            itemTitleView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),
+                    backgroundResource));
+            textViewTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
+       } else {
+            itemTitleView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),
+                    R.color.white));
+            textViewTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), backgroundResource));
         }
     }
 }

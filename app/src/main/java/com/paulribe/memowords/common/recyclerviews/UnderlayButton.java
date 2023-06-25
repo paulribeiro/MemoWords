@@ -12,9 +12,9 @@ public class UnderlayButton {
     private final int color;
     private int pos;
     private RectF clickRegion;
-    private final SwipeHelper.UnderlayButtonClickListener clickListener;
+    private final UnderlayButtonClickListener clickListener;
 
-    public UnderlayButton(String text, Bitmap bitmap, int color, SwipeHelper.UnderlayButtonClickListener clickListener) {
+    public UnderlayButton(String text, Bitmap bitmap, int color, UnderlayButtonClickListener clickListener) {
         this.text = text;
         this.bitmap = bitmap;
         this.color = color;

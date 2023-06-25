@@ -5,15 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.KnowledgeLevelFilter;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeLevelViewHolder> {
+public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeLevelFilterViewHolder> {
 
     private List<KnowledgeLevelFilter> filters;
     private OnViewClickListener listener;
@@ -29,15 +29,15 @@ public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeL
 
     @NonNull
     @Override
-    public KnowledgeLevelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public KnowledgeLevelFilterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.knowledge_level_item, parent, false);
-        return new KnowledgeLevelViewHolder(view);
+        return new KnowledgeLevelFilterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull KnowledgeLevelViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull KnowledgeLevelFilterViewHolder holder, int position) {
         holder.update(this.filters.get(position), holder.itemView.getContext());
 
         holder.itemView.setOnClickListener(v -> listener.onViewClick(filters.get(position)));

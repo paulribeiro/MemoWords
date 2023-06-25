@@ -1,14 +1,14 @@
 package com.paulribe.memowords.authentication.login;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.BaseViewModel;
-
-import androidx.lifecycle.MutableLiveData;
 
 public class LoginViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isLoginSuccessful = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoginSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
 
     public void init() {

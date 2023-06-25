@@ -10,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClientInstance {
 
-    private RetrofitClientInstance () {}
-
     private static final OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15L, TimeUnit.SECONDS)
@@ -21,6 +19,8 @@ public class RetrofitClientInstance {
     private static Retrofit retrofitMyMemory;
     private static final String BASE_URL_PONS = "https://api.pons.com";
     private static final String BASE_URL_MY_MEMORY = "https://api.mymemory.translated.net";
+
+    private RetrofitClientInstance () {}
 
     public static Retrofit getRetrofitInstance() {
         if (retrofitPons == null) {

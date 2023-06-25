@@ -12,8 +12,8 @@ import com.paulribe.memowords.common.restclient.HtmlHelper;
 
 public class TranslationResultSubsectionViewHolder extends RecyclerView.ViewHolder {
 
-    private View view;
-    private TextView textViewSubsectionTitle;
+    private final View view;
+    private final TextView textViewSubsectionTitle;
 
     public TranslationResultSubsectionViewHolder(@NonNull View itemView) {
         super(itemView);

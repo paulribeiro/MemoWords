@@ -6,15 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.paulribe.memowords.MainActivity;
-import com.paulribe.memowords.R;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class RevisionFinishedFragment extends Fragment {
+import com.paulribe.memowords.MainActivity;
+import com.paulribe.memowords.R;
 
-    private Button beginLearningButton;
+public class RevisionFinishedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,7 +22,7 @@ public class RevisionFinishedFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        beginLearningButton = view.findViewById(R.id.button_begin_learning);
+        Button beginLearningButton = view.findViewById(R.id.button_begin_learning);
 
         beginLearningButton.setOnClickListener(view1 ->
                 ((MainActivity)getActivity()).comeBackLearningFragmentLearnNewWords());

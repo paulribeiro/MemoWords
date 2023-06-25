@@ -5,23 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.Word;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class FindWordAdapter extends RecyclerView.Adapter<FindWordViewHolder> {
 
-    // FOR DATA
     private List<Word> words;
-    private boolean isLanguageFR;
-    private OnViewClickListener listener;
+    private final boolean isLanguageFR;
+    private final OnViewClickListener listener;
 
-
-    // CONSTRUCTOR
     public FindWordAdapter(List<Word> words, boolean isLanguageFR, OnViewClickListener listener) {
         this.words = words;
         this.isLanguageFR = isLanguageFR;
@@ -32,9 +29,9 @@ public class FindWordAdapter extends RecyclerView.Adapter<FindWordViewHolder> {
         void onViewClick(Word word);
     }
 
+    @NonNull
     @Override
     public FindWordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // CREATE VIEW HOLDER AND INFLATING ITS XML LAYOUT
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.word_title_item, parent, false);
@@ -49,12 +46,7 @@ public class FindWordAdapter extends RecyclerView.Adapter<FindWordViewHolder> {
         } else {
             holder.updateWithWordTitle(this.words.get(position).getWordTranslated(), position);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onViewClick(words.get(position));
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onViewClick(words.get(position)));
     }
 
     @Override

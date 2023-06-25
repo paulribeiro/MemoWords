@@ -34,13 +34,10 @@ public class UnderlayButton {
         drawBackground(paint, canvas, rect);
 
         float spaceHeight = 0;
-        //float textWidth = paint.measureText(text);
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
         float combinedHeight = bitmap.getHeight() + spaceHeight + bounds.height();
         canvas.drawBitmap(bitmap, rect.centerX() - (bitmap.getWidth() / 2f), rect.centerY() - (combinedHeight / 2), null);
-        //If you want text as well with bitmap
-        //canvas.drawText(text, rect.centerX() - (textWidth / 2), rect.centerY() + (combinedHeight / 2), paint);
 
         clickRegion = rect;
         this.pos = pos;

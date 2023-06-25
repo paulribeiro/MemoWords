@@ -4,20 +4,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.TranslatedWord;
 import com.paulribe.memowords.common.recyclerviews.OnWordTranslatedClickListener;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class TranslationResultRowViewHolder extends RecyclerView.ViewHolder {
 
-    private View view;
-    private TextView textViewWordSource;
-    private TextView textViewWordTarget;
-    private Button addResultWordButton;
-    private OnWordTranslatedClickListener translatedWordListener;
+    private final View view;
+    private final TextView textViewWordSource;
+    private final TextView textViewWordTarget;
+    private final Button addResultWordButton;
+    private final OnWordTranslatedClickListener translatedWordListener;
 
     public TranslationResultRowViewHolder(@NonNull View itemView, OnWordTranslatedClickListener listener) {
         super(itemView);

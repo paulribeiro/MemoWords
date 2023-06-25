@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.common.util.CollectionUtils;
 import com.paulribe.memowords.R;
 import com.paulribe.memowords.common.model.TranslatedWord;
@@ -14,15 +17,12 @@ import com.paulribe.memowords.common.recyclerviews.word.NoContentViewHolder;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class TranslationResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private String searchedWord;
     private List<TranslatedWord> possibleTranslations;
-    private OnWordTranslatedClickListener onWordTranslatedClickListener;
-    private OnExpandSectionClickListener onExpandSectionClickListener;
+    private final OnWordTranslatedClickListener onWordTranslatedClickListener;
+    private final OnExpandSectionClickListener onExpandSectionClickListener;
 
     public TranslationResultAdapter(List<TranslatedWord> translations, OnWordTranslatedClickListener onWordTranslatedClickListener,
                                     OnExpandSectionClickListener onExpandSectionClickListener, String searchedWord) {
@@ -32,6 +32,7 @@ public class TranslationResultAdapter extends RecyclerView.Adapter<RecyclerView.
         this.searchedWord = searchedWord;
     }
 
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -67,6 +68,9 @@ public class TranslationResultAdapter extends RecyclerView.Adapter<RecyclerView.
             case 3:
                 ((NoContentViewHolder)holder).updateNoContentItemWithImage(searchedWord, holder.itemView.getContext());
                 break;
+            default:
+                // Not possible.
+                break;
         }
     }
 
@@ -99,16 +103,8 @@ public class TranslationResultAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    public List<TranslatedWord> getPossibleTranslations() {
-        return possibleTranslations;
-    }
-
     public void setPossibleTranslations(List<TranslatedWord> possibleTranslations) {
         this.possibleTranslations = possibleTranslations;
-    }
-
-    public String getSearchedWord() {
-        return searchedWord;
     }
 
     public void setSearchedWord(String searchedWord) {

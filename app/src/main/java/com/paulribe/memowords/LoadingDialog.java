@@ -5,9 +5,9 @@ import android.app.AlertDialog;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class LoadingDialog {
 
-    private Activity activity;
+    private final Activity activity;
     private AlertDialog dialog;
     private AnimationDrawable animationDrawable;
 
@@ -50,13 +50,13 @@ public class LoadingDialog {
             @Override
             public void onGlobalLayout() {
                 int width = dialogContainer.getWidth();
-                window.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialogContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
     }
 
-    public void dismissDialog(){
+    public void dismissDialog() {
         if(animationDrawable != null) {
             animationDrawable.stop();
             dialog.dismiss();

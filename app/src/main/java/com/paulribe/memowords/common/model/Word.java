@@ -4,7 +4,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Word {
-
     private String wordId;
     private String wordNative;
     private String wordTranslated;

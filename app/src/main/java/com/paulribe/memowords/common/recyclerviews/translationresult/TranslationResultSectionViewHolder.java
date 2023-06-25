@@ -16,14 +16,12 @@ import java.util.Objects;
 
 public class TranslationResultSectionViewHolder extends RecyclerView.ViewHolder {
 
-    private View view;
-    private TextView textViewSectionTitle;
-    private ImageView expandImageView;
-    private OnExpandSectionClickListener onExpandSectionClickListener;
+    private final TextView textViewSectionTitle;
+    private final ImageView expandImageView;
+    private final OnExpandSectionClickListener onExpandSectionClickListener;
 
     public TranslationResultSectionViewHolder(@NonNull View itemView, OnExpandSectionClickListener onExpandSectionClickListener) {
         super(itemView);
-        view = itemView.findViewById(R.id.item_title_section_view);
         textViewSectionTitle = itemView.findViewById(R.id.textView_section);
         expandImageView = itemView.findViewById(R.id.expandImageView);
         this.onExpandSectionClickListener = onExpandSectionClickListener;

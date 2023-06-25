@@ -1,14 +1,14 @@
 package com.paulribe.memowords.authentication.passwordforgotten;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.paulribe.memowords.BaseViewModel;
 
-import androidx.lifecycle.MutableLiveData;
-
 public class PasswordForgottenViewModel extends BaseViewModel {
 
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isPasswordResetSuccessful = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isPasswordResetSuccessful = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
 
     public void init() {

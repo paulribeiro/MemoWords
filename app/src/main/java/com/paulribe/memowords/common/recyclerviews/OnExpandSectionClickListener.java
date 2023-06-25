@@ -9,10 +9,7 @@ public class OnExpandSectionClickListener implements View.OnClickListener {
     private TranslatedWord translatedSection;
 
     public OnExpandSectionClickListener() {
-    }
-
-    public OnExpandSectionClickListener(TranslatedWord translatedSection) {
-        this.translatedSection = translatedSection;
+        // No action to perform.
     }
 
     @Override

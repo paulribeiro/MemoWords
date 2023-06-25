@@ -5,17 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.paulribe.memowords.R;
-
 import androidx.fragment.app.Fragment;
+
+import com.paulribe.memowords.R;
 
 public class NoWordsFragment extends Fragment {
 
-    public NoWordsFragment() {}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public NoWordsFragment() {
+        // No action to perform.
     }
 
     @Override

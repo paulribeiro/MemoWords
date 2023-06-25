@@ -91,15 +91,6 @@ public class LearningViewModel extends BaseViewModel {
                     isDataLoaded.setValue(Boolean.TRUE);
                 }
             }
-
-            @Override
-            public void dataIsInserted() {
-                //No action to perform.
-            }
-            @Override
-            public void dataIsDeleted() {
-                //No action to perform.
-            }
         });
     }
 

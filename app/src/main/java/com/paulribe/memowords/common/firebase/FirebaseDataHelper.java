@@ -32,9 +32,7 @@ public class FirebaseDataHelper {
 
     public interface DataStatus {
         void dataIsLoaded(List<Word> words, List<String> keys);
-        void dataIsInserted();
         void dataIsUpdated(List<Word> words);
-        void dataIsDeleted();
     }
 
     public void readWords(final DataStatus dataStatus) {

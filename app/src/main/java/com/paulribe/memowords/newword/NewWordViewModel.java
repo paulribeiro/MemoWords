@@ -24,18 +24,9 @@ public class NewWordViewModel extends BaseViewModel {
             public void dataIsLoaded(List<Word> w, List<String> keys) {
                 words = w;
             }
-
-            @Override
-            public void dataIsInserted() {}
-
             @Override
             public void dataIsUpdated(List<Word> w) {
                 words = w;
-            }
-
-            @Override
-            public void dataIsDeleted() {
-
             }
         });
     }

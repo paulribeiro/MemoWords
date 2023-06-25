@@ -106,20 +106,9 @@ public class ListWordsViewModel extends BaseViewModel {
             public void dataIsLoaded(List<Word> w, List<String> keys) {
                 words.setValue(w);
             }
-
-            @Override
-            public void dataIsInserted() {
-                // No action to perform.
-            }
-
             @Override
             public void dataIsUpdated(List<Word> w) {
                 words.setValue(w);
-            }
-
-            @Override
-            public void dataIsDeleted() {
-                // No action to perform.
             }
         });
     }

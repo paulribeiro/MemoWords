@@ -166,7 +166,7 @@ public class SearchWordsUITest {
         checkSourceTargetLanguage("French", "German");
         onView(withId(R.id.recycler_view_words)).check(matches(isDisplayed()));
         onView(withId(R.id.recycler_view_words))
-                .check(matches(atPosition(0, hasDescendant(withText("No Result")))));
+                .check(matches(atPosition(0, hasDescendant(withText("No results")))));
     }
 
     private static void swapLanguage() {

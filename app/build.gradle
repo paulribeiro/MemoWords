@@ -96,10 +96,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.2.2'
 
 
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.2.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.1.0' // app crashing when updating
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3' // when updating, missing color on word list.
+    implementation 'androidx.navigation:navigation-fragment:2.2.1'  //conflict with the dependencies when updating.
     implementation 'androidx.navigation:navigation-ui:2.2.1'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

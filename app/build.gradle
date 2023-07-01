@@ -60,9 +60,6 @@ android {
         dataBinding true
     }
 
-    lintOptions {
-        abortOnError false
-    }
     sourceSets {
         debug {
             java {
@@ -74,6 +71,10 @@ android {
                 srcDirs 'src\\release\\java'
             }
         }
+    }
+    namespace 'com.paulribe.memowords'
+    lint {
+        abortOnError false
     }
 }
 

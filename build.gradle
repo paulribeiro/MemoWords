@@ -8,9 +8,9 @@ buildscript {
         
     }
     dependencies {
-        def nav_version = "2.3.0-alpha04"
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'com.google.gms:google-services:4.3.3'  // Google Services plugin
+        def nav_version = '2.4.1'
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.google.gms:google-services:4.3.10'  // Google Services plugin
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.dicedmelon.gradle:jacoco-android:0.1.5"
 

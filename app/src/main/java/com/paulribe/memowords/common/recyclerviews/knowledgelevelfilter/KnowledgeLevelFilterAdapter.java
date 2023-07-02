@@ -16,7 +16,7 @@ import java.util.List;
 public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeLevelFilterViewHolder> {
 
     private List<KnowledgeLevelFilter> filters;
-    private OnViewClickListener listener;
+    private final OnViewClickListener listener;
 
     public KnowledgeLevelFilterAdapter(List<KnowledgeLevelFilter> filters, OnViewClickListener listener) {
         this.filters = filters;
@@ -46,5 +46,9 @@ public class KnowledgeLevelFilterAdapter extends RecyclerView.Adapter<KnowledgeL
     @Override
     public int getItemCount() {
         return filters.size();
+    }
+
+    public void setFilters(List<KnowledgeLevelFilter> filters) {
+        this.filters = filters;
     }
 }

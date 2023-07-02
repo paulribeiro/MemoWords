@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -205,16 +206,21 @@ public class ListWordsViewModel extends BaseViewModel {
         }
     }
 
-    public List<Word> getFilteredWordsByKnowledgeLevel(){
+    public List<Word> getFilteredWordsByKnowledgeLevel(Set<KnowledgeLevelEnum> knowledgeLevelSelected){
         List<Word> allWords = getWords().getValue();
         if(allWords != null) {
-            if(!CollectionUtils.isEmpty(getKnowledgeFilterSelected().getValue())) {
-                return allWords.stream().filter(w -> getKnowledgeFilterSelected().getValue().contains(convertToKnowledgeLevelEnum(w.getKnowledgeLevel()))).collect(Collectors.toList());
+            if(!CollectionUtils.isEmpty(knowledgeLevelSelected)) {
+                return allWords.stream().filter(w -> knowledgeLevelSelected.contains(convertToKnowledgeLevelEnum(w.getKnowledgeLevel()))).collect(Collectors.toList());
             } else {
                 return allWords;
             }
         }
         return new ArrayList<>();
+    }
+
+    public long getFilteredWordsCountByKnowledgeLevel(List<KnowledgeLevelEnum> knowledgeLevelSelected){
+        List<Word> wordsForKnowledgeLevel = getFilteredWordsByKnowledgeLevel(new HashSet<>(knowledgeLevelSelected));
+        return wordsForKnowledgeLevel.size();
     }
 
     public KnowledgeLevelEnum convertToKnowledgeLevelEnum (Integer knowledgeLevel) {
@@ -233,7 +239,7 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public List<Word> filterWordsToDisplay() {
-        List<Word> wordsToFilter = getFilteredWordsByKnowledgeLevel();
+        List<Word> wordsToFilter = getFilteredWordsByKnowledgeLevel(getKnowledgeFilterSelected().getValue());
         String searchWord = getSearchedString().getValue();
         Boolean isFavorite = getIsFavoriteSelected().getValue();
         if(isFavorite != null && isFavorite) {

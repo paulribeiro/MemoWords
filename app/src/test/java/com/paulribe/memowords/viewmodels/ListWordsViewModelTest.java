@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -249,7 +250,7 @@ public class ListWordsViewModelTest {
     }
 
     private void prepareMockForFilterWordsToDIsplay(List<Word> words, String searchString, Boolean isFavoriteSelected, OrderByEnum orderByEnum) {
-        Mockito.doReturn(new ArrayList<>(words)).when(viewModelMock).getFilteredWordsByKnowledgeLevel();
+        Mockito.doReturn(new ArrayList<>(words)).when(viewModelMock).getFilteredWordsByKnowledgeLevel(any());
         Mockito.doReturn(new MutableLiveData<>(searchString)).when(viewModelMock).getSearchedString();
         Mockito.doReturn(new MutableLiveData<>(isFavoriteSelected)).when(viewModelMock).getIsFavoriteSelected();
         Mockito.doReturn(new MutableLiveData<>(orderByEnum)).when(viewModelMock).getOrderByEnum();
@@ -329,7 +330,7 @@ public class ListWordsViewModelTest {
         Mockito.doReturn(new MutableLiveData<>(words)).when(viewModelMock).getWords();
         Mockito.doReturn(new MutableLiveData<>(knowledgeLevels)).when(viewModelMock).getKnowledgeFilterSelected();
 
-        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel();
+        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel(knowledgeLevels);
 
         assertEquals(3, filteredWordsByKnowledgeLevel.size());
     }
@@ -352,7 +353,7 @@ public class ListWordsViewModelTest {
         Mockito.doReturn(new MutableLiveData<>(words)).when(viewModelMock).getWords();
         Mockito.doReturn(new MutableLiveData<>(new ArrayList<>())).when(viewModelMock).getKnowledgeFilterSelected();
 
-        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel();
+        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel(any());
 
         assertEquals(9, filteredWordsByKnowledgeLevel.size());
     }
@@ -365,7 +366,8 @@ public class ListWordsViewModelTest {
         Mockito.doReturn(new MutableLiveData<>()).when(viewModelMock).getWords();
         Mockito.doReturn(new MutableLiveData<>(knowledgeLevels)).when(viewModelMock).getKnowledgeFilterSelected();
 
-        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel();
+        HashSet<KnowledgeLevelEnum> knowledgeLevelSelected = new HashSet<>(Arrays.asList(KnowledgeLevelEnum.NEW, KnowledgeLevelEnum.LONG_TERM_MEMORY));
+        List<Word> filteredWordsByKnowledgeLevel = viewModelMock.getFilteredWordsByKnowledgeLevel(knowledgeLevelSelected);
 
         assertNotNull(filteredWordsByKnowledgeLevel);
         assertEquals(0, filteredWordsByKnowledgeLevel.size());

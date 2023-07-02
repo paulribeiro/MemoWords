@@ -23,7 +23,7 @@ public class KnowledgeLevelFilterViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void update(KnowledgeLevelFilter knowledgeLevel, Context context) {
-        textViewTitle.setText(knowledgeLevel.getKnowledgeLevelEnum().getKnowledgeLevel(context));
+        textViewTitle.setText(String.format("%s (%s)", knowledgeLevel.getKnowledgeLevelEnum().getKnowledgeLevel(context), knowledgeLevel.getWordsCountInKnowledgeLevel()));
         int backgroundResource;
         switch(knowledgeLevel.getKnowledgeLevelEnum()) {
             case NEW:

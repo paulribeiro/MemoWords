@@ -50,6 +50,7 @@ import com.paulribe.memowords.common.restclient.PonsService;
 import com.paulribe.memowords.common.restclient.RetrofitClientInstance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -135,10 +136,17 @@ public class ListFragment extends Fragment {
         this.recyclerViewFilter.setItemAnimator(new DefaultItemAnimator());
     }
 
+    private void updateFilterRecyclerView() {
+        this.knowledgeLevelFilterAdapter.setFilters(createKnowledgeLevelFilterList());
+        this.knowledgeLevelFilterAdapter.notifyDataSetChanged();
+    }
+
     private List<KnowledgeLevelFilter> createKnowledgeLevelFilterList() {
         List<KnowledgeLevelFilter> knowledgeLevelFilterList = new ArrayList<>();
         for(KnowledgeLevelEnum knowledgeLevelEnum : KnowledgeLevelEnum.values()) {
-            knowledgeLevelFilterList.add(new KnowledgeLevelFilter(knowledgeLevelEnum, false));
+            knowledgeLevelFilterList.add(new KnowledgeLevelFilter(knowledgeLevelEnum,
+                    listWordsViewModel.getKnowledgeFilterSelected().getValue().contains(knowledgeLevelEnum),
+                    listWordsViewModel.getFilteredWordsCountByKnowledgeLevel(Collections.singletonList(knowledgeLevelEnum))));
         }
         return knowledgeLevelFilterList;
     }
@@ -152,7 +160,7 @@ public class ListFragment extends Fragment {
                 ponsClickListener = createPonsClickListener();
             }
             View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
-            List<Word> wordList = listWordsViewModel.getFilteredWordsByKnowledgeLevel();
+            List<Word> wordList = listWordsViewModel.getFilteredWordsByKnowledgeLevel(listWordsViewModel.getKnowledgeFilterSelected().getValue());
             this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener,
                     listWordsViewModel.getSearchedString().getValue());
         }
@@ -284,6 +292,7 @@ public class ListFragment extends Fragment {
         if(Boolean.TRUE.equals(listWordsViewModel.getIsRecyclerViewOnTranslateResults())) {
            configureRecyclerView();
         }
+        updateFilterRecyclerView();
         List<Word> words = listWordsViewModel.filterWordsToDisplay();
         adapter.setSearchedWord(listWordsViewModel.getSearchedString().getValue());
         adapter.setWords(words);

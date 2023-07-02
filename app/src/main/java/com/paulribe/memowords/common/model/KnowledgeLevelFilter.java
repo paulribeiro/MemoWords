@@ -4,20 +4,19 @@ import com.paulribe.memowords.common.enumeration.KnowledgeLevelEnum;
 
 public class KnowledgeLevelFilter {
 
-    private KnowledgeLevelEnum knowledgeLevelEnum;
+    private final KnowledgeLevelEnum knowledgeLevelEnum;
     private boolean isSelected;
 
-    public KnowledgeLevelFilter(KnowledgeLevelEnum knowledgeLevelEnum, boolean isSelected) {
+    private final long wordsCountInKnowledgeLevel;
+
+    public KnowledgeLevelFilter(KnowledgeLevelEnum knowledgeLevelEnum, boolean isSelected, long wordsCount) {
         this.knowledgeLevelEnum = knowledgeLevelEnum;
         this.isSelected = isSelected;
+        this.wordsCountInKnowledgeLevel = wordsCount;
     }
 
     public KnowledgeLevelEnum getKnowledgeLevelEnum() {
         return knowledgeLevelEnum;
-    }
-
-    public void setKnowledgeLevelEnum(KnowledgeLevelEnum knowledgeLevelEnum) {
-        this.knowledgeLevelEnum = knowledgeLevelEnum;
     }
 
     public boolean getSelected() {
@@ -26,5 +25,9 @@ public class KnowledgeLevelFilter {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public long getWordsCountInKnowledgeLevel() {
+        return wordsCountInKnowledgeLevel;
     }
 }

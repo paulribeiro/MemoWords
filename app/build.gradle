@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
-//apply plugin: 'jacoco'
+apply plugin: 'jacoco'
 
 android {
 
@@ -78,14 +78,28 @@ android {
     }
 }
 
-//jacoco {
-//    version = "0.8.8"
-//}
-//jacocoAndroidUnitTestReport {
-//    csv.enabled false
-//    html.enabled false
-//    xml.enabled true
-//}
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+tasks.register("jacocoTestReport", JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    def fileFilter = ['jdk.internal.*']
+    def debugTree = fileTree(dir: "$buildDir/intermediates/javac/debug", excludes: fileFilter)
+
+    sourceDirectories.setFrom files(android.sourceSets.main.java.srcDirs)
+    classDirectories.setFrom files(debugTree)
+    executionData.setFrom fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec"
+    ])
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

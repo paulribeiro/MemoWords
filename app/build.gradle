@@ -92,7 +92,7 @@ tasks.register("jacocoTestReport", JacocoReport) {
     }
 
     def fileFilter = ['jdk.internal.*']
-    def debugTree = fileTree(dir: "$buildDir/intermediates/javac/debug", excludes: fileFilter)
+    def debugTree = fileTree(dir: "$buildDir/app/src/debug", excludes: fileFilter)
 
     sourceDirectories.setFrom files(android.sourceSets.main.java.srcDirs)
     classDirectories.setFrom files(debugTree)

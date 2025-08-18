@@ -47,6 +47,7 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
+            testCoverageEnabled = true
         }
     }
 
@@ -92,13 +93,11 @@ tasks.register("jacocoTestReport", JacocoReport) {
     }
 
     def fileFilter = ['jdk.internal.*']
-    def debugTree = fileTree(dir: "$buildDir/app/src/debug", excludes: fileFilter)
+    def debugTree = layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
 
     sourceDirectories.setFrom files(android.sourceSets.main.java.srcDirs)
     classDirectories.setFrom files(debugTree)
-    executionData.setFrom fileTree(dir: "$buildDir", includes: [
-            "jacoco/testDebugUnitTest.exec"
-    ])
+    executionData.setFrom layout.buildDirectory.dir("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
 }
 
 dependencies {

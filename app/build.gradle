@@ -97,7 +97,8 @@ tasks.register("jacocoTestReport", JacocoReport) {
 
     sourceDirectories.setFrom files(android.sourceSets.main.java.srcDirs)
     classDirectories.setFrom files(debugTree)
-    executionData.setFrom layout.buildDirectory.dir("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    executionData.setFrom layout.buildDirectory.dir("app/build/jacoco/testReleaseUnitTest.exec")
+    executionData.setFrom layout.buildDirectory.dir("app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
 }
 
 dependencies {

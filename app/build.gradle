@@ -92,13 +92,20 @@ tasks.register("jacocoTestReport", JacocoReport) {
         csv.required.set(false)
     }
 
-    def fileFilter = ['jdk.internal.*']
-    def debugTree = layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
+                      '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
 
-    sourceDirectories.setFrom files(android.sourceSets.main.java.srcDirs)
-    classDirectories.setFrom files(debugTree)
-    executionData.setFrom layout.buildDirectory.dir("app/build/jacoco/testReleaseUnitTest.exec")
-    executionData.setFrom layout.buildDirectory.dir("app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+
+    executionData.setFrom(fileTree(dir: "$buildDir", includes: [
+            "jacoco/testReleaseUnitTest.exec",
+            "ooutputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+    ]))
 }
 
 dependencies {

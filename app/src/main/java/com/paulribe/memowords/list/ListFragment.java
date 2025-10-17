@@ -163,10 +163,7 @@ public class ListFragment extends Fragment {
         listWordsViewModel.setRecyclerViewOnTranslateResults(Boolean.FALSE);
         if(this.adapter == null) {
             OnFavoriteClickListener favoriteClickListener = createFavoriteClickListener();
-            View.OnClickListener ponsClickListener = null;
-            if(listWordsViewModel.getPossiblePonsTranslations().contains(listWordsViewModel.getTranslationLanguagesPrefix())) {
-                ponsClickListener = createPonsClickListener();
-            }
+            View.OnClickListener ponsClickListener = createPonsClickListener(listWordsViewModel.getTranslationLanguagesPrefix());
             View.OnClickListener myMemoryClickListener = createMyMemoryClickListener();
             List<Word> wordList = listWordsViewModel.getFilteredWordsByKnowledgeLevel(listWordsViewModel.getKnowledgeFilterSelected().getValue());
             this.adapter = new WordAdapter(wordList, favoriteClickListener, ponsClickListener, myMemoryClickListener,
@@ -240,13 +237,13 @@ public class ListFragment extends Fragment {
             };
     }
 
-    private View.OnClickListener createPonsClickListener() {
+    private View.OnClickListener createPonsClickListener(String translationLanguagePrefix) {
         return view -> {
                 startLoader();
                 hideKeyboard();
                 PonsService service = RetrofitClientInstance.getRetrofitInstance().create(PonsService.class);
-                Call<List<PonsResult>> call = service.getAllTranslations(listWordsViewModel.getTranslationLanguagesPrefix(), listWordsViewModel.getSearchedString().getValue(),
-                        listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons(), listWordsViewModel.getxApiKeyPons());
+                Call<List<PonsResult>> call = service.getAllTranslations(translationLanguagePrefix, listWordsViewModel.getSearchedString().getValue(),
+                        listWordsViewModel.getCurrentSourceLanguage().getValue().getPrefixForPons(), listWordsViewModel.getxApiKeyPons()); // TODO: check if source language should be passed with possibly en ?
                 call.enqueue(new Callback<List<PonsResult>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<PonsResult>> call, @NonNull Response<List<PonsResult>> response) {

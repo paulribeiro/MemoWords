@@ -72,9 +72,6 @@ public class ListWordsViewModel extends BaseViewModel {
     @Getter
     private MutableLiveData<HashSet<KnowledgeLevelEnum>> knowledgeFilterSelected;
 
-    @Getter
-    private List<String> possiblePonsTranslations;
-
     public void setRecyclerViewOnTranslateResults(Boolean recyclerViewOnTranslateResults) {
         isRecyclerViewOnTranslateResults = recyclerViewOnTranslateResults;
     }
@@ -94,8 +91,6 @@ public class ListWordsViewModel extends BaseViewModel {
         currentTargetLanguage = new MutableLiveData<>(this.getCurrentLanguage().getValue());
         isNativeLanguageToTranslation = new MutableLiveData<>(Boolean.TRUE);
         knowledgeFilterSelected = new MutableLiveData<>(new HashSet<>());
-
-        possiblePonsTranslations = Arrays.asList("enfr", "deen", "enes", "enpt", "defr", "esfr", "dept", "dees", "espt");
     }
 
     public void readWords() {
@@ -293,10 +288,32 @@ public class ListWordsViewModel extends BaseViewModel {
     }
 
     public String getTranslationLanguagesPrefix() {
-        if(getCurrentSourceLanguage().getValue().getPrefixForPons().compareTo(getCurrentTargetLanguage().getValue().getPrefixForPons()) < 0) {
-            return getCurrentSourceLanguage().getValue().getPrefixForPons() + getCurrentTargetLanguage().getValue().getPrefixForPons();
+        List<String> possiblePonsTranslations = Arrays.asList("enfr", "deen", "enes", "enpt", "defr", "esfr", "dept", "dees", "espt", "bgde", "bgen");
+        String ponsLanguagePrefix = buildPrefixForPons();
+        if(possiblePonsTranslations.contains(ponsLanguagePrefix)) {
+            return ponsLanguagePrefix;
+        }
+        return buildPrefixForPonsWithDefaultLanguage();
+    }
+
+    private String buildPrefixForPons() {
+        String sourceLanguage = getCurrentSourceLanguage().getValue().getPrefixForPons();
+        String targetLanguage = getCurrentTargetLanguage().getValue().getPrefixForPons();
+        if(sourceLanguage.compareTo(targetLanguage) < 0) {
+            return sourceLanguage + targetLanguage;
         } else {
-            return getCurrentTargetLanguage().getValue().getPrefixForPons() + getCurrentSourceLanguage().getValue().getPrefixForPons();
+            return targetLanguage + sourceLanguage;
+        }
+    }
+
+    private String buildPrefixForPonsWithDefaultLanguage() {
+        String defaultLanguage = "en";
+        String sourceLanguage = getIsNativeLanguageToTranslation().getValue() ? defaultLanguage : getCurrentSourceLanguage().getValue().getPrefixForPons();
+        String targetLanguage = getIsNativeLanguageToTranslation().getValue() ? getCurrentTargetLanguage().getValue().getPrefixForPons() : defaultLanguage;
+        if(sourceLanguage.compareTo(targetLanguage) < 0) {
+            return sourceLanguage + targetLanguage;
+        } else {
+            return targetLanguage + sourceLanguage;
         }
     }
 

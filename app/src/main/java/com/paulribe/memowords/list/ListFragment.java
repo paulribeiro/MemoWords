@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -100,6 +102,12 @@ public class ListFragment extends Fragment {
         targetLanguageTextView = view.findViewById(R.id.targetLanguageTextView);
         ImageButton swapLanguageButton = view.findViewById(R.id.swapLanguageButton);
         listFragmentView = view;
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
+            int paddingTop = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            v.setPadding(v.getPaddingLeft(), paddingTop, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
 
         createOptionMenuOrderBy();
         configureRecyclerView();

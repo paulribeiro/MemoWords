@@ -68,6 +68,7 @@
     <string name="english">Anglais</string>
     <string name="french">Français</string>
     <string name="spanish">Espagnol</string>
+    <string name="bulgarian">Bulgare</string>
     <string name="select_language">Selectionner votre langue maternelle</string>
     <string name="logout">Déconnexion</string>
     <string name="favorite">Favoris</string>

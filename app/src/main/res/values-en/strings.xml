@@ -68,6 +68,7 @@
     <string name="english">English</string>
     <string name="french">French</string>
     <string name="spanish">Spanish</string>
+    <string name="bulgarian">Bulgarian</string>
     <string name="select_language">Select your native language</string>
     <string name="logout">Log out</string>
     <string name="favorite">favorite</string>

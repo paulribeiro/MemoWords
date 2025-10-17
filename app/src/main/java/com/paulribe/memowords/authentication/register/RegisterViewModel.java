@@ -51,6 +51,7 @@ public class RegisterViewModel extends BaseViewModel {
         mCountryList.add(new CountryItem(LanguageEnum.FRENCH, R.mipmap.fr_flag));
         mCountryList.add(new CountryItem(LanguageEnum.ENGLISH, R.mipmap.gb_flag));
         mCountryList.add(new CountryItem(LanguageEnum.PORTUGUESE, R.mipmap.pt_flag));
+        mCountryList.add(new CountryItem(LanguageEnum.BULGARIAN, R.mipmap.bg_flag));
     }
 
     public MutableLiveData<Boolean> getIsLoading() {

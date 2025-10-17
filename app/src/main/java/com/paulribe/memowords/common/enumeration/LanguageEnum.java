@@ -2,9 +2,9 @@ package com.paulribe.memowords.common.enumeration;
 
 import android.content.Context;
 
-import com.paulribe.memowords.R;
-
 import androidx.annotation.NonNull;
+
+import com.paulribe.memowords.R;
 
 public enum LanguageEnum {
     PORTUGUESE("portuguese", R.string.portuguese),
@@ -12,6 +12,7 @@ public enum LanguageEnum {
     ENGLISH("english", R.string.english),
     FRENCH("french", R.string.french),
     SPANISH("spanish", R.string.spanish),
+    BULGARIAN("bulgarian", R.string.bulgarian),
     NONE("select your native language", R.string.select_language);
 
     private final String language;
@@ -43,6 +44,8 @@ public enum LanguageEnum {
                 return "es";
             case PORTUGUESE:
                 return "pt";
+            case BULGARIAN:
+                return "bg";
             default:
                 return "";
         }

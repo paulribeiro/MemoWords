@@ -70,6 +70,7 @@
     <string name="english">Englisch</string>
     <string name="french">Französisch</string>
     <string name="spanish">Spanisch</string>
+    <string name="bulgarian">Bulgarisch</string>
     <string name="select_language">Wählen Sie Ihre Muttersprache</string>
     <string name="logout">Ausloggen</string>
     <string name="favorite">Lieblings</string>

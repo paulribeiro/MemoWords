@@ -19,11 +19,14 @@
                 android:icon="@drawable/flag_portugal_24dp"
                 app:showAsAction="ifRoom"
                 android:title="@string/portuguese" />
-
             <item android:id="@+id/action_english"
                 android:icon="@drawable/flag_england_24dp"
                 app:showAsAction="ifRoom"
                 android:title="@string/english" />
+            <item android:id="@+id/action_bulgarian"
+                android:icon="@drawable/flag_bulgaria_24dp"
+                app:showAsAction="ifRoom"
+                android:title="@string/bulgarian" />
         </menu>
     </item>
 

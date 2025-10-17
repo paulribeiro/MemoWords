@@ -82,11 +82,15 @@ public class MainActivity extends AppCompatActivity {
             case PORTUGUESE:
                 toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_portugal_24dp);
                 break;
+            case BULGARIAN:
+                toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_bulgaria_24dp);
+                break;
         }
 
         MenuItem menuItemGerman = toolbar.getMenu().getItem(1).getSubMenu().getItem(0);
         MenuItem menuItemPortuguese = toolbar.getMenu().getItem(1).getSubMenu().getItem(1);
         MenuItem menuItemEnglish = toolbar.getMenu().getItem(1).getSubMenu().getItem(2);
+        MenuItem menuItemBulgarian = toolbar.getMenu().getItem(1).getSubMenu().getItem(3);
         MenuItem.OnMenuItemClickListener menuItemClickListener = menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_german:
@@ -101,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     switchWordsLanguage(LanguageEnum.ENGLISH);
                     toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_england_24dp);
                     break;
+                case R.id.action_bulgarian:
+                    switchWordsLanguage(LanguageEnum.BULGARIAN);
+                    toolbar.getMenu().getItem(1).setIcon(R.drawable.flag_bulgaria_24dp);
+                    break;
                 default:
                     break;
             }
@@ -110,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         menuItemGerman.setOnMenuItemClickListener(menuItemClickListener);
         menuItemPortuguese.setOnMenuItemClickListener(menuItemClickListener);
         menuItemEnglish.setOnMenuItemClickListener(menuItemClickListener);
+        menuItemBulgarian.setOnMenuItemClickListener(menuItemClickListener);
 
         MenuItem menuItemLogout = toolbar.getMenu().getItem(0);
         menuItemLogout.setTitle(baseViewModel.getCurrentUser().getEmail());

@@ -22,18 +22,18 @@
         <Button
             android:id="@+id/addSearchedWordButton"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/layout_rounded"
             android:text="Add"
-            android:textColor="@color/themeColor"
+            android:backgroundTint="@color/themeColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView_target"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/MyButtonStyle"/>
 
         <TextView
             android:id="@+id/textView_target"

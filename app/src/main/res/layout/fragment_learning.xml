@@ -121,6 +121,7 @@
 
             <Button
                 android:id="@+id/showTranslationButton"
+                style="@style/MyButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="24dp"
@@ -135,6 +136,7 @@
 
             <Button
                 android:id="@+id/button2"
+                style="@style/MyButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="24dp"
@@ -152,6 +154,7 @@
 
             <Button
                 android:id="@+id/button3"
+                style="@style/MyButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="24dp"

@@ -49,7 +49,7 @@
             android:gravity="center"
             android:text="@string/edit_the_word"
             android:textColor="@color/white"
-            android:textSize="42dp"
+            android:textSize="42sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -96,37 +96,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/popupDeleteButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/shape_button"
-            android:backgroundTint="@color/themeColor"
+            app:backgroundTint="@color/themeColor"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:text="@string/delete_word"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:cornerRadius="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/popupButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/shape_button"
-            android:backgroundTint="@color/themeColor"
+            app:backgroundTint="@color/themeColor"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:text="@string/add_word"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,7 +148,6 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintCircleRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="250dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 

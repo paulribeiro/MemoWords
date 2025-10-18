@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorHighlight">@color/themeColor</item>
         <item name="android:textColorLink">@color/colorPrimary</item>
+        <item name="buttonStyle">@style/MyButtonStyle</item>
+    </style>
+
+    <style name="MyButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="cornerRadius">10dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

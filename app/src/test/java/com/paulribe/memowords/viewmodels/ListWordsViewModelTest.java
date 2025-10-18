@@ -374,14 +374,14 @@ public class ListWordsViewModelTest {
     }
 
     @Test
-    public void getTranslationLanguagesPrefixTest() {
+    public void getTranslationLanguagesPrefixTest_whenTranslationCombinationDoesNotExistForPons() {
 
         Mockito.doReturn(new MutableLiveData<>(LanguageEnum.FRENCH)).when(viewModelMock).getCurrentSourceLanguage();
         Mockito.doReturn(new MutableLiveData<>(LanguageEnum.PORTUGUESE)).when(viewModelMock).getCurrentTargetLanguage();
 
         String translationLanguagesPrefix = viewModelMock.getTranslationLanguagesPrefix();
 
-        assertEquals("frpt", translationLanguagesPrefix);
+        assertEquals("enpt", translationLanguagesPrefix);
     }
 
     @Test

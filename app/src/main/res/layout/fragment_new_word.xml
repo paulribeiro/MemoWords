@@ -25,7 +25,7 @@
         android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="48dp"
         android:background="@drawable/cross_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
             android:id="@+id/popupEditTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="48dp"
             android:gravity="center"
             android:text="@string/edit_the_word"
             android:textColor="@color/white"

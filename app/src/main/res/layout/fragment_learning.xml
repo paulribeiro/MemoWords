@@ -129,6 +129,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="24dp"
                 android:text="@string/show_answer"
+                android:backgroundTint="@color/themeColor2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
